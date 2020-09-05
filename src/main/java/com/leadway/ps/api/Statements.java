@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
-@SessionAttributes("name")
+@SessionAttributes(names = {"username", "greetings", "fullname"})
 @RequestMapping("/statements")
 public class Statements {
 
@@ -77,7 +77,7 @@ public class Statements {
 
     @PostMapping("/approve/{id}")
     public String review(@PathVariable(value = "id") String id, ModelMap model,Approval approval) throws Exception {
-        String name = (String) model.get("name");
+        String username = (String) model.get("username");
         statements.approve(approval);
         model.put("statement", statements.getStatement(id));
         return "review";
