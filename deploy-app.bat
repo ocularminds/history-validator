@@ -1,0 +1,1 @@
+"C:\Program Files\Java\jdk1.8.0_221\bin\java" -jar payara-micro-5.2020.4.jar --deploy target\ps.war
