@@ -16,8 +16,10 @@
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title">Statements Validations</h4>
+                                <p><button class="btn btn-dark">Reject</button>&nbsp;<button class="btn btn-info">Approve</button>
+                                    &nbsp;<button class="btn btn-success"> <i data-feather="file-text" class="feather-icon"></i>&nbsp;Export Excel</button></p>
                                 <div class="table-responsive">
-                                    <table id="zero_config" class="table table-striped table-bordered no-wrap">
+                                    <table id="zero_config" class="table table-striped table-bordered no-wrap" style="font-size: 0.6em">
                                         <thead>
                                             <tr>
                                                 <th>SURNAME</th>
@@ -49,24 +51,21 @@
                                     </table>
                                 </div>
                                 <div class="table-responsive">
-                                    <table id="zero_config" class="table table-striped table-bordered no-wrap">
+                                    <table id="zero_config" class="table table-striped table-bordered no-wrap" style="font-size: 0.6em">
                                         <thead>
                                             <tr>
-                                                <th>PAY_RECEIVE_DATE</th>
-                                                <th>RELATED_MONTH_START</th>
-                                                <th>RELATED_MONTH_END</th>
-                                                <th>TRANSACTION_TYPE</th>
-                                                <th>EMPLOYER_CONTRIBUTION</th>
-                                                <th>EMPLOYEE_CONTRIBUTION</th>
-                                                <th>VOLUNTARY_CONTINGENT</th>
-                                                <th>VOLUNTARY_RETIREMENT</th>
-                                                <th>OTHER_INFLOWS</th>
-                                                <th>TOTAL_CONTRIBUTIONS</th>
-                                                <th>NUMBER_OF_UNITS</th>
+                                                <th>PAY_DATE</th>
+                                                <th>MONTH_START</th>
+                                                <th>MONTH_END</th>
+                                                <th>TTRAN_TYPE</th>
+                                                <th>EMPLOYER</th>
+                                                <th>EMPLOYEE</th>
+                                                <th>TOTAL</th>
+                                                <th>UNITS</th>
                                                 <th>FEES</th>
-                                                <th>OTHER_WITHDRAWALS</th>
+                                                <th>WITHDRAWALS</th>
                                                 <th>NET_CONTRIBUTIONS</th>
-                                                <th>RELATED_PFA_CODE</th>
+                                                <th>PFA_CODE</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -76,16 +75,13 @@
                                                     <td><fmt:formatDate value="${s.monthStart}" pattern="dd-MMM-yyyy" /></td>
                                                     <td><fmt:formatDate value="${s.monthEnd}" pattern="MMM-yyyy" /></td>
                                                     <td>${s.type}</td>
-                                                    <td>${s.employer}</td>
-                                                    <td>${s.contribution}</td>
-                                                    <td>${s.voluntaryContigent}</td>
-                                                    <td>${s.voluntaryRetirement}</td>
-                                                    <td>${s.otherInflows}</td>
-                                                    <td>${s.total}</td>
-                                                    <td>${s.units}</td>
-                                                    <td>${s.fees}</td>
-                                                    <td>${s.withdrawals}</td>
-                                                    <td>${s.net}</td>
+                                                    <td class="text-right">${s.employer}</td>
+                                                    <td class="text-right">${s.contribution}</td>
+                                                    <td class="text-right">${s.total}</td>
+                                                    <td class="text-right">${s.units}</td>
+                                                    <td class="text-right">${s.fees}</td>
+                                                    <td class="text-right">${s.withdrawals}</td>
+                                                    <td class="text-right">${s.net}</td>
                                                     <td>${s.pfa}</td>
                                                 </tr>
                                             </c:forEach>

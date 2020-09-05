@@ -11,7 +11,7 @@
                 </b>
                 <span class="logo-text">
                     <img src="${pageContext.request.contextPath}/assets/images/logo-text.png" alt="homepage" class="dark-logo" />
-                    <img src="${pageContext.request.contextPath}/assets/images/logo-light-text.png" class="light-logo" alt="homepage" />
+                    <img src="${pageContext.request.contextPath}/assets/images/n_1.png" class="light-logo" alt="homepage" />
                 </span>
             </a>
         </div>
