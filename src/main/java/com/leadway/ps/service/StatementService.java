@@ -1,5 +1,6 @@
 package com.leadway.ps.service;
 
+import com.leadway.ps.ExcelFile;
 import com.leadway.ps.model.Approval;
 import com.leadway.ps.model.Criteria;
 import com.leadway.ps.model.Record;
@@ -22,7 +23,7 @@ public class StatementService {
     List<StatementRequest> requests;
 
     public StatementService() {
-        requests = new ArrayList<StatementRequest>();
+        requests = new ArrayList<>();
     }
 
     @PostConstruct
@@ -42,7 +43,7 @@ public class StatementService {
     }
 
     public List<StatementRequest> selectForReview() {
-        List<StatementRequest> filtered = new ArrayList<StatementRequest>();
+        List<StatementRequest> filtered = new ArrayList<>();
         for (StatementRequest req : requests) {
             if (req.getStatus().equals("PENDING")) {
                 filtered.add(req);
@@ -52,7 +53,7 @@ public class StatementService {
     }
 
     public List<StatementRequest> selectForApproval() {
-        List<StatementRequest> filtered = new ArrayList<StatementRequest>();
+        List<StatementRequest> filtered = new ArrayList<>();
         for (StatementRequest req : requests) {
             if (req.getStatus().equals("REVIEWED")) {
                 filtered.add(req);
@@ -89,16 +90,17 @@ public class StatementService {
         requests.add(0, req);
     }
 
-    private List<StatementRequest> randomise(Criteria criteria) {
+    public List<StatementRequest> randomise(Criteria criteria) {
         int random;
-        int rand = (int) (Math.random() * 50);
+        int rand = (int) (Math.random() * 25);
         long time = new Date().getTime();
-        List<StatementRequest> data = new ArrayList<StatementRequest>();
+        List<StatementRequest> data = new ArrayList<>();
         List<Record> records;
         Record record;
         String[] names = {
             "Akpan, Jinadu, Paul", "Segun,Hammed, Bello",
             "Chukwu,Festus,Adimeru", "Omosetan,Omorele,Pius", "Djeri,Oriola,Yakub"};
+        BigDecimal total, units, fundUnits, net,netSum;
         for (int i = 0; i < rand; i++) {
             random = (int) (Math.random() * 5);
             String[] emp = names[random].split(",");
@@ -110,14 +112,15 @@ public class StatementService {
             req.setEmployer("PR0000070199");
             req.setCode("FUND3");
             req.setPrice(new BigDecimal("3.7230"));
-            req.setUnits(new BigDecimal(Math.random() * 99999999).setScale(2, RoundingMode.HALF_UP));
-            req.setBalance(new BigDecimal("134202540.87"));
-            req.setEarning(new BigDecimal("-36542048.01"));
+            netSum = BigDecimal.ZERO;
+            fundUnits = new BigDecimal(Math.random() * 99999999).setScale(2, RoundingMode.HALF_UP);
+            req.setUnits(fundUnits);
+            req.setBalance(fundUnits.multiply(req.getPrice()));
             req.setStatus("PENDING");
             int max = (int) (Math.random() * 25);
             long amount = (int) (Math.random() * 99999999l);
-            long units = (int) (Math.random() * 999999999l);
-            records = new ArrayList<Record>();
+            BigDecimal debits = new BigDecimal((long) (Math.random() * 76543210l));
+            records = new ArrayList<>();
             for (int j = 0; j < max; j++) {
                 int t = (int) (Math.random() * 1000 * 60 * 60 * 24 * 90);
                 record = new Record();
@@ -130,18 +133,33 @@ public class StatementService {
                 record.setVoluntaryContigent(BigDecimal.ZERO);
                 record.setVoluntaryRetirement(BigDecimal.ZERO);
                 record.setOtherInflows(BigDecimal.ZERO);
-                record.setTotal(record.getEmployer().add(record.getContribution()));
-                record.setUnits(new BigDecimal(units));
+                total = record.getEmployer().add(record.getContribution());
+                total = total.add(record.getVoluntaryContigent());
+                total = total.add(record.getVoluntaryRetirement());
+                total = total.add(record.getOtherInflows());
+                units = total.divide(req.getPrice(), 2, RoundingMode.HALF_UP);
+                record.setTotal(total);
+                record.setUnits(units);
                 record.setFees(new BigDecimal("100.00"));
-                record.setWithdrawals(BigDecimal.ZERO);
-                record.setNet(record.getTotal().subtract(record.getWithdrawals()));
+                record.setWithdrawals(debits);
+                net = total.subtract(record.getFees()).subtract(debits);
+                netSum = netSum.add(net);
+                record.setNet(net);
                 record.setPfa("022");
                 records.add(record);
             }
 
+            req.setEarning(req.getBalance().subtract(netSum));
             req.setRecords(records);
             data.add(req);
         }
         return data;
+    }
+
+    public static void main(String[] args) throws Exception {
+        Criteria criteria = new Criteria(200, "PEN100016997603");
+        StatementService service = new StatementService();
+        List<StatementRequest> req = service.randomise(criteria);
+        new ExcelFile(req.get(0)).toFile();
     }
 }

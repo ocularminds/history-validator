@@ -73,7 +73,7 @@
                                     </div>
                                 </form:form>
                                 <div class="table-responsive">
-                                    <table id="zero_config" class="table table-striped table-bordered no-wrap" style="font-size: 0.6em">
+                                    <table id="zero_config" class="table table-striped table-bordered no-wrap">
                                         <thead>
                                             <tr>
                                                 <th>PIN</th>

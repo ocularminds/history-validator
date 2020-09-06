@@ -3,15 +3,14 @@
         <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i
                 class="ti-menu ti-close"></i></a>
         <div class="navbar-brand">
-            <a href="dashboard.html">
+            <a href="dashboard">
                 <b class="logo-icon">
-                    <img src="${pageContext.request.contextPath}/assets/images/logo-icon.png" alt="homepage" class="dark-logo" />
-                    <!-- Light Logo icon -->
-                    <img src="${pageContext.request.contextPath}/assets/images/logo-icon.png" alt="homepage" class="light-logo" />
+                    <img src="${pageContext.request.contextPath}/assets/images/n_1.png" alt="homepage" class="dark-logo" />
+                    <img src="${pageContext.request.contextPath}/assets/images/n_1.png" alt="homepage" class="light-logo" />
                 </b>
                 <span class="logo-text">
-                    <img src="${pageContext.request.contextPath}/assets/images/logo-text.png" alt="homepage" class="dark-logo" />
-                    <img src="${pageContext.request.contextPath}/assets/images/logo-light-text.png" class="light-logo" alt="homepage" />
+                    <img src="${pageContext.request.contextPath}/assets/images/n_1" alt="homepage" class="dark-logo" />
+                    <img src="${pageContext.request.contextPath}/assets/images/n_1.png" class="light-logo" alt="homepage" />
                 </span>
             </a>
         </div>
