@@ -58,7 +58,6 @@ public class Statements {
 
     @RequestMapping("/export/{pin}")
     public void download(@PathVariable(value = "pin") String pin, HttpServletResponse response) throws InterruptedException, ExecutionException {
-
         String fn = pin + ".xlsx";
         String file = ExcelFile.FOLDER + File.separator + fn;
         String attachement = String.format("attachment; filename=\"%s\"", fn);

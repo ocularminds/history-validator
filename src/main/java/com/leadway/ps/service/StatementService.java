@@ -1,6 +1,8 @@
 package com.leadway.ps.service;
 
 import com.leadway.ps.ExcelFile;
+import com.leadway.ps.RecordRowMapper;
+import com.leadway.ps.StatementRowMapper;
 import com.leadway.ps.model.Approval;
 import com.leadway.ps.model.Criteria;
 import com.leadway.ps.model.Record;
@@ -10,7 +12,13 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,9 +29,21 @@ import org.springframework.stereotype.Service;
 public class StatementService {
 
     List<StatementRequest> requests;
+    private JdbcTemplate template;
+    private SimpleJdbcCall procedure;
 
-    public StatementService() {
+    @Autowired
+    public StatementService(JdbcTemplate jdbcTemplate, SimpleJdbcCall simpleJdbcCall) {
         requests = new ArrayList<>();
+        this.template = jdbcTemplate;
+        this.procedure = simpleJdbcCall;
+        if (this.template != null) {
+            this.template.setResultsMapCaseInsensitive(true);
+        }
+        if (this.procedure != null) {
+            this.procedure = simpleJdbcCall.withProcedureName("uspTypeAStatementMandatorySummary")
+                    .returningResultSet("statements", new RecordRowMapper());
+        }
     }
 
     @PostConstruct
@@ -36,29 +56,67 @@ public class StatementService {
         return requests;
     }
 
-    public List<StatementRequest> search(Criteria criteria, String user) {
+    public StatementRequest search(String pin) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("select e.firstname , e.lastname , e.MiddleName ,");
+        sb.append("re.employercode, fd.FundName from employee join employer er ");
+        sb.append("on e.employerid = er.employerid join  funddefinition fd ");
+        sb.append("on fd.funddefinitionid = e.fundid and e.rsapin = ?");
+        List<StatementRequest> list = template.query(
+                sb.toString(), new Object[]{pin}, new StatementRowMapper()
+        );
+        return list.size() > 0 ? list.get(0) : null;
+    }
+
+    public List<StatementRequest> create(Criteria criteria, String user) {
         List<StatementRequest> searched = randomise(criteria);
         requests.addAll(searched);
         return searched;
     }
 
+    public List<StatementRequest> search(Criteria criteria, String user) {
+        List<StatementRequest> data = new ArrayList<>();
+        StatementRequest req = search(criteria.getPin());
+        if (req == null) {
+            return data;
+        }
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("FundID", criteria.getFund())
+                .addValue("RSAPIN", criteria.getPin())
+                .addValue("FromDate", criteria.getFrom())
+                .addValue("ToDate", criteria.getTo());
+
+        try {
+            Map<String, Object> out = procedure.execute(in);
+            if (out == null) {
+                data.add(req);
+                return data;
+            }
+            List<Record> records = (List<Record>) out.get("statements");
+            addCalculatedValues(req, records);
+            data.add(req);
+            requests.addAll(data);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
+        return data;
+
+    }
+
     public List<StatementRequest> selectForReview() {
         List<StatementRequest> filtered = new ArrayList<>();
-        for (StatementRequest req : requests) {
-            if (req.getStatus().equals("PENDING")) {
-                filtered.add(req);
-            }
-        }
+        requests.stream().filter((req) -> (req.getStatus().equals("PENDING"))).forEachOrdered((req) -> {
+            filtered.add(req);
+        });
         return filtered;
     }
 
     public List<StatementRequest> selectForApproval() {
         List<StatementRequest> filtered = new ArrayList<>();
-        for (StatementRequest req : requests) {
-            if (req.getStatus().equals("REVIEWED")) {
-                filtered.add(req);
-            }
-        }
+        requests.stream().filter((req) -> (req.getStatus().equals("REVIEWED"))).forEachOrdered((req) -> {
+            filtered.add(req);
+        });
         return filtered;
     }
 
@@ -100,7 +158,7 @@ public class StatementService {
         String[] names = {
             "Akpan, Jinadu, Paul", "Segun,Hammed, Bello",
             "Chukwu,Festus,Adimeru", "Omosetan,Omorele,Pius", "Djeri,Oriola,Yakub"};
-        BigDecimal total, units, fundUnits, net,netSum;
+        BigDecimal total, units, fundUnits, net, netSum;
         for (int i = 0; i < rand; i++) {
             random = (int) (Math.random() * 5);
             String[] emp = names[random].split(",");
@@ -156,9 +214,41 @@ public class StatementService {
         return data;
     }
 
+    private void addCalculatedValues(StatementRequest req, List<Record> data) {
+        req.setPrice(new BigDecimal("3.7230"));
+        BigDecimal netSum = BigDecimal.ZERO, totalSum = BigDecimal.ZERO, unitSum = BigDecimal.ZERO;
+        int max = data.size();
+        BigDecimal debits, total, net;
+        List<Record> records = new ArrayList<>();
+        Record record;
+        for (int j = 0; j < max; j++) {
+            record = data.get(j);
+            record.setVoluntaryContigent(BigDecimal.ZERO);
+            record.setVoluntaryRetirement(BigDecimal.ZERO);
+            record.setOtherInflows(BigDecimal.ZERO);
+            total = record.getEmployer().add(record.getContribution());
+            total = total.add(record.getVoluntaryContigent());
+            total = total.add(record.getVoluntaryRetirement());
+            total = total.add(record.getOtherInflows());
+            unitSum = unitSum.add(req.getUnits());
+            debits = record.getWithdrawals();
+            record.setTotal(total);
+            net = total.subtract(record.getFees()).subtract(debits);
+            netSum = netSum.add(net);
+            totalSum = totalSum.add(total);
+            record.setNet(net);
+            records.add(record);
+        }
+
+        req.setUnits(unitSum);
+        req.setBalance(unitSum.multiply(req.getPrice()).setScale(2, RoundingMode.HALF_UP));
+        req.setEarning(req.getBalance().subtract(netSum));
+        req.setRecords(records);
+    }
+
     public static void main(String[] args) throws Exception {
         Criteria criteria = new Criteria(200, "PEN100016997603");
-        StatementService service = new StatementService();
+        StatementService service = new StatementService(null, null);
         List<StatementRequest> req = service.randomise(criteria);
         new ExcelFile(req.get(0)).toFile();
     }
