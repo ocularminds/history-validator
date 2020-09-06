@@ -15,5 +15,4 @@ Pension Statement transaction validator.
 ```bash
   java -jar payara-micro-5.2020.4.jar --deploy target\ps.war
 ```
-
 Point your browser to http://127.0.0.1:8080/ps

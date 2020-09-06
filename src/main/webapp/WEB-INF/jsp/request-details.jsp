@@ -17,7 +17,7 @@
                             <div class="card-body">
                                 <h4 class="card-title">Statements Validations</h4>
                                 <p><button class="btn btn-dark">Reject</button>&nbsp;<button class="btn btn-info">Approve</button>
-                                    &nbsp;<a class="btn btn-success" href="${pageContext.request.contextPath}/statements/export/${statement.pin}"> <i data-feather="file-text" class="feather-icon"></i>&nbsp;Export Excel</a></p>
+                                 &nbsp;<a class="btn btn-success" href="${pageContext.request.contextPath}/statements/export/${statement.pin}"> <i data-feather="file-text" class="feather-icon"></i>&nbsp;Export Excel</a></p>
                                 <div class="table-responsive">
                                     <table id="zero_config" class="table table-striped table-bordered no-wrap" style="font-size: 0.6em">
                                         <thead>
