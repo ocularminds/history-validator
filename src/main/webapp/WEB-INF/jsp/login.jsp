@@ -8,9 +8,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="">
-        <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/assets/images/favicon.png">
         <title>Pension Statements - Login</title>
-        <link href="dist/css/style.min.css" rel="stylesheet">
+        <link href="${pageContext.request.contextPath}/dist/css/style.min.css" rel="stylesheet">
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -32,6 +32,7 @@
                     <div class="col-lg-6 col-md-8 bg-white">
                         <div class="p-3">
                             <h2 class="mt-3 text-center">Sign In</h2>
+                            <p class="text-center"><img src="${pageContext.request.contextPath}/assets/images/n_1.png" alt=""logo/></p>
                             <p class="text-center">Enter your username and password to continue.</p>
                             <p style="color: red">${errorMessage}</p>
                             <form:form class="mt-4" method="post" action="${pageContext.request.contextPath}/login" modelAttribute="credentials">
@@ -61,9 +62,9 @@
                 </div>
             </div>
         </div>
-        <script src="assets/libs/jquery/dist/jquery.min.js "></script>
-        <script src="assets/libs/popper.js/dist/umd/popper.min.js "></script>
-        <script src="assets/libs/bootstrap/dist/js/bootstrap.min.js "></script>
+        <script src="${pageContext.request.contextPath}/assets/libs/jquery/dist/jquery.min.js "></script>
+        <script src="${pageContext.request.contextPath}/assets/libs/popper.js/dist/umd/popper.min.js "></script>
+        <script src="${pageContext.request.contextPath}/assets/libs/bootstrap/dist/js/bootstrap.min.js "></script>
         <script>
             $(".preloader ").fadeOut();
         </script>
