@@ -8,8 +8,6 @@ import com.leadway.ps.service.StatementService;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -59,32 +57,25 @@ public class Statements {
     }
 
     @RequestMapping("/export/{pin}")
-    public HttpServletResponse download(@PathVariable(value = "pin") String pin, HttpServletResponse response) throws InterruptedException, ExecutionException {
+    public void download(@PathVariable(value = "pin") String pin, HttpServletResponse response) throws InterruptedException, ExecutionException {
 
         String fn = pin + ".xlsx";
-        try {
-            String file = ExcelFile.FOLDER + File.separator + fn;
-            String attachement = String.format("attachment; filename=\"%s\"", fn);
-            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-            response.setContentLengthLong(file.length());
-            response.addHeader("Content-Disposition", attachement);
-
-            ExecutorService executor = Executors.newFixedThreadPool(1);
-            Future<String> future = executor.submit(() -> {
-                try (ServletOutputStream os = response.getOutputStream();
-                        FileInputStream in = new FileInputStream(file)) {
-                    IOUtils.copy(in, os);
-                }
-                return null;
-            });
-            future.get();
-            executor.shutdown();
-            response.flushBuffer();
-        } catch (IOException ex) {
-            System.out.println("Error writing file to output stream. Filename was " + fn + ex);
-            throw new RuntimeException("IOError writing file to output stream");
-        }
-        return response;
+        String file = ExcelFile.FOLDER + File.separator + fn;
+        String attachement = String.format("attachment; filename=\"%s\"", fn);
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setContentLengthLong(file.length());
+        response.addHeader("Content-Disposition", attachement);
+        ExecutorService executor = Executors.newFixedThreadPool(1);
+        Future<String> future = executor.submit(() -> {
+            try (ServletOutputStream os = response.getOutputStream();
+                    FileInputStream in = new FileInputStream(file)) {
+                IOUtils.copy(in, os);
+                os.flush();
+            }
+            return null;
+        });
+        future.get();
+        executor.shutdown();
     }
 
     @RequestMapping("/search")
