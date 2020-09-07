@@ -28,7 +28,7 @@ public class RecordRowMapper implements RowMapper<Record> {
         record.setFees(rs.getBigDecimal("AdminFee"));
         record.setWithdrawals(rs.getBigDecimal("Payments"));
         record.setNet(rs.getBigDecimal("NetAmount"));
-        record.setPfa(rs.getString("ContEmployerCode"));
+        record.setPfa("023");
         return record;
     }
 }

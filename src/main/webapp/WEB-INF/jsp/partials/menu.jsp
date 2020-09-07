@@ -46,20 +46,11 @@
        <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false"><i data-feather="grid" class="feather-icon"></i><span
 		class="hide-menu">Audits </span></a>
 	<ul aria-expanded="false" class="collapse  first-level base-level-line">
-	    <li class="sidebar-item"><a href="table-basic.html" class="sidebar-link">
-	       <span class="hide-menu"> Basic Table</span></a>
-	    </li>
 	    <li class="sidebar-item">
 	    <a href="${pageContext.request.contextPath}/audits" class="sidebar-link">
 	    <span class="hide-menu">Activities</span></a>
 	    </li>
 	</ul>
-    </li>
-    <li class="sidebar-item"> 
-       <a class="sidebar-link sidebar-link" href="${pageContext.request.contextPath}/reports" aria-expanded="false">
-	  <i data-feather="sidebar" class="feather-icon"></i>
-	    <span class="hide-menu">Reports</span>
-       </a>
     </li>
     <li class="list-divider"></li>
     <li class="nav-small-cap"><span class="hide-menu">Authentication</span></li>
@@ -69,7 +60,7 @@
 	  <span class="hide-menu">Lock Screen </span></a>
     </li>
     <li class="sidebar-item"> 
-       <a class="sidebar-link sidebar-link" href="${pageContext.request.contextPath}/help" aria-expanded="false">
+       <a class="sidebar-link sidebar-link" href="#help" aria-expanded="false">
 	  <i data-feather="edit-3" class="feather-icon"></i><span class="hide-menu">Help</span></a>
     </li>
 </ul>
