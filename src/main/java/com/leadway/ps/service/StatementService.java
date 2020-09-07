@@ -80,7 +80,7 @@ public class StatementService {
                 .addValue("FromDate", criteria.getFrom())
                 .addValue("ToDate", criteria.getTo());
 
-        try {           
+        try {
             Map<String, Object> out = procedure.execute(in);
             if (out == null) {
                 data.add(req);
