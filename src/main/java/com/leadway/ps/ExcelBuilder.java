@@ -18,6 +18,8 @@ import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 
 /**
  *
@@ -47,11 +49,30 @@ public class ExcelBuilder {
         return sheet;
     }
 
-    public static CellStyle newStyle(XSSFWorkbook workbook, XSSFColor color, boolean isBold) {
+    public static CellStyle newStyle(XSSFWorkbook workbook, XSSFColor color, boolean isBold){
+       return newStyle(workbook,color,isBold,null,null);
+    }
+
+    public static CellStyle newStyle(XSSFWorkbook workbook, XSSFColor color, boolean isBold, IndexedColors background, HorizontalAlignment ha) {
         CellStyle style = workbook.createCellStyle();
         XSSFFont font = workbook.createFont();
         if (isBold) {
             font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+        }
+        if(background != null){
+           style.setFillBackgroundColor(background.getIndex());
+        }
+        if(ha != null){
+           switch(ha){
+                case RIGHT:
+                style.setAlignment((short)3);
+                break;
+                case CENTER:
+                style.setAlignment((short)2);
+                break;
+                default:
+                break;
+            }
         }
         font.setFontHeightInPoints((short) 11);
         font.setColor(color);

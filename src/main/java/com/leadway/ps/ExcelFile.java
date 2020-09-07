@@ -8,13 +8,15 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.text.DecimalFormat;
 import java.math.BigDecimal;
+import java.util.stream.IntStream;
 import java.awt.Color;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
 /**
  *
  * @author Dev.io
@@ -56,11 +58,19 @@ public final class ExcelFile {
         try {
             XSSFWorkbook workbook = (XSSFWorkbook) ExcelBuilder.createWorkBookForPath(outFile);
             XSSFSheet sheet = ExcelBuilder.newSheet(FOLDER, outFile, HEADERS, workbook);
-            CellStyle style = ExcelBuilder.newStyle(workbook, null, false);
+            CellStyle[] styles = {
+                ExcelBuilder.newStyle(workbook,null,false, IndexedColors.WHITE, HorizontalAlignment.CENTER),
+                ExcelBuilder.newStyle(workbook,null,false, IndexedColors.YELLOW, HorizontalAlignment.CENTER),
+                ExcelBuilder.newStyle(workbook,null,false, IndexedColors.GREY_50_PERCENT, HorizontalAlignment.RIGHT),
+                ExcelBuilder.newStyle(workbook,null,true, IndexedColors.WHITE, HorizontalAlignment.CENTER),
+                ExcelBuilder.newStyle(workbook,null,false,IndexedColors.WHITE,HorizontalAlignment.RIGHT),
+                ExcelBuilder.newStyle(workbook,null,false,IndexedColors.YELLOW,HorizontalAlignment.RIGHT)
+            };
+
             int rowCount = 1;
             addHeaderContent(workbook, rowCount++, sheet);
             ExcelBuilder.createHeaderRow(workbook, sheet, SUB_HEADERS, rowCount++);
-            addContent(rowCount, sheet, style);
+            addContent(rowCount, sheet, styles);
             writeFile(workbook, outFile);
         } catch (IOException ex) {
             System.out.println("error writing transaction history file " + ex);
@@ -85,36 +95,36 @@ public final class ExcelFile {
         ExcelBuilder.createCell(++columnCount, row, amountFormat(request.getEarning(),2), style);
     }
 
-    private void addContent(int rowCount, XSSFSheet sheet, CellStyle style) {
+    private void addContent(int rowCount, XSSFSheet sheet, CellStyle[] style) {
         Row row;
         BigDecimal sumTotal = BigDecimal.ZERO,sumNet=BigDecimal.ZERO;
         for (Record record : request.getRecords()) {
             row = sheet.createRow(rowCount);
             int columnCount = 0;
-            ExcelBuilder.createCell(columnCount, row, SDF.format(record.getDateReceived()), style);
-            ExcelBuilder.createCell(++columnCount, row, SDF.format(record.getMonthStart()), style);
-            ExcelBuilder.createCell(++columnCount, row, SF.format(record.getMonthEnd()), style);
-            ExcelBuilder.createCell(++columnCount, row, record.getType(), style);
-            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getEmployer(),2), style);
-            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getContribution(),2), style);
-            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getVoluntaryContigent(),2), style);
-            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getVoluntaryRetirement(),2), style);
-            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getOtherInflows(),2), style);
-            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getTotal(),2), style);
-            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getUnits(),2), style);
-            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getFees(),2), style);
-            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getWithdrawals(),2), style);
-            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getNet(),2), style);
-            ExcelBuilder.createCell(++columnCount, row, record.getPfa(), style);
+            ExcelBuilder.createCell(columnCount, row, SDF.format(record.getDateReceived()), style[0]);
+            ExcelBuilder.createCell(++columnCount, row, SDF.format(record.getMonthStart()), style[0]);
+            ExcelBuilder.createCell(++columnCount, row, SF.format(record.getMonthEnd()), style[1]);
+            ExcelBuilder.createCell(++columnCount, row, upper(record.getType()), style[1]);
+            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getEmployer(),2), style[4]);
+            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getContribution(),2), style[4]);
+            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getVoluntaryContigent(),2), style[5]);
+            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getVoluntaryRetirement(),2), style[5]);
+            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getOtherInflows(),2), style[4]);
+            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getTotal(),2), style[2]);
+            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getUnits(),2), style[5]);
+            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getFees(),2), style[4]);
+            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getWithdrawals(),2), style[4]);
+            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getNet(),2), style[2]);
+            ExcelBuilder.createCell(++columnCount, row, record.getPfa(), style[1]);
             sumTotal = sumTotal.add(record.getTotal());
             sumNet = sumNet.add(record.getNet());
             ++rowCount;
        }
         
         row = sheet.createRow(rowCount);
-        ExcelBuilder.createCell(9,row,amountFormat(sumTotal,2),style);
-        ExcelBuilder.createCell(13,row,amountFormat(sumNet,2),style);
-
+        ExcelBuilder.createCell(9,row,amountFormat(sumTotal,2),style[3]);
+        ExcelBuilder.createCell(13,row,amountFormat(sumNet,2),style[3]);
+        IntStream.range(0,15).forEach((columnIndex) -> sheet.autoSizeColumn(columnIndex));
     }
 
     private Fault buildFault(StringBuilder errors, int success) {
