@@ -52,9 +52,6 @@
                                     <div class="col-lg-12 text-center">
                                         <button type="submit" class="btn btn-block btn-dark">Sign In</button>
                                     </div>
-                                    <div class="col-lg-12 text-center mt-5">
-                                        Forgot password? <a href="#" class="text-danger">Click here</a>
-                                    </div>
                                 </div>
                             </form:form>
                         </div>

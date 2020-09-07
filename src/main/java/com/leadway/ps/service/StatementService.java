@@ -41,15 +41,9 @@ public class StatementService {
             this.template.setResultsMapCaseInsensitive(true);
         }
         if (this.procedure != null) {
-            this.procedure = simpleJdbcCall.withProcedureName("uspTypeAStatementMandatorySummary")
+            this.procedure = simpleJdbcCall.withProcedureName("uspTypeAStatementTransactions")
                     .returningResultSet("statements", new RecordRowMapper());
         }
-    }
-
-    @PostConstruct
-    public void init() {
-        Criteria criteria = new Criteria(200, "PEN100016997603");
-        requests = randomise(criteria);
     }
 
     public List<StatementRequest> findAll() {
@@ -58,7 +52,7 @@ public class StatementService {
 
     public StatementRequest search(String pin) {
         StringBuilder sb = new StringBuilder();
-        sb.append("select e.firstname , e.lastname , e.MiddleName ,");
+        sb.append("select e.firstname,e.lastname,e.MiddleName,e.rsapin,e.fundid, ");
         sb.append("re.employercode, fd.FundName from employee join employer er ");
         sb.append("on e.employerid = er.employerid join  funddefinition fd ");
         sb.append("on fd.funddefinitionid = e.fundid and e.rsapin = ?");
@@ -81,12 +75,12 @@ public class StatementService {
             return data;
         }
         SqlParameterSource in = new MapSqlParameterSource()
-                .addValue("FundID", criteria.getFund())
+                .addValue("FundID", req.getFundId())
                 .addValue("RSAPIN", criteria.getPin())
                 .addValue("FromDate", criteria.getFrom())
                 .addValue("ToDate", criteria.getTo());
 
-        try {
+        try {           
             Map<String, Object> out = procedure.execute(in);
             if (out == null) {
                 data.add(req);
@@ -97,6 +91,7 @@ public class StatementService {
             data.add(req);
             requests.addAll(data);
         } catch (Exception e) {
+            e.printStackTrace();
             System.err.println(e.getMessage());
         }
 

@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.text.DecimalFormat;
+import java.math.BigDecimal;
 import java.awt.Color;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
@@ -42,6 +44,12 @@ public final class ExcelFile {
         outFile = FOLDER + File.separator + output("xlsx");
     }
 
+   //1. Add Footer total  and net contributions
+   //2. Summary in uppercase
+   //3. Fund unit price in ecimal places - 4
+   //4. Data to fix column
+   //5. Format amount to comma nd decimal places
+   //6. Negative amount to be in parentences
     public Fault toFile() throws Exception {
         StringBuilder errors = new StringBuilder();
         int success = 0;
@@ -65,39 +73,48 @@ public final class ExcelFile {
         Row row = sheet.createRow(rowCount);
         CellStyle style = ExcelBuilder.newStyle(workbook, new XSSFColor(Color.RED), true);
         int columnCount = 0;
-        ExcelBuilder.createCell(columnCount, row, request.getSurname(), style);
-        ExcelBuilder.createCell(++columnCount, row, request.getFirstName(), style);
-        ExcelBuilder.createCell(++columnCount, row, request.getMiddleName(), style);
-        ExcelBuilder.createCell(++columnCount, row, request.getPin(), style);
-        ExcelBuilder.createCell(++columnCount, row, request.getEmployer(), style);
-        ExcelBuilder.createCell(++columnCount, row, request.getCode(), style);
-        ExcelBuilder.createCell(++columnCount, row, request.getPrice(), style);
-        ExcelBuilder.createCell(++columnCount, row, request.getUnits(), style);
-        ExcelBuilder.createCell(++columnCount, row, request.getBalance(), style);
-        ExcelBuilder.createCell(++columnCount, row, request.getEarning(), style);
+        ExcelBuilder.createCell(columnCount, row, upper(request.getSurname()), style);
+        ExcelBuilder.createCell(++columnCount, row, upper(request.getFirstName()), style);
+        ExcelBuilder.createCell(++columnCount, row, upper(request.getMiddleName()), style);
+        ExcelBuilder.createCell(++columnCount, row, upper(request.getPin()), style);
+        ExcelBuilder.createCell(++columnCount, row, upper(request.getEmployer()), style);
+        ExcelBuilder.createCell(++columnCount, row, upper(request.getCode()), style);
+        ExcelBuilder.createCell(++columnCount, row, amountFormat(request.getPrice(),4), style);
+        ExcelBuilder.createCell(++columnCount, row, amountFormat(request.getUnits(),2), style);
+        ExcelBuilder.createCell(++columnCount, row, amountFormat(request.getBalance(),2), style);
+        ExcelBuilder.createCell(++columnCount, row, amountFormat(request.getEarning(),2), style);
     }
 
     private void addContent(int rowCount, XSSFSheet sheet, CellStyle style) {
         Row row;
+        BigDecimal sumTotal = BigDecimal.ZERO,sumNet=BigDecimal.ZERO;
         for (Record record : request.getRecords()) {
-            row = sheet.createRow(++rowCount);
+            row = sheet.createRow(rowCount);
             int columnCount = 0;
             ExcelBuilder.createCell(columnCount, row, SDF.format(record.getDateReceived()), style);
             ExcelBuilder.createCell(++columnCount, row, SDF.format(record.getMonthStart()), style);
             ExcelBuilder.createCell(++columnCount, row, SF.format(record.getMonthEnd()), style);
             ExcelBuilder.createCell(++columnCount, row, record.getType(), style);
-            ExcelBuilder.createCell(++columnCount, row, record.getEmployer(), style);
-            ExcelBuilder.createCell(++columnCount, row, record.getContribution(), style);
-            ExcelBuilder.createCell(++columnCount, row, record.getVoluntaryContigent(), style);
-            ExcelBuilder.createCell(++columnCount, row, record.getVoluntaryRetirement(), style);
-            ExcelBuilder.createCell(++columnCount, row, record.getOtherInflows(), style);
-            ExcelBuilder.createCell(++columnCount, row, record.getTotal(), style);
-            ExcelBuilder.createCell(++columnCount, row, record.getUnits(), style);
-            ExcelBuilder.createCell(++columnCount, row, record.getFees(), style);
-            ExcelBuilder.createCell(++columnCount, row, record.getWithdrawals(), style);
-            ExcelBuilder.createCell(++columnCount, row, record.getNet(), style);
+            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getEmployer(),2), style);
+            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getContribution(),2), style);
+            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getVoluntaryContigent(),2), style);
+            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getVoluntaryRetirement(),2), style);
+            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getOtherInflows(),2), style);
+            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getTotal(),2), style);
+            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getUnits(),2), style);
+            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getFees(),2), style);
+            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getWithdrawals(),2), style);
+            ExcelBuilder.createCell(++columnCount, row, amountFormat(record.getNet(),2), style);
             ExcelBuilder.createCell(++columnCount, row, record.getPfa(), style);
-        }
+            sumTotal = sumTotal.add(record.getTotal());
+            sumNet = sumNet.add(record.getNet());
+            ++rowCount;
+       }
+        
+        row = sheet.createRow(rowCount);
+        ExcelBuilder.createCell(9,row,amountFormat(sumTotal,2),style);
+        ExcelBuilder.createCell(13,row,amountFormat(sumNet,2),style);
+
     }
 
     private Fault buildFault(StringBuilder errors, int success) {
@@ -119,5 +136,21 @@ public final class ExcelFile {
     private String output(String ext) {
         String extension = ext != null && ext.equals("xls") ? "xlsx" : ext;
         return String.format("%s.%s", pin, extension);
+    }
+
+   private static String upper(String s){
+      return s == null?"":s.toUpperCase();
+   }
+
+    private static String amountFormat(BigDecimal bd, int decimal){
+       bd.setScale(decimal, java.math.RoundingMode.HALF_UP);
+       DecimalFormat df = new DecimalFormat("#,###.00");
+       df.setMinimumFractionDigits(decimal);
+       df.setMaximumFractionDigits(decimal);
+       String s = df.format(bd);  
+       if(s.startsWith("-")){
+          return "("+s.substring(1,s.length())+")";
+       } 
+       return s;    
     }
 }

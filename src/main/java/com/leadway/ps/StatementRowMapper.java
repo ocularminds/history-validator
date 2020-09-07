@@ -17,6 +17,7 @@ public class StatementRowMapper implements RowMapper<StatementRequest> {
         StatementRequest req = new StatementRequest();
         req.setFirstName(rs.getString("firstname"));
         req.setMiddleName(rs.getString("MiddleName"));
+        req.setFundId(rs.getInt("fundid"));
         req.setCode(rs.getString("FundName"));
         req.setEmployer(rs.getString("employercode"));
         req.setPin(rs.getString("rsapin"));

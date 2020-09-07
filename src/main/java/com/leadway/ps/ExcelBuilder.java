@@ -53,7 +53,7 @@ public class ExcelBuilder {
         if (isBold) {
             font.setBoldweight(Font.BOLDWEIGHT_BOLD);
         }
-        font.setFontHeightInPoints((short) 9);
+        font.setFontHeightInPoints((short) 11);
         font.setColor(color);
         style.setFont(font);
 

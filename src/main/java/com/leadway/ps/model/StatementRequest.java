@@ -8,7 +8,7 @@ import java.util.List;
  * @author Dev.io
  */
 public class StatementRequest {
-
+    private int fundId;
     private String surname;
     private String firstName;
     private String middleName;
@@ -24,6 +24,11 @@ public class StatementRequest {
     private String requester;
     private List<String> comments;
 
+   public int getFundId(){
+return this.fundId;}
+public void setFundId(int fundId){
+this.fundId = fundId;
+}
     /**
      * @return the surname
      */
