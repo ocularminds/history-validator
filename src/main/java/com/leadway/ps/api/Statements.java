@@ -1,10 +1,12 @@
 package com.leadway.ps.api;
 
 import com.leadway.ps.ExcelFile;
+import com.leadway.ps.InvalidAccessError;
 import com.leadway.ps.model.Approval;
 import com.leadway.ps.model.Criteria;
 import com.leadway.ps.model.StatementRequest;
 import com.leadway.ps.service.StatementService;
+import com.leadway.ps.service.UserService;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -25,95 +27,212 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @Controller
-@SessionAttributes(names = {"username", "greetings", "fullname"})
+@SessionAttributes(names = { "username", "greetings", "fullname" })
 @RequestMapping("/statements")
 public class Statements {
+  StatementService statements;
+  UserService users;
 
-    StatementService statements;
+  @Autowired
+  public Statements(StatementService statements, UserService users) {
+    this.statements = statements;
+    this.users = users;
+  }
+  
+  @ExceptionHandler(InvalidAccessError.class)
+  public String handleAnyException(Throwable ex, HttpServletRequest request) {
+    return "denied";
+  }
 
-    @Autowired
-    public Statements(StatementService statements) {
-        this.statements = statements;
+  @RequestMapping("/requests")
+  public String getAll(ModelMap model) {
+    String username = (String) model.get("username");
+    if(username == null) return "redirect:/login";
+    List<StatementRequest> requests = statements.findAll();
+    model.put("statements", requests);
+    return "requests";
+  }
+
+  @RequestMapping("/requests/{id}")
+  public String getStatement(
+    @PathVariable(value = "id") String id,
+    ModelMap model
+  )
+    throws Exception {
+    String name = (String) model.get("username");
+    if(name == null) return "redirect:/login";
+    StatementRequest r = statements.getStatement(id);
+    model.put("statement", r);
+    new ExcelFile(r).toFile();
+    return "request-details";
+  }
+
+  @RequestMapping("/export/{pin}")
+  public void download(
+    @PathVariable(value = "pin") String pin,
+    HttpServletResponse response
+  )
+    throws InterruptedException, ExecutionException, IOException {
+    String fn = pin + ".xlsx";
+    String file = ExcelFile.FOLDER + File.separator + fn;
+    String attachement = String.format("attachment; filename=\"%s\"", fn);
+    response.setContentType(
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    response.setContentLengthLong(file.length());
+    response.addHeader("Content-Disposition", attachement);
+    ExecutorService executor = Executors.newFixedThreadPool(1);
+    executor.execute(() -> writeFile(response, file));
+    executor.shutdown();
+  }
+
+  @RequestMapping("/search")
+  public String search(ModelMap model) throws InvalidAccessError {
+    String username = (String) model.get("username");
+    if(username == null) return "redirect:/login";
+    if (!users.hasRole(username, "search")) {
+      throw new InvalidAccessError(
+        "You are not authorized to access this recource"
+      );
     }
+    model.put("statements", Collections.EMPTY_LIST);
+    model.put("criteria", new Criteria());
+    return "search";
+  }
 
-    @RequestMapping("/requests")
-    public String getAll(ModelMap model) {
-        String username = (String) model.get("username");
-        List<StatementRequest> requests = statements.findAll();
-        System.out.println("Total requests: " + requests.size());
-        model.put("statements", requests);
-        return "requests";
-    }
+  @PostMapping("/search")
+  public String search(
+    ModelMap model,
+    @ModelAttribute(value = "criteria") Criteria criteria
+  ) {
+    String username = (String) model.get("username");
+    if(username == null) return "redirect:/login";
+    List<StatementRequest> requests = statements.search(criteria, username);
+    model.put("statements", requests);
+    return "search";
+  }
 
-    @RequestMapping("/requests/{id}")
-    public String getStatement(@PathVariable(value = "id") String id, ModelMap model) throws Exception {
-        String name = (String) model.get("username");
-        StatementRequest r = statements.getStatement(id);
-        model.put("statement", r);
-        new ExcelFile(r).toFile();
-        return "request-details";
+  @RequestMapping("/reviews")
+  public String getReviewables(ModelMap model) throws InvalidAccessError {
+    String username = (String) model.get("username");
+    if(username == null) return "redirect:/login";
+    if (!users.hasRole(username, "reviews")) {
+      throw new InvalidAccessError(
+        "You are not authorized to access this recource"
+      );
     }
+    List<StatementRequest> requests = statements.findAll();
+    model.put("statements", requests);
+    return "reviews";
+  }
 
-    @RequestMapping("/export/{pin}")
-    public void download(@PathVariable(value = "pin") String pin, HttpServletResponse response) throws InterruptedException, ExecutionException {
-        String fn = pin + ".xlsx";
-        String file = ExcelFile.FOLDER + File.separator + fn;
-        String attachement = String.format("attachment; filename=\"%s\"", fn);
-        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.setContentLengthLong(file.length());
-        response.addHeader("Content-Disposition", attachement);
-        ExecutorService executor = Executors.newFixedThreadPool(1);
-        Future<String> future = executor.submit(() -> {
-            try (ServletOutputStream os = response.getOutputStream();
-                    FileInputStream in = new FileInputStream(file)) {
-                IOUtils.copy(in, os);
-                os.flush();
-            }
-            return null;
-        });
-        future.get();
-        executor.shutdown();
+  @RequestMapping("/reviews/{id}")
+  public String getReviewable(
+    @PathVariable(value = "id") String id,
+    ModelMap model
+  )
+    throws Exception {
+    String name = (String) model.get("name");
+    if(name == null) return "redirect:/login";
+    if (!users.hasRole(name, "reviews")) {
+      throw new InvalidAccessError(
+        "You are not authorized to access this recource"
+      );
     }
+    model.put("statement", statements.getStatement(id));
+    return "review";
+  }
 
-    @RequestMapping("/search")
-    public String search(ModelMap model) {
-        String username = (String) model.get("username");
-        model.put("statements", Collections.EMPTY_LIST);
-        model.put("criteria", new Criteria());
-        return "search";
+  @PostMapping("/reviews/{id}")
+  public String review(
+    @PathVariable(value = "id") String id,
+    ModelMap model,
+    Approval approval
+  )
+    throws Exception {
+    String username = (String) model.get("username");
+    if(username == null) return "redirect:/login";
+    if (!users.hasRole(username, "reviews")) {
+      throw new InvalidAccessError(
+        "You are not authorized to access this recource"
+      );
     }
+    statements.approve(approval);
+    model.put("statement", statements.getStatement(id));
+    return "review";
+  }
 
-    @PostMapping("/search")
-    public String search(ModelMap model, @ModelAttribute(value = "criteria") Criteria criteria) {
-        String username = (String) model.get("username");
-        List<StatementRequest> requests = statements.search(criteria, username);
-        model.put("statements", requests);
-        return "search";
+  @RequestMapping("/approvals")
+  public String getApprovables(ModelMap model) throws InvalidAccessError {
+    String username = (String) model.get("username");
+    if(username == null) return "redirect:/login";
+    if (!users.hasRole(username, "approvals")) {
+      throw new InvalidAccessError(
+        "You are not authorized to access this recource"
+      );
     }
+    List<StatementRequest> requests = statements.findAll();
+    model.put("statements", requests);
+    return "approvals";
+  }
 
-    @RequestMapping("/reviews")
-    public String getReviewables(ModelMap model) {
-        String username = (String) model.get("username");
-        List<StatementRequest> requests = statements.findAll();
-        System.out.println("Total requests: " + requests.size());
-        model.put("statements", requests);
-        return "reviews";
+  @RequestMapping("/approvals/{id}")
+  public String getApprovable(
+    @PathVariable(value = "id") String id,
+    ModelMap model
+  )
+    throws Exception {
+    String name = (String) model.get("name");
+    if(name == null) return "redirect:/login";
+    if (!users.hasRole(name, "reviews")) {
+      throw new InvalidAccessError(
+        "You are not authorized to access this recource"
+      );
     }
+    model.put("statement", statements.getStatement(id));
+    return "review";
+  }
 
-    @RequestMapping("/reviews/{id}")
-    public String getReviewable(@PathVariable(value = "id") String id, ModelMap model) throws Exception {
-        String name = (String) model.get("name");
-        model.put("statement", statements.getStatement(id));
-        return "review";
+  @PostMapping("/approvals/{id}")
+  public String approve(
+    @PathVariable(value = "id") String id,
+    ModelMap model,
+    Approval approval
+  )
+    throws Exception {
+    String username = (String) model.get("username");
+    if(username == null) return "redirect:/login";
+    if (!users.hasRole(username, "approvals")) {
+      throw new InvalidAccessError(
+        "You are not authorized to access this recource"
+      );
     }
+    statements.approve(approval);
+    model.put("statement", statements.getStatement(id));
+    return "approval";
+  }
 
-    @PostMapping("/approve/{id}")
-    public String review(@PathVariable(value = "id") String id, ModelMap model, Approval approval) throws Exception {
-        String username = (String) model.get("username");
-        statements.approve(approval);
-        model.put("statement", statements.getStatement(id));
-        return "review";
+  private void writeFile(HttpServletResponse response, String file) {
+    ServletOutputStream os = null;    
+    FileInputStream in = null;
+    try {
+      os = response.getOutputStream();
+      in = new FileInputStream(file);      
+      IOUtils.copy(in, os);
+      os.flush();
+    } catch (IOException ex) {
+      ex.printStackTrace();
+    } finally {
+        try {
+            if (in != null) in.close();
+            if (os != null) os.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }      
     }
+  }
 }
