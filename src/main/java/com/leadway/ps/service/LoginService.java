@@ -1,20 +1,32 @@
 package com.leadway.ps.service;
 
+import com.leadway.ps.model.Credentials;
+import com.leadway.ps.model.User;
+import com.leadway.ps.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 /**
  *
  * @author Dev.io
  */
-import com.leadway.ps.model.Credentials;
-import org.springframework.stereotype.Service;
 
 @Service
 public class LoginService {
+  UserService users;
 
-    public boolean authenticate(Credentials credentials) {
-        if (credentials.getPassword() == null || credentials.getUsername() == null) {
-            return false;
-        }
-        return credentials.getUsername().equalsIgnoreCase("admin")
-                && credentials.getPassword().equalsIgnoreCase("pass");
+  @Autowired
+  public LoginService(UserService userService) {
+    this.users = userService;
+  }
+
+  public boolean authenticate(Credentials credentials) {
+    if (
+      credentials.getPassword() == null || credentials.getUsername() == null
+    ) {
+      return false;
     }
+    if (users.get(credentials.getUsername()) == null) return false;
+    return credentials.getPassword().equalsIgnoreCase("pass");
+  }
 }
