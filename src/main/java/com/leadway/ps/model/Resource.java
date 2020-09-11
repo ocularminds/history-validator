@@ -1,4 +1,5 @@
 package com.leadway.ps.model;
+
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
