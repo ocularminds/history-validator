@@ -1,14 +1,32 @@
 package com.leadway.ps.model;
 
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  *
  * @author Dev.io
  */
+@Entity
+@Table(name = "users")
 public class User {
+  @Id
+  @Column(name = "userid", nullable = false, length = 22)
   private String id;
+
+  @Column(name = "surname", nullable = false, length = 26)
   private String surname;
+
+  @Column(name = "firstname", nullable = false, length = 26)
   private String name;
+
+  @Column(name = "role", nullable = false, length = 26)
   private String role;
+
+  @Column(name = "dept", nullable = true, length = 6)
   private String department;
 
   public User() {}

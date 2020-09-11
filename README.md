@@ -13,7 +13,7 @@ Pension Statement transaction validator.
 6. if building from IDE, load the pom.xml file with your choiced IDE and run clean.
 7. To run type the following in the root folder:
 ```bash
-  java -jar payara-micro-5.2020.4.jar --deploy target\ps.war
+  java -jar payara-micro-5.2020.4.jar --deploy target\th.war
 ```
 Point your browser to http://127.0.0.1:8080/ps
 

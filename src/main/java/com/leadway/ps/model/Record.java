@@ -1,5 +1,11 @@
 package com.leadway.ps.model;
-
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -7,23 +13,77 @@ import java.util.Date;
  *
  * @author Dev.io
  */
+@Entity
+@Table(name = "history")
 public class Record {
 
+    @Id
+    @Column(name = "hid", nullable = false, length = 22)
+    private String id;//pin+pfa+recordnum
+
+    @Column(name = "date_received")
     private Date dateReceived;
+
+    @Column(name = "month_start")
     private Date monthStart;
+
+    @Column(name = "month_end")
     private Date monthEnd;
+
+    @Column(name = "typ", nullable = false, precision = 22, scale = 2)
     private String type;
+
+    @Column(name = "contribution", nullable = false, precision = 22, scale = 2)
     private BigDecimal contribution;
+
+    @Column(name = "employer", nullable = false, precision = 22, scale = 2)
     private BigDecimal employer;
+
+    @Column(name = "contigent", nullable = false, precision = 22, scale = 2)
     private BigDecimal voluntaryContigent;
+
+    @Column(name = "retirement", nullable = false, length = 22)
     private BigDecimal voluntaryRetirement;
+
+    @Column(name = "inflows", nullable = false, precision = 22, scale = 2)
     private BigDecimal otherInflows;
+
+    @Column(nullable = false, precision = 22, scale = 2)
     private BigDecimal total;
+
+    @Column(nullable = false, precision = 22, scale = 2)
     private BigDecimal units;
+
+    @Column(nullable = false, precision = 22, scale = 2)
     private BigDecimal fees;
+
+    @Column(nullable = false, precision = 22, scale = 2)
     private BigDecimal withdrawals;
+
+    @Column(nullable = false, precision = 22, scale = 2)
     private BigDecimal net;
+
+    @Column(nullable = false)
     private String pfa;
+
+    //@JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "rsa_pin")
+    private StatementRequest request;
+
+    /**
+     * @return the id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * @param pfa the pfa to set
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
 
     /**
      * @return the dateReceived

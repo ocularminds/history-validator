@@ -20,7 +20,7 @@ public class LoginService {
     this.users = userService;
   }
 
-  public boolean authenticate(Credentials credentials) {
+  public boolean authenticate(Credentials credentials) throws Exception{
     if (
       credentials.getPassword() == null || credentials.getUsername() == null
     ) {

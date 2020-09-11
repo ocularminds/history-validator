@@ -17,11 +17,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,7 +44,7 @@ public class Statements {
     this.statements = statements;
     this.users = users;
   }
-  
+
   @ExceptionHandler(InvalidAccessError.class)
   public String handleAnyException(Throwable ex, HttpServletRequest request) {
     return "denied";
@@ -51,7 +53,7 @@ public class Statements {
   @RequestMapping("/requests")
   public String getAll(ModelMap model) {
     String username = (String) model.get("username");
-    if(username == null) return "redirect:/login";
+    if (username == null) return "redirect:/login";
     List<StatementRequest> requests = statements.findAll();
     model.put("statements", requests);
     return "requests";
@@ -64,7 +66,7 @@ public class Statements {
   )
     throws Exception {
     String name = (String) model.get("username");
-    if(name == null) return "redirect:/login";
+    if (name == null) return "redirect:/login";
     StatementRequest r = statements.getStatement(id);
     model.put("statement", r);
     new ExcelFile(r).toFile();
@@ -91,9 +93,9 @@ public class Statements {
   }
 
   @RequestMapping("/search")
-  public String search(ModelMap model) throws InvalidAccessError {
+  public String search(ModelMap model) throws InvalidAccessError, Exception {
     String username = (String) model.get("username");
-    if(username == null) return "redirect:/login";
+    if (username == null) return "redirect:/login";
     if (!users.hasRole(username, "search")) {
       throw new InvalidAccessError(
         "You are not authorized to access this recource"
@@ -110,16 +112,17 @@ public class Statements {
     @ModelAttribute(value = "criteria") Criteria criteria
   ) {
     String username = (String) model.get("username");
-    if(username == null) return "redirect:/login";
+    if (username == null) return "redirect:/login";
     List<StatementRequest> requests = statements.search(criteria, username);
     model.put("statements", requests);
     return "search";
   }
 
   @RequestMapping("/reviews")
-  public String getReviewables(ModelMap model) throws InvalidAccessError {
+  public String getReviewables(ModelMap model)
+    throws InvalidAccessError, Exception {
     String username = (String) model.get("username");
-    if(username == null) return "redirect:/login";
+    if (username == null) return "redirect:/login";
     if (!users.hasRole(username, "reviews")) {
       throw new InvalidAccessError(
         "You are not authorized to access this recource"
@@ -137,7 +140,7 @@ public class Statements {
   )
     throws Exception {
     String name = (String) model.get("name");
-    if(name == null) return "redirect:/login";
+    if (name == null) return "redirect:/login";
     if (!users.hasRole(name, "reviews")) {
       throw new InvalidAccessError(
         "You are not authorized to access this recource"
@@ -155,7 +158,7 @@ public class Statements {
   )
     throws Exception {
     String username = (String) model.get("username");
-    if(username == null) return "redirect:/login";
+    if (username == null) return "redirect:/login";
     if (!users.hasRole(username, "reviews")) {
       throw new InvalidAccessError(
         "You are not authorized to access this recource"
@@ -167,9 +170,10 @@ public class Statements {
   }
 
   @RequestMapping("/approvals")
-  public String getApprovables(ModelMap model) throws InvalidAccessError {
+  public String getApprovables(ModelMap model)
+    throws InvalidAccessError, Exception {
     String username = (String) model.get("username");
-    if(username == null) return "redirect:/login";
+    if (username == null) return "redirect:/login";
     if (!users.hasRole(username, "approvals")) {
       throw new InvalidAccessError(
         "You are not authorized to access this recource"
@@ -187,7 +191,7 @@ public class Statements {
   )
     throws Exception {
     String name = (String) model.get("name");
-    if(name == null) return "redirect:/login";
+    if (name == null) return "redirect:/login";
     if (!users.hasRole(name, "reviews")) {
       throw new InvalidAccessError(
         "You are not authorized to access this recource"
@@ -205,7 +209,7 @@ public class Statements {
   )
     throws Exception {
     String username = (String) model.get("username");
-    if(username == null) return "redirect:/login";
+    if (username == null) return "redirect:/login";
     if (!users.hasRole(username, "approvals")) {
       throw new InvalidAccessError(
         "You are not authorized to access this recource"
@@ -217,22 +221,22 @@ public class Statements {
   }
 
   private void writeFile(HttpServletResponse response, String file) {
-    ServletOutputStream os = null;    
+    ServletOutputStream os = null;
     FileInputStream in = null;
     try {
       os = response.getOutputStream();
-      in = new FileInputStream(file);      
+      in = new FileInputStream(file);
       IOUtils.copy(in, os);
       os.flush();
     } catch (IOException ex) {
       ex.printStackTrace();
     } finally {
-        try {
-            if (in != null) in.close();
-            if (os != null) os.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }      
+      try {
+        if (in != null) in.close();
+        if (os != null) os.close();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     }
   }
 }
