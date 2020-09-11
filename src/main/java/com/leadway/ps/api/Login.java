@@ -53,7 +53,7 @@ this.users=userService;
     }
 
     @GetMapping(value = "/dashboard")
-    public String dashboard(ModelMap model) {
+    public String dashboard(ModelMap model) throws Exception{
         String username = (String) model.get("username");
         if(username == null) return "redirect:/login";
         User user = users.get(username);
@@ -73,7 +73,8 @@ this.users=userService;
     }
 
     @PostMapping(value = "/login")
-    public String authenticate(ModelMap model, @ModelAttribute(value = "credentials") Credentials credentials, BindingResult result) {
+    public String authenticate(ModelMap model, @ModelAttribute(value = "credentials") Credentials credentials, 
+    BindingResult result)throws Exception {
         boolean isValidUser = service.authenticate(credentials);
         if (!isValidUser) {
             model.put("errorMessage", "Invalid Credentials");
