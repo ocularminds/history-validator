@@ -60,10 +60,9 @@ public class UserService {
   }
 
   public void add(User user) {
-    String id = new StringBuilder(Long.toString(System.currentTimeMillis()))
-      .reverse()
-      .substring(0, 7);
-    user.setId(id);
+    String s1 = Integer.toString(((int)Math.rand()*100)+100);
+    String s2 = Long.toString(System.currentTimeMillis);
+    user.setId(s1+new StringBuilder(s2).reverse().substring(0,6));
     users.save(user);
   }
 
@@ -86,6 +85,9 @@ public class UserService {
   }
 
   public void add(Resource resource) {
+    String s1 = Integer.toString(((int)Math.rand()*100)+100);
+    String s2 = Long.toString(System.currentTimeMillis);
+    resource.setId(s1+new StringBuilder(s2).reverse().substring(0,5));
     resources.save(resource);
   }
 
