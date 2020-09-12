@@ -14,7 +14,7 @@ import java.util.Date;
  * @author Dev.io
  */
 @Entity
-@Table(name = "history")
+@Table(name = "th_history")
 public class Record {
 
     @Id
