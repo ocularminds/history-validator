@@ -20,7 +20,7 @@ import javax.persistence.JoinColumn;
  * @author Dev.io
  */
 @Entity
-@Table(name = "search")
+@Table(name = "th_search")
 public class StatementRequest {
   @Id
   @Column(name="rsa_pin", nullable = false, length = 22)

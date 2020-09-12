@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "resources")
+@Table(name = "th_resources")
 public class Resource {
   @Id
   @Column(name = "rid", nullable = false, length = 22)

@@ -11,7 +11,7 @@ import javax.persistence.Table;
  * @author Dev.io
  */
 @Entity
-@Table(name = "users")
+@Table(name = "th_users")
 public class User {
   @Id
   @Column(name = "userid", nullable = false, length = 22)
