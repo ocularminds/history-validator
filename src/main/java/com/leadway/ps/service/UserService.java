@@ -7,13 +7,9 @@ import com.leadway.ps.model.User;
 import com.leadway.ps.repository.DepartmentRepository;
 import com.leadway.ps.repository.ResourceRepository;
 import com.leadway.ps.repository.UserRepository;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +20,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
   final String[] roles;
-  final UserRepository users;
+  final UserRepository repository;
   final ResourceRepository resources;
   final DepartmentRepository departments;
 
@@ -35,17 +31,17 @@ public class UserService {
     DepartmentRepository departmentRepository
   ) {
     this.departments = departmentRepository;
-    this.users = userRepository;
+    repository = userRepository;
     roles = new String[] { "INITIATOR", "REVIEWER", "AUTHORIZER" };
     this.resources = resourceRepository;
   }
 
   public List<User> findAll() {
-    return users.findAll();
+    return repository.findAll();
   }
 
   public User get(String id) throws Exception {
-    return users
+    return repository
       .findById(id)
       .orElseThrow(() -> new Exception("User not found"));
   }
@@ -56,14 +52,14 @@ public class UserService {
     currentUser.setSurname(user.getSurname());
     currentUser.setRole(user.getRole());
     currentUser.setDepartment(user.getDepartment());
-    return users.save(user);
+    return repository.save(user);
   }
 
-  public void add(User user) {
-    String s1 = Integer.toString(((int)Math.rand()*100)+100);
-    String s2 = Long.toString(System.currentTimeMillis);
-    user.setId(s1+new StringBuilder(s2).reverse().substring(0,6));
-    users.save(user);
+   public void add(User user) {
+    String s1 = Integer.toString((int) ((Math.random() * 100) + 100));
+    String s2 = Long.toString(System.currentTimeMillis());
+    user.setId(s1 + new StringBuilder(s2).reverse().substring(0, 6));
+    repository.save(user);
   }
 
   public List<Department> findAllDepartments() {
@@ -85,10 +81,10 @@ public class UserService {
   }
 
   public void add(Resource resource) {
-    String s1 = Integer.toString(((int)Math.rand()*100)+100);
-    String s2 = Long.toString(System.currentTimeMillis);
-    resource.setId(s1+new StringBuilder(s2).reverse().substring(0,5));
-    resources.save(resource);
+    String s1 = Integer.toString((int) ((Math.random() * 100) + 100));
+    String s2 = Long.toString(System.currentTimeMillis());
+    resource.setId(s1 + new StringBuilder(s2).reverse().substring(0, 5));
+    resources.saveAndFlush(resource);
   }
 
   public Optional<Resource> getResource(String link) {
@@ -98,7 +94,9 @@ public class UserService {
   public boolean hasRole(String userid, String page)
     throws InvalidAccessError, Exception {
     User user = get(userid);
-    if (userid == null) return false;
+    if (userid == null) {
+      return false;
+    }
     Resource resource = getResource(page)
       .orElseThrow(() -> new InvalidAccessError("Unknown resource"));
     return (
