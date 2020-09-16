@@ -12,7 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "th_departments")
-public class Department {
+public class Department implements java.io.Serializable{
   
   @Id
   @Column(name = "code", nullable = false, length = 22)

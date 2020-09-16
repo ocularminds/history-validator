@@ -12,7 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "th_users")
-public class User {
+public class User implements java.io.Serializable{
   @Id
   @Column(name = "userid", nullable = false, length = 22)
   private String id;
