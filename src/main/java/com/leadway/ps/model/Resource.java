@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "th_resources")
-public class Resource {
+public class Resource  implements java.io.Serializable{
   @Id
   @Column(name = "rid", nullable = false, length = 22)
   private String id;

@@ -7,8 +7,8 @@ import com.leadway.ps.service.UserService;
 import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -47,10 +47,7 @@ public class Loader implements ApplicationRunner {
         { "104", "Risk Management & Strategy" },
       };
       System.out.println("--- 1. Populating department records ----");
-      for (String[] d : depts) {
-        System.out.println("--- \t"+Arrays.toString(d));
-        this.users.add(new Department(d[0], d[1]));
-      }
+      this.users.add(Department.class, depts);
       String[][] res = {
         { "Admin", "users", "Manage Users", "ADMIN" },
         { "Admin", "roles", "Manage Users", "ADMIN" },
@@ -59,22 +56,16 @@ public class Loader implements ApplicationRunner {
         { "Statements", "statements/approvals", "Approvals", "AUTHORIZER" },
       };
       System.out.println("--- 2. Populating resources[menu] records ----");
-      for (String[] r : res) {
-        System.out.println("--- \t"+Arrays.toString(r));
-        this.users.add(new Resource(r[0], r[1], r[2], r[3]));
-      }
+      this.users.add(Resource.class, res);
       System.out.println("--- 3. Populating user records ----");
       String[][] appusers = {
         { "n-yusuf", "Nurudeen", "Yusuf", "INITIATOR", "100" },
         { "o-shewu", "Oluwatosin", "Tosin", "REVIEWER", "005" },
         { "o-aliu", "Olayinka", "Aliu", "AUTHORIZER", "101" },
       };
-      for (String[] u : appusers) {
-        System.out.println("--- \t"+Arrays.toString(u));
-        this.users.add(new User(u[0], u[1], u[2], u[3], u[4]));
-      }
+      users.add(User.class, appusers);
       System.out.println(
-        "--- Populating completed. " + this.users.findAll().size() + " records"
+        "--- Populating completed. " + users.findAll().size() + " records"
       );
     }
   }

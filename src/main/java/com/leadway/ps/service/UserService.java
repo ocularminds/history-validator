@@ -7,6 +7,8 @@ import com.leadway.ps.model.User;
 import com.leadway.ps.repository.DepartmentRepository;
 import com.leadway.ps.repository.ResourceRepository;
 import com.leadway.ps.repository.UserRepository;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
@@ -36,6 +38,10 @@ public class UserService {
     this.resources = resourceRepository;
   }
 
+  public String[] getRoles() {
+    return roles;
+  }
+
   public List<User> findAll() {
     return repository.findAll();
   }
@@ -55,7 +61,7 @@ public class UserService {
     return repository.save(user);
   }
 
-   public void add(User user) {
+  public void add(User user) {
     String s1 = Integer.toString((int) ((Math.random() * 100) + 100));
     String s2 = Long.toString(System.currentTimeMillis());
     user.setId(s1 + new StringBuilder(s2).reverse().substring(0, 6));
@@ -76,6 +82,39 @@ public class UserService {
     return departments.save(department);
   }
 
+  public void add(Class typ, String[][] data) {
+    if (typ == Department.class) {
+      List<Department> records = new ArrayList<>();
+      for (String[] d : data) {
+        System.out.println("--- \t" + Arrays.toString(d));
+        records.add(new Department(d[0], d[1]));
+      }
+      departments.saveAll(records);
+      departments.flush();
+    } else if (typ == Resource.class) {
+      List<Resource> records = new ArrayList<>();
+      Resource resource;
+      for (String[] r : data) {
+        System.out.println("--- \t" + Arrays.toString(r));
+        resource = new Resource(r[0], r[1], r[2], r[3]);
+        resource.setId(nextId());
+        records.add(resource);
+      }
+      resources.saveAll(records);
+      resources.flush();
+    } else {
+      List<User> records = new ArrayList<>();
+      User user;
+      for (String[] u : data) {
+        System.out.println("--- \t" + Arrays.toString(u));
+        user = new User(u[0], u[1], u[2], u[3], u[4]);
+        records.add(user);
+      }
+      repository.saveAll(records);
+      repository.flush();
+    }
+  }
+
   public void add(Department department) {
     departments.save(department);
   }
@@ -84,11 +123,11 @@ public class UserService {
     String s1 = Integer.toString((int) ((Math.random() * 100) + 100));
     String s2 = Long.toString(System.currentTimeMillis());
     resource.setId(s1 + new StringBuilder(s2).reverse().substring(0, 5));
-    resources.saveAndFlush(resource);
+    resources.save(resource);
   }
 
   public Optional<Resource> getResource(String link) {
-    return resources.findById(link);
+    return resources.findByLink(link);
   }
 
   public boolean hasRole(String userid, String page)
@@ -102,5 +141,11 @@ public class UserService {
     return (
       resource != null && (resource.getPriviledge().equals(user.getRole()))
     );
+  }
+
+  private String nextId() {
+    String s1 = Integer.toString((int) ((Math.random() * 100) + 100));
+    String s2 = Long.toString(System.currentTimeMillis());
+    return s1 + new StringBuilder(s2).reverse().substring(0, 5);
   }
 }

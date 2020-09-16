@@ -96,7 +96,7 @@ public class Statements {
   public String search(ModelMap model) throws InvalidAccessError, Exception {
     String username = (String) model.get("username");
     if (username == null) return "redirect:/login";
-    if (!users.hasRole(username, "search")) {
+    if (!users.hasRole(username, "statements/search")) {
       throw new InvalidAccessError(
         "You are not authorized to access this recource"
       );
@@ -123,7 +123,7 @@ public class Statements {
     throws InvalidAccessError, Exception {
     String username = (String) model.get("username");
     if (username == null) return "redirect:/login";
-    if (!users.hasRole(username, "reviews")) {
+    if (!users.hasRole(username, "statements/reviews")) {
       throw new InvalidAccessError(
         "You are not authorized to access this recource"
       );
@@ -141,7 +141,7 @@ public class Statements {
     throws Exception {
     String name = (String) model.get("name");
     if (name == null) return "redirect:/login";
-    if (!users.hasRole(name, "reviews")) {
+    if (!users.hasRole(name, "statements/reviews")) {
       throw new InvalidAccessError(
         "You are not authorized to access this recource"
       );
@@ -159,7 +159,7 @@ public class Statements {
     throws Exception {
     String username = (String) model.get("username");
     if (username == null) return "redirect:/login";
-    if (!users.hasRole(username, "reviews")) {
+    if (!users.hasRole(username, "statements/reviews")) {
       throw new InvalidAccessError(
         "You are not authorized to access this recource"
       );
@@ -174,7 +174,7 @@ public class Statements {
     throws InvalidAccessError, Exception {
     String username = (String) model.get("username");
     if (username == null) return "redirect:/login";
-    if (!users.hasRole(username, "approvals")) {
+    if (!users.hasRole(username, "statements/approvals")) {
       throw new InvalidAccessError(
         "You are not authorized to access this recource"
       );
@@ -192,7 +192,7 @@ public class Statements {
     throws Exception {
     String name = (String) model.get("name");
     if (name == null) return "redirect:/login";
-    if (!users.hasRole(name, "reviews")) {
+    if (!users.hasRole(name, "statements/approvals")) {
       throw new InvalidAccessError(
         "You are not authorized to access this recource"
       );
@@ -210,7 +210,7 @@ public class Statements {
     throws Exception {
     String username = (String) model.get("username");
     if (username == null) return "redirect:/login";
-    if (!users.hasRole(username, "approvals")) {
+    if (!users.hasRole(username, "statements/approvals")) {
       throw new InvalidAccessError(
         "You are not authorized to access this recource"
       );

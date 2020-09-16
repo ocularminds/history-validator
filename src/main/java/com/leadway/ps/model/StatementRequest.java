@@ -21,7 +21,7 @@ import javax.persistence.JoinColumn;
  */
 @Entity
 @Table(name = "th_search")
-public class StatementRequest {
+public class StatementRequest  implements java.io.Serializable{
   @Id
   @Column(name="rsa_pin", nullable = false, length = 22)
   private String pin;
