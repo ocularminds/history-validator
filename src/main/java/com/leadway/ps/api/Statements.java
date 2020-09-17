@@ -128,7 +128,7 @@ public class Statements {
         "You are not authorized to access this recource"
       );
     }
-    List<StatementRequest> requests = statements.findAll();
+    List<StatementRequest> requests = statements.findAllPending();
     model.put("statements", requests);
     return "reviews";
   }
@@ -179,7 +179,7 @@ public class Statements {
         "You are not authorized to access this recource"
       );
     }
-    List<StatementRequest> requests = statements.findAll();
+    List<StatementRequest> requests = statements.findAllReviewed();
     model.put("statements", requests);
     return "approvals";
   }

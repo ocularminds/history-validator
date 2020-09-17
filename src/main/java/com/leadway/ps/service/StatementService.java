@@ -84,6 +84,7 @@ public class StatementService {
     if (req == null) {
       return data;
     }
+    req.setRequester(user);
     SqlParameterSource in = new MapSqlParameterSource()
       .addValue("FundID", req.getFundId())
       .addValue("RSAPIN", criteria.getPin())
@@ -109,11 +110,11 @@ public class StatementService {
     return data;
   }
 
-  public List<StatementRequest> selectForReview() {
+  public List<StatementRequest> findAllPending() {
     return repository.findAllByStatus("PENDING");
   }
 
-  public List<StatementRequest> selectForApproval() {
+  public List<StatementRequest> findAllReviewed() {
     return repository.findAllByStatus("REVIEWED");
   }
 

@@ -37,7 +37,7 @@
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
-                                                                        <form:input path="to" type="date" class="form-control" readonly="true" placeholder="Date To" />
+                                                                        <form:input path="to" type="date" class="form-control" placeholder="Date To" />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -85,6 +85,7 @@
                                                             <th>UNITS</th>
                                                             <th>BALANCE</th>
                                                             <th>EARNING</th>
+                                                            <th>REQUESTER</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -96,8 +97,9 @@
                                                                 <td>${s.code}</td>
                                                                 <td>${s.price}</td>
                                                                 <td>${s.units}</td>
-                                                                <td>${s.balance}</td>
-                                                                <td>${s.earning}</td>
+                                                                <td class="text-right">${s.balance}</td>
+                                                                <td class="text-right">${s.earning}</td>
+                                                                <td>${s.requester}</td>
                                                             </tr>
                                                         </c:forEach>
                                                     </tbody>
