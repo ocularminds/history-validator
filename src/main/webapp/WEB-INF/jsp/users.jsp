@@ -53,7 +53,7 @@
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
-                                                                        <form:input path="surname" type="text" class="form-control" readonly="true" />
+                                                                        <form:input path="surname" type="text" class="form-control" />
                                                                     </div>
                                                                 </div>
                                                             </div>
