@@ -3,6 +3,7 @@ package com.leadway.ps.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.ArrayList;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -70,6 +71,14 @@ public class StatementRequest  implements java.io.Serializable{
   @CollectionTable(name = "comments", joinColumns = @JoinColumn(name = "rsa_pin")) // 2
   @Column(name = "comments") // 3
   private List<String> comments;
+
+  public StatementRequest(){
+    balance = BigDecimal.ZERO;
+    comments = new ArrayList<>();
+    price = BigDecimal.ZERO;
+    units = BigDecimal.ZERO;
+    earning = BigDecimal.ZERO;
+  }
 
   public int getFundId() {
     return this.fundId;
