@@ -114,25 +114,23 @@ public class StatementService {
   private void addStatistics(StatementRequest req, List<Record> data) {
     BigDecimal netSum = BigDecimal.ZERO, totalSum = BigDecimal.ZERO;
     BigDecimal unitSum = BigDecimal.ZERO;
+    RoundingMode RAND = RoundingMode.HALF_UP;
     int max = data.size();
     BigDecimal debits, total, net;
     List<Record> records = new ArrayList<>();
     Record record;
     for (int j = 0; j < max; j++) {
       record = data.get(j);
-      unitSum = unitSum.add(req.getUnits());
-      netSum = netSum.add(record.getNet());
-      totalSum = totalSum.add(record.getTotal());
+      unitSum = unitSum.add(req.getUnits().setScale(2, RAND));
+      netSum = netSum.add(record.getNet().setScale(2, RAND));
+      totalSum = totalSum.add(record.getTotal().setScale(2, RAND));
       record.setId(req.getPin() + record.getPfa() + j);
       record.setRequest(req);
     }
 
     req.setUnits(unitSum);
-    req.setBalance(
-      unitSum.multiply(req.getPrice())
-      .setScale(2, RoundingMode.HALF_UP)
-    );
-    req.setEarning(req.getBalance().subtract(netSum));
+    req.setBalance(unitSum.multiply(req.getPrice()).setScale(2, RAND));
+    req.setEarning(req.getBalance().subtract(netSum).setScale(2, RAND));
     req.setRecords(records);
   }
 }

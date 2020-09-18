@@ -88,10 +88,10 @@ public class PencomServiceTest {
       record.setType("TF003");
       record.setEmployer(new BigDecimal(amount * 0.44).setScale(2, RAND));
       record.setContribution(new BigDecimal(amount * 0.56).setScale(2, RAND));
-      record.setVoluntaryContigent(BigDecimal.ZERO);
-      record.setVoluntaryRetirement(BigDecimal.ZERO);
-      record.setOtherInflows(BigDecimal.ZERO);
-      total = record.getEmployer().add(record.getContribution());
+      record.setVoluntaryContigent(BigDecimal.ZERO.setScale(2, RAND));
+      record.setVoluntaryRetirement(BigDecimal.ZERO.setScale(2, RAND));
+      record.setOtherInflows(BigDecimal.ZERO.setScale(2, RAND));
+      total = record.getEmployer().add(record.getContribution().setScale(2, RAND));
       total = total.add(record.getVoluntaryContigent());
       total = total.add(record.getVoluntaryRetirement());
       total = total.add(record.getOtherInflows());
@@ -99,7 +99,7 @@ public class PencomServiceTest {
       record.setTotal(total);
       record.setUnits(units);
       record.setFees(new BigDecimal("100.00"));
-      record.setWithdrawals(debits);
+      record.setWithdrawals(debits.setScale(2, RAND));
       net = total.subtract(record.getFees()).subtract(debits);
       netSum = netSum.add(net);
       record.setNet(net);
