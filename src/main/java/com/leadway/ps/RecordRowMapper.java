@@ -14,7 +14,7 @@ public class RecordRowMapper implements RowMapper<Record> {
 
     @Override
     public Record mapRow(ResultSet rs, int i) throws SQLException {
-        Record record = new Record();        
+        Record record = new Record();
         record.setDateReceived(rs.getDate("PAY_RECEIVE_DATE"));
         record.setMonthStart(rs.getDate("RELATED_MONTH_START"));
         record.setMonthEnd(rs.getDate("RELATED_MONTH_END"));
