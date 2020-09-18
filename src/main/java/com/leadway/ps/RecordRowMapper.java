@@ -28,6 +28,7 @@ public class RecordRowMapper implements RowMapper<Record> {
         record.setFees(rs.getBigDecimal("FEES"));
         record.setWithdrawals(rs.getBigDecimal("OTHER_WITHDRAWALS"));
         record.setNet(rs.getBigDecimal("NET_CONTRIBUTIONS"));
+        record.setBalance(BigDecimal.ZERO);
         String pfa = rs.getString("RELATED_PFA_CODE");
         String pin = rs.getString("rsapin");
         record.setPfa(pfa);
