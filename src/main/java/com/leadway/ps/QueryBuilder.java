@@ -5,7 +5,7 @@ public class QueryBuilder {
   public static String search() {
     StringBuilder sb = new StringBuilder();
     sb.append("select e.firstname,e.lastname,e.MiddleName,e.rsapin,e.fundid, ");
-    sb.append("re.employercode, fd.FundName from employee join employer er ");
+    sb.append("er.employercode, fd.FundName from employee e join employer er ");
     sb.append("on e.employerid = er.employerid join  funddefinition fd ");
     sb.append("on fd.funddefinitionid = e.fundid and e.rsapin = ?");
     return sb.toString();
