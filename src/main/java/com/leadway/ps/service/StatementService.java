@@ -112,7 +112,6 @@ public class StatementService {
   }
 
   private void addStatistics(StatementRequest req, List<Record> data) {
-    req.setPrice(new BigDecimal("3.7230"));
     BigDecimal netSum = BigDecimal.ZERO, totalSum = BigDecimal.ZERO;
     BigDecimal unitSum = BigDecimal.ZERO;
     int max = data.size();
@@ -125,7 +124,7 @@ public class StatementService {
       netSum = netSum.add(record.getNet());
       totalSum = totalSum.add(record.getTotal());
       record.setId(req.getPin() + record.getPfa() + j);
-      records.add(record);
+      record.setRequest(req);
     }
 
     req.setUnits(unitSum);

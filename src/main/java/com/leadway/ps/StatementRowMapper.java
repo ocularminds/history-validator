@@ -8,13 +8,14 @@ import org.springframework.jdbc.core.RowMapper;
 
 /**
  *
- * @author Dev.io
+ * @author Babatope Festus
  */
 public class StatementRowMapper implements RowMapper<StatementRequest> {
 
     @Override
     public StatementRequest mapRow(ResultSet rs, int i) throws SQLException {
-        StatementRequest req = new StatementRequest();
+        StatementRequest req = new StatementRequest();        
+        req.setPrice(rs.getBigDecimal("fundunitprice"));
         req.setFirstName(rs.getString("firstname"));
         req.setMiddleName(rs.getString("MiddleName"));
         req.setFundId(rs.getInt("fundid"));
