@@ -31,27 +31,18 @@ import org.springframework.stereotype.Service;
 public class StatementService {
   List<StatementRequest> requests;
   private JdbcTemplate template;
-  private SimpleJdbcCall procedure;
   private HistoryRepository repository;
 
   @Autowired
   public StatementService(
     JdbcTemplate jdbcTemplate,
-    SimpleJdbcCall simpleJdbcCall,
     HistoryRepository historyRepository
   ) {
     this.repository = historyRepository;
     requests = new ArrayList<>();
     this.template = jdbcTemplate;
-    this.procedure = simpleJdbcCall;
     if (this.template != null) {
       this.template.setResultsMapCaseInsensitive(true);
-    }
-    if (this.procedure != null) {
-      this.procedure =
-        simpleJdbcCall
-          .withProcedureName("uspTypeAStatementTransactions")
-          .returningResultSet("statements", new RecordRowMapper());
     }
   }
 
@@ -88,7 +79,7 @@ public class StatementService {
       if (records == null || records.isEmpty()) {
         return data;
       }
-      req.setRecords(records);
+      addStatistics(req, records);
       req = repository.save(req);
       data.add(req);
     } catch (Exception e) {
@@ -118,5 +109,31 @@ public class StatementService {
     req.setStatus(approval.getApproval().name());
     req.getComments().add(approval.getComment());
     repository.save(req);
+  }
+
+  private void addStatistics(StatementRequest req, List<Record> data) {
+    req.setPrice(new BigDecimal("3.7230"));
+    BigDecimal netSum = BigDecimal.ZERO, totalSum = BigDecimal.ZERO;
+    BigDecimal unitSum = BigDecimal.ZERO;
+    int max = data.size();
+    BigDecimal debits, total, net;
+    List<Record> records = new ArrayList<>();
+    Record record;
+    for (int j = 0; j < max; j++) {
+      record = data.get(j);
+      unitSum = unitSum.add(req.getUnits());
+      netSum = netSum.add(record.getNet());
+      totalSum = totalSum.add(record.getTotal());
+      record.setId(req.getPin() + record.getPfa() + j);
+      records.add(record);
+    }
+
+    req.setUnits(unitSum);
+    req.setBalance(
+      unitSum.multiply(req.getPrice())
+      .setScale(2, RoundingMode.HALF_UP)
+    );
+    req.setEarning(req.getBalance().subtract(netSum));
+    req.setRecords(records);
   }
 }
