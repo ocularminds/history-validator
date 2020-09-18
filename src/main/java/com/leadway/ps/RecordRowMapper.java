@@ -32,7 +32,7 @@ public class RecordRowMapper implements RowMapper<Record> {
         String pin = rs.getString("rsapin");
         record.setPfa(pfa);
         record.setTotal(rs.getBigDecimal("TOTAL_CONTRIBUTIONS"));
-        record.setId(pin+pfa+Integer.toString(i));
+        record.setId(pin+pfa+Integer.toString(i));//line 35
         return record;
     }
 }
