@@ -44,6 +44,7 @@ import javax.persistence.Table;
   }
 )
 public class Record {
+
   @Id
   @Column(name = "hid", nullable = false, length = 22)
   @JsonIgnore
