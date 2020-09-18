@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import com.leadway.ps.RecordRowMapper;
 import com.leadway.ps.StatementRowMapper;
+import com.leadway.ps.model.Approval;
 import com.leadway.ps.model.Criteria;
 import com.leadway.ps.model.Record;
 import com.leadway.ps.model.StatementRequest;
@@ -16,6 +17,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import org.junit.*;
 import org.junit.Assert;
 import org.junit.Test;
@@ -45,6 +47,59 @@ public class StatementServiceTest {
     when(repository.findAll()).thenReturn(requests);
     List<StatementRequest> records = service.findAll();
     assertTrue(records.size() == 2);
+  }
+
+  @Test
+  public void testFindAllPending() {
+    List<StatementRequest> requests = new ArrayList<>();
+    requests.add(createRequest("345"));
+    requests.add(createRequest("5467"));
+    when(repository.findAllByStatus("PENDING")).thenReturn(requests);
+    List<StatementRequest> records = service.findAllPending();
+    assertTrue(records.size() == 2);
+  }
+
+  @Test
+  public void testFindAllReviewed() {
+    List<StatementRequest> requests = new ArrayList<>();
+    requests.add(createRequest("345"));
+    requests.add(createRequest("5467"));
+    when(repository.findAllByStatus("REVIEWED")).thenReturn(requests);
+    List<StatementRequest> records = service.findAllReviewed();
+    assertTrue(records.size() == 2);
+  }
+
+  @Test
+  public void testGetStatement() throws Exception {
+    StatementRequest request = createRequest("345");
+    when(repository.findById("345")).thenReturn(Optional.of(request));
+    StatementRequest record = service.getStatement("345");
+    assertTrue(record != null);
+  }
+
+  @Test
+  public void testThrowsExceptionIDIsNotFound() {
+    when(repository.findById(any(String.class)))
+      .thenReturn(Optional.ofNullable(null));
+    Exception exception = assertThrows(
+      Exception.class,
+      () -> {
+        service.getStatement("1234");
+      }
+    );
+    String expectedMessage = "Entry not found";
+    String actualMessage = exception.getMessage();
+    assertTrue(actualMessage.contains(expectedMessage));
+  }
+
+  @Test
+  public void testApprove() throws Exception {
+    Approval approval = new Approval();
+    approval.setRequestId("345");
+    approval.setApproval(Approval.ApprovalType.REVIEW);
+    StatementRequest request = createRequest("345");
+    when(repository.findById("345")).thenReturn(Optional.of(request));
+    service.approve(approval);
   }
 
   @Test
@@ -97,6 +152,15 @@ public class StatementServiceTest {
     assertTrue(result.size() == 1);
   }
 
+  @Test
+  public void testSearchWithCriteriaHavingNullPin() {
+    Criteria criteria = new Criteria();
+    String user = "dummy";
+    criteria.setPin(null);
+    List<StatementRequest> result = service.search(criteria, user);
+    assertTrue(result.isEmpty());
+  }
+
   private StatementRequest createRequest(String pin) {
     StatementRequest req = new StatementRequest();
     String[] names = {
@@ -120,15 +184,6 @@ public class StatementServiceTest {
     req.setUnits(fundUnits);
     req.setStatus("PENDING");
     return req;
-  }
-
-  @Test
-  public void testSearchWithCriteriaHavingNullPin() {
-    Criteria criteria = new Criteria();
-    String user = "dummy";
-    criteria.setPin(null);
-    List<StatementRequest> result = service.search(criteria, user);
-    assertTrue(result.isEmpty());
   }
 
   private List<Record> randomise(int max) {
