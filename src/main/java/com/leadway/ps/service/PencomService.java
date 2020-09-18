@@ -19,6 +19,8 @@ public class PencomService {
   String token = "";
   final TypeReference<HashMap<String, String>> typ = new TypeReference<HashMap<String, String>>() {};
 
+  public void submit(){}
+
   public Object[] submit(StatementRequest req) {
     Map<String, StatementRequest> d = new HashMap<>();
     d.put("thSummary", req);
