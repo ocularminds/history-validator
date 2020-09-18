@@ -5,6 +5,9 @@ public class QueryBuilder {
   public static String search() {
     StringBuilder sb = new StringBuilder();
     sb.append("select e.firstname,e.lastname,e.MiddleName,e.rsapin,e.fundid, ");
+    sb.append("(select top 1 u.unitprice  from unitprice u  ");
+    sb.append("where e.fundid = u.fundid  order by unitpriceid desc");
+    sb.append(") as fundunitprice, ");
     sb.append("er.employercode, fd.FundName from employee e join employer er ");
     sb.append("on e.employerid = er.employerid join  funddefinition fd ");
     sb.append("on fd.funddefinitionid = e.fundid and e.rsapin = ?");

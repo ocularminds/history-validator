@@ -295,4 +295,18 @@ public class Record {
         this.pfa = pfa;
     }
 
+    /**
+     * @return the request
+     */
+    public StatementRequest getRequest() {
+        return request;
+    }
+
+    /**
+     * @param request the request to set
+     */
+    public void setRequest(StatementRequest request) {
+        this.request = request;
+    }
+
 }
