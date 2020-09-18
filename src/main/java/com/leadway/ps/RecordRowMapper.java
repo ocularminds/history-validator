@@ -28,11 +28,11 @@ public class RecordRowMapper implements RowMapper<Record> {
         record.setFees(rs.getBigDecimal("FEES"));
         record.setWithdrawals(rs.getBigDecimal("OTHER_WITHDRAWALS"));
         record.setNet(rs.getBigDecimal("NET_CONTRIBUTIONS"));
-        String pfa = rs.getString("RELATED_PFA_CODE");
+        String pfa = rs.getString("RELATED_PFA_CODE");//line 35
         String pin = rs.getString("rsapin");
         record.setPfa(pfa);
         record.setTotal(rs.getBigDecimal("TOTAL_CONTRIBUTIONS"));
-        record.setId(pin+pfa+Integer.toString(i));//line 35
+        record.setId(pin+pfa+Integer.toString(i));
         return record;
     }
 }
