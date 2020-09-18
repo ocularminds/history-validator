@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 /**
  *
- * @author Dev.io
+ * @author Babatope Festus
  */
 public class RecordRowMapper implements RowMapper<Record> {
 
