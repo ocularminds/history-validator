@@ -2,6 +2,7 @@ package com.leadway.ps.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.ArrayList;
 import javax.persistence.Column;
@@ -107,11 +108,12 @@ public class StatementRequest  implements java.io.Serializable{
   private List<String> comments;
 
   public StatementRequest(){
-    balance = BigDecimal.ZERO;
+    RoundingMode RAND = RoundingMode.HALF_UP;
+    balance = BigDecimal.ZERO.setScale(2, RAND);
     comments = new ArrayList<>();
-    price = BigDecimal.ZERO;
-    units = BigDecimal.ZERO;
-    earning = BigDecimal.ZERO;
+    price = BigDecimal.ZERO.setScale(2, RAND);
+    units = BigDecimal.ZERO.setScale(2, RAND);
+    earning = BigDecimal.ZERO.setScale(2, RAND);
   }
 
   public int getFundId() {

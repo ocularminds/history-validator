@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -50,14 +51,17 @@ public class Record {
 
   @Column(name = "date_received")
   @JsonProperty("paymentDate")
+  @JsonFormat(pattern = "dd-MMM-yyyy")
   private Date dateReceived;
 
   @Column(name = "month_start")
   @JsonProperty("relatedMnthStart")
+  @JsonFormat(pattern = "dd-MMM-yyyy")
   private Date monthStart;
 
   @Column(name = "month_end")
   @JsonProperty("relatedMnthEnd")
+  @JsonFormat(pattern = "dd-MMM-yyyy")
   private Date monthEnd;
 
   @Column(name = "typ", nullable = false, precision = 22, scale = 2)
