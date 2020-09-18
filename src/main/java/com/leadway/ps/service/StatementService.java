@@ -125,7 +125,6 @@ public class StatementService {
       totalSum = totalSum.add(record.getTotal());
       record.setId(req.getPin() + record.getPfa() + j);
       record.setRequest(req);
-      records.add(record);
     }
 
     req.setUnits(unitSum);
