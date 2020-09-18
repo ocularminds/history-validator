@@ -16,60 +16,94 @@ import javax.persistence.OneToMany;
 import javax.persistence.ElementCollection;
 import javax.persistence.CollectionTable;
 import javax.persistence.JoinColumn;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  *
  * @author Dev.io
  */
 @Entity
 @Table(name = "th_search")
+@JsonPropertyOrder({
+  "employerCode",
+  "firstname",
+  "fundCode",
+  "middlename",
+  "quarterId",
+  "referenceId",
+  "rsapin",
+  "rsaBalance",
+  "surname",
+  "tpfacode",
+  "ttlGainOrLoss",
+  "ttlNoOfUnits",
+  "unitPrice"
+})
 public class StatementRequest  implements java.io.Serializable{
   @Id
   @Column(name="rsa_pin", nullable = false, length = 22)
+  @JsonProperty("rsapin")
   private String pin;
 
   @Column(name = "fund_id")
+  @JsonProperty("fundCode")
   private int fundId;
 
   @Column(name = "surname", nullable = false, length = 22)
+  @JsonProperty("surname")
   private String surname;
 
   @Column(name = "first_name", nullable = false, length = 22)
+  @JsonProperty("firstname")
   private String firstName;
 
   @Column(name = "middle_name", nullable = false, length = 22)
+  @JsonProperty("middlename")
   private String middleName;
 
   @Column(nullable = false, length = 22)
+  @JsonProperty("employerCode")
   private String employer;
 
   @Column(nullable = false, length = 22)
+  @JsonProperty("tpfacode")
   private String code;
 
   @Column(nullable = false, precision = 22, scale = 4)
+  @JsonProperty("unitPrice")
   private BigDecimal price;
 
   @Column(nullable = false, precision = 22, scale = 2)
+  @JsonProperty("ttlNoOfUnits")
   private BigDecimal units;
 
   @Column(nullable = false, precision = 22, scale = 2)
+  @JsonProperty("rsaBalance")
   private BigDecimal balance;
 
   @Column(nullable = false, precision = 22, scale = 2)
+  @JsonProperty("ttlGainOrLoss")
   private BigDecimal earning;
 
   @Fetch(FetchMode.JOIN)
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "request", orphanRemoval = true)
+  @JsonProperty("detailRecords")
   private List<Record> records;
 
   @Column(nullable = false, length = 22)
+  @JsonIgnore
   private String status;
 
   @Column(nullable = false, length = 22)
+  @JsonIgnore
   private String requester;
 
   @ElementCollection // 1
   @CollectionTable(name = "comments", joinColumns = @JoinColumn(name = "rsa_pin")) // 2
   @Column(name = "comments") // 3
+  @JsonIgnore
   private List<String> comments;
 
   public StatementRequest(){
