@@ -14,12 +14,10 @@ public class QueryBuilder {
   public static String build() {
     StringBuilder sb = new StringBuilder();
     sb.append("select e.rsapin,c.Employeeid, Valuedate [PAY_RECEIVE_DATE],  ");
-    sb.append(
-      "StartPeriod [RELATED_MONTH_START], EndPeriod [RELATED_MONTH_END],  "
-    );
-    sb.append(
-      "[TRANSACTION_TYPE]=case when cast(ContributionTypeID as varchar)  "
-    );
+    sb.append("StartPeriod [RELATED_MONTH_START], ");
+    sb.append("EndPeriod [RELATED_MONTH_END],  ");
+    sb.append("[TRANSACTION_TYPE]=case ");
+    sb.append("when cast(ContributionTypeID as varchar)  ");
     sb.append("in (11,12,13,14,66) then 'AR001'  ");
     sb.append("when cast(ContributionTypeID as varchar) in (3) then 'VLC01'  ");
     sb.append(
