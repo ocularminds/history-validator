@@ -81,6 +81,7 @@ public class StatementService {
       }
       addStatistics(req, records);
       req = repository.save(req);
+      repository.flush();
       data.add(req);
     } catch (Exception e) {
       e.printStackTrace();
