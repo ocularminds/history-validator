@@ -102,13 +102,14 @@ public class StatementRequest  implements java.io.Serializable{
   private String requester;
 
   @ElementCollection // 1
-  @CollectionTable(name = "comments", joinColumns = @JoinColumn(name = "rsa_pin")) // 2
+  @CollectionTable(name = "th_comments", joinColumns = @JoinColumn(name = "rsa_pin")) // 2
   @Column(name = "comments") // 3
   @JsonIgnore
   private List<String> comments;
 
   public StatementRequest(){
     RoundingMode RAND = RoundingMode.HALF_UP;
+    records = new ArrayList<>();
     balance = BigDecimal.ZERO.setScale(2, RAND);
     comments = new ArrayList<>();
     price = BigDecimal.ZERO.setScale(2, RAND);
