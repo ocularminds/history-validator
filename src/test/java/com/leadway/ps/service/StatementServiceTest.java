@@ -121,6 +121,21 @@ public class StatementServiceTest {
   }
 
   @Test
+  public void testSearchWithInvalidPin() {
+    String pin = "PIN-3424";
+    when(
+        template.query(
+          Mockito.anyString(),
+          Mockito.any(Object[].class),
+          Mockito.any(StatementRowMapper.class)
+        )
+      )
+      .thenReturn(new ArrayList<>());
+    Statement request = service.search(pin);
+    assertTrue(request == null);
+  }
+
+  @Test
   public void testSearchWithCriteria() {
     String pin = "PIN-3424";
     String user = "dummy";
@@ -150,14 +165,73 @@ public class StatementServiceTest {
     criteria.setPin(pin);
     List<Statement> result = service.search(criteria, user);
     assertTrue(result.size() == 1);
+
+    when(repository.save(any(Statement.class)))
+      .thenThrow(new RuntimeException());
+    result = service.search(criteria, user);
+    assertTrue(result.size() == 0);
   }
 
   @Test
-  public void testSearchWithCriteriaHavingNullPin() {
+  public void testSearchWithCriteriaReturnEmptyDataForUnknownPin() {
+    String pin = "PIN-3424";
+    String user = "dummy";
+    final List<Statement> requests = new ArrayList<>();
+    Statement req = createRequest(pin);
+    List<Record> history = randomise(10);
+    req.setRecords(history);
+    requests.add(req);
+    when(
+        template.query(
+          any(String.class),
+          any(Object[].class),
+          any(StatementRowMapper.class)
+        )
+      )
+      .thenReturn(requests);
+    when(
+        template.query(
+          any(String.class),
+          any(Object[].class),
+          any(RecordRowMapper.class)
+        )
+      )
+      .thenReturn(null);
+    Criteria criteria = new Criteria();
+    criteria.setPin(pin);
+    List<Statement> result = service.search(criteria, user);
+    assertTrue(result.size() == 0);
+    when(
+        template.query(
+          any(String.class),
+          any(Object[].class),
+          any(RecordRowMapper.class)
+        )
+      )
+      .thenReturn(new ArrayList());
+    result = service.search(criteria, user);
+    assertTrue(result.size() == 0);
+    when(
+        template.query(
+          any(String.class),
+          any(Object[].class),
+          any(StatementRowMapper.class)
+        )
+      )
+      .thenReturn(new ArrayList());
+    result = service.search(criteria, user);
+    assertTrue(result.size() == 0);
+  }
+
+  @Test
+  public void testSearchWithCriteriaHavingNullOrEmptyPin() {
     Criteria criteria = new Criteria();
     String user = "dummy";
     criteria.setPin(null);
     List<Statement> result = service.search(criteria, user);
+    assertTrue(result.isEmpty());
+    criteria.setPin("");
+    result = service.search(criteria, user);
     assertTrue(result.isEmpty());
   }
 

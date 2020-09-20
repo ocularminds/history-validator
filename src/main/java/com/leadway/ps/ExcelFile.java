@@ -155,7 +155,7 @@ public final class ExcelFile {
     private static String amountFormat(BigDecimal bd, int decimal){
        bd.setScale(decimal, java.math.RoundingMode.HALF_UP);
        DecimalFormat df = new DecimalFormat("#,###.00");
-       df.setMinimumFractionDigits(decimal);
+       df.setMinimumIntegerDigits(2);
        df.setMaximumFractionDigits(decimal);
        String s = df.format(bd);  
        if(s.startsWith("-")){

@@ -42,9 +42,7 @@ public class StatementService {
     this.repository = statementRepository;
     requests = new ArrayList<>();
     this.template = jdbcTemplate;
-    if (this.template != null) {
-      this.template.setResultsMapCaseInsensitive(true);
-    }
+    this.template.setResultsMapCaseInsensitive(true);
   }
 
   public List<Statement> findAll() {

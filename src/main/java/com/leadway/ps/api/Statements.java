@@ -18,19 +18,19 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import javax.servlet.http.HttpServletRequest;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @Controller
 @SessionAttributes(names = { "username", "greetings", "fullname" })
@@ -81,10 +81,8 @@ public class Statements {
     throws InterruptedException, ExecutionException, IOException {
     String fn = pin + ".xlsx";
     String file = ExcelFile.FOLDER + File.separator + fn;
-    String attachement = String.format("attachment; filename=\"%s\"", fn);
-    response.setContentType(
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    );
+    String attachement = String.format("attachment; filename=\"%s\".xls", pin);
+    response.setContentType("application/vnd.ms-excel");
     response.setContentLengthLong(file.length());
     response.addHeader("Content-Disposition", attachement);
     ExecutorService executor = Executors.newFixedThreadPool(1);
