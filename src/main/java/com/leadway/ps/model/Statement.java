@@ -88,8 +88,7 @@ public class Statement  implements java.io.Serializable{
   @JsonProperty("ttlGainOrLoss")
   private BigDecimal earning;
 
-  @Fetch(FetchMode.JOIN)
-  @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "statement")
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "statement")
   @JsonProperty("detailRecords")
   private List<Record> records;
 

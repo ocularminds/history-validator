@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service;
 public class PencomService {
   String endpoint = "http://rts.pencom.gov.ng";
   String key = "";
-  String subkey = "";
-  String user = "";
-  String token = "";
+  String subkey = "Zadok@.01";
+  String user = "PPHILIPS";
+  String token = "37059739";
   final TypeReference<HashMap<String, String>> typ = new TypeReference<HashMap<String, String>>() {};
 
   public void submit() {}
