@@ -60,5 +60,12 @@ public class LoginServiceTest {
     Credentials credentials = new Credentials();
     boolean result = service.authenticate(credentials);
     assertTrue(!result);
+    credentials.setUsername("");
+    result = service.authenticate(credentials);
+    assertTrue(!result);
+    credentials.setUsername(null);
+    credentials.setPassword("");
+    result = service.authenticate(credentials);
+    assertTrue(!result);
   }
 }
