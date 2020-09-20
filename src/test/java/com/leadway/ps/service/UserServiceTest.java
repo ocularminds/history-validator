@@ -144,6 +144,23 @@ public class UserServiceTest {
   }
 
   @Test
+  public void testPutDepartment() throws Exception {
+    Department old = new Department("001", "Test");
+    Department dept = new Department("001", "IT");
+    when(departments.getOne(any(String.class))).thenReturn(old);
+    when(departments.save(any(Department.class))).thenReturn(dept);
+    Department current = service.put("001", dept);
+    assertTrue(current != null && current.getName().equals(dept.getName()));
+  }
+
+  @Test
+  public void testHasRoleWhenUserNameIsNull() throws Exception {
+    final String LINK = "/statements/search";
+    boolean result = service.hasRole(null, LINK);
+    assertTrue(!result);
+  }
+
+  @Test
   public void testHasRole() throws Exception {
     final String LINK = "/statements/search";
     User user = create("0001", "TEST");
@@ -153,6 +170,24 @@ public class UserServiceTest {
     when(repository.findById(any(String.class))).thenReturn(Optional.of(user));
     when(resources.findByLink(any(String.class))).thenReturn(Optional.of(r));
     service.hasRole("0001", LINK);
+  }
+
+  @Test
+  public void testFindAllDepartments() {
+    List<Department> requests = new ArrayList<>();
+    requests.add(new Department());
+    requests.add(new Department());
+    when(departments.findAll()).thenReturn(requests);
+    List<Department> records = service.findAllDepartments();
+    assertTrue(records.size() == 2);
+  }
+
+  @Test
+  public void testGetDepartment() throws Exception {
+    Department d = new Department("345", "IT");
+    when(departments.getOne("345")).thenReturn(d);
+    Department record = service.getDepartment("345");
+    assertTrue(record != null && record.getName().equals("IT"));
   }
 
   private User create(String id, String role) {
