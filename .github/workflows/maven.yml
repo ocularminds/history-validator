@@ -24,8 +24,8 @@ jobs:
       run: mvn clean -B package --file pom.xml
     
     - name: Generate Coverage Report
+      run: mvn clean -B test --file pom.xml      
       uses: codecov/codecov-action@v1
       with:
-        directory: ./target/site
         name: codecov-umbrella # optional
         fail_ci_if_error: false # optional (default = false)
