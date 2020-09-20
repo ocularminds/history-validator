@@ -10,8 +10,8 @@ import com.leadway.ps.StatementRowMapper;
 import com.leadway.ps.model.Approval;
 import com.leadway.ps.model.Criteria;
 import com.leadway.ps.model.Record;
-import com.leadway.ps.model.StatementRequest;
-import com.leadway.ps.repository.HistoryRepository;
+import com.leadway.ps.model.Statement;
+import com.leadway.ps.repository.StatementRepository;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -34,46 +34,46 @@ public class StatementServiceTest {
   JdbcTemplate template;
 
   @Mock
-  HistoryRepository repository;
+  StatementRepository repository;
 
   @InjectMocks
   StatementService service;
 
   @Test
   public void testFindAll() {
-    List<StatementRequest> requests = new ArrayList<>();
-    requests.add(new StatementRequest());
-    requests.add(new StatementRequest());
+    List<Statement> requests = new ArrayList<>();
+    requests.add(new Statement());
+    requests.add(new Statement());
     when(repository.findAll()).thenReturn(requests);
-    List<StatementRequest> records = service.findAll();
+    List<Statement> records = service.findAll();
     assertTrue(records.size() == 2);
   }
 
   @Test
   public void testFindAllPending() {
-    List<StatementRequest> requests = new ArrayList<>();
+    List<Statement> requests = new ArrayList<>();
     requests.add(createRequest("345"));
     requests.add(createRequest("5467"));
     when(repository.findAllByStatus("PENDING")).thenReturn(requests);
-    List<StatementRequest> records = service.findAllPending();
+    List<Statement> records = service.findAllPending();
     assertTrue(records.size() == 2);
   }
 
   @Test
   public void testFindAllReviewed() {
-    List<StatementRequest> requests = new ArrayList<>();
+    List<Statement> requests = new ArrayList<>();
     requests.add(createRequest("345"));
     requests.add(createRequest("5467"));
     when(repository.findAllByStatus("REVIEWED")).thenReturn(requests);
-    List<StatementRequest> records = service.findAllReviewed();
+    List<Statement> records = service.findAllReviewed();
     assertTrue(records.size() == 2);
   }
 
   @Test
   public void testGetStatement() throws Exception {
-    StatementRequest request = createRequest("345");
+    Statement request = createRequest("345");
     when(repository.findById("345")).thenReturn(Optional.of(request));
-    StatementRequest record = service.getStatement("345");
+    Statement record = service.getStatement("345");
     assertTrue(record != null);
   }
 
@@ -97,16 +97,16 @@ public class StatementServiceTest {
     Approval approval = new Approval();
     approval.setRequestId("345");
     approval.setApproval(Approval.ApprovalType.REVIEW);
-    StatementRequest request = createRequest("345");
+    Statement request = createRequest("345");
     when(repository.findById("345")).thenReturn(Optional.of(request));
     service.approve(approval);
   }
 
   @Test
   public void testSearchPin() {
-    final List<StatementRequest> requests = new ArrayList<>();
-    requests.add(new StatementRequest());
-    requests.add(new StatementRequest());
+    final List<Statement> requests = new ArrayList<>();
+    requests.add(new Statement());
+    requests.add(new Statement());
     String pin = "PIN-3424";
     when(
         template.query(
@@ -116,7 +116,7 @@ public class StatementServiceTest {
         )
       )
       .thenReturn(requests);
-    StatementRequest request = service.search(pin);
+    Statement request = service.search(pin);
     assertTrue(request != null);
   }
 
@@ -124,8 +124,8 @@ public class StatementServiceTest {
   public void testSearchWithCriteria() {
     String pin = "PIN-3424";
     String user = "dummy";
-    final List<StatementRequest> requests = new ArrayList<>();
-    StatementRequest req = createRequest(pin);
+    final List<Statement> requests = new ArrayList<>();
+    Statement req = createRequest(pin);
     List<Record> history = randomise(10);
     req.setRecords(history);
     requests.add(req);
@@ -145,10 +145,10 @@ public class StatementServiceTest {
         )
       )
       .thenReturn(history);
-    when(repository.save(any(StatementRequest.class))).thenReturn(req);
+    when(repository.save(any(Statement.class))).thenReturn(req);
     Criteria criteria = new Criteria();
     criteria.setPin(pin);
-    List<StatementRequest> result = service.search(criteria, user);
+    List<Statement> result = service.search(criteria, user);
     assertTrue(result.size() == 1);
   }
 
@@ -157,12 +157,12 @@ public class StatementServiceTest {
     Criteria criteria = new Criteria();
     String user = "dummy";
     criteria.setPin(null);
-    List<StatementRequest> result = service.search(criteria, user);
+    List<Statement> result = service.search(criteria, user);
     assertTrue(result.isEmpty());
   }
 
-  private StatementRequest createRequest(String pin) {
-    StatementRequest req = new StatementRequest();
+  private Statement createRequest(String pin) {
+    Statement req = new Statement();
     String[] names = {
       "Akpan, Jinadu, Paul",
       "Segun,Hammed, Bello",

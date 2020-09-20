@@ -2,7 +2,6 @@ package com.leadway.ps.api;
 
 import com.leadway.ps.InvalidAccessError;
 import com.leadway.ps.model.Department;
-import com.leadway.ps.model.StatementRequest;
 import com.leadway.ps.model.User;
 import com.leadway.ps.service.UserService;
 import java.io.File;

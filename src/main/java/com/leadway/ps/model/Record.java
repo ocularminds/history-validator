@@ -1,10 +1,10 @@
 package com.leadway.ps.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -44,7 +44,6 @@ import javax.persistence.Table;
   }
 )
 public class Record {
-
   @Id
   @Column(name = "hid", nullable = false, length = 22)
   @JsonIgnore
@@ -113,10 +112,10 @@ public class Record {
   @JsonProperty("relatedPfaCode")
   private String pfa;
 
-  @ManyToOne  
-  @JoinColumn(name = "rsa_pin", referencedColumnName="rsa_pin")
+  @ManyToOne
+  @JoinColumn(name = "rsa_pin", referencedColumnName = "rsa_pin")
   @JsonIgnore
-  private StatementRequest request;
+  private Statement statement;
 
   /**
    * @return the id
@@ -343,16 +342,16 @@ public class Record {
   }
 
   /**
-   * @return the request
+   * @return the statement
    */
-  public StatementRequest getRequest() {
-    return request;
+  public Statement getStatement() {
+    return statement;
   }
 
   /**
-   * @param request the request to set
+   * @param statement the request to set
    */
-  public void setRequest(StatementRequest request) {
-    this.request = request;
+  public void setStatement(Statement request) {
+    this.statement = request;
   }
 }

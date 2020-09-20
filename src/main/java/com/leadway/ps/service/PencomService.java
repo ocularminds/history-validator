@@ -1,6 +1,6 @@
 package com.leadway.ps.service;
 
-import com.leadway.ps.model.StatementRequest;
+import com.leadway.ps.model.Statement;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.leadway.ps.common.HttpIO;
 import com.leadway.ps.common.JsonParser;
@@ -21,8 +21,8 @@ public class PencomService {
 
   public void submit(){}
 
-  public Object[] submit(StatementRequest req) {
-    Map<String, StatementRequest> d = new HashMap<>();
+  public Object[] submit(Statement req) {
+    Map<String, Statement> d = new HashMap<>();
     d.put("thSummary", req);
     System.out.println(JsonParser.toJson(d));
     if (d != null) {

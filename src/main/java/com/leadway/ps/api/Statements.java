@@ -4,7 +4,7 @@ import com.leadway.ps.ExcelFile;
 import com.leadway.ps.InvalidAccessError;
 import com.leadway.ps.model.Approval;
 import com.leadway.ps.model.Criteria;
-import com.leadway.ps.model.StatementRequest;
+import com.leadway.ps.model.Statement;
 import com.leadway.ps.service.StatementService;
 import com.leadway.ps.service.UserService;
 import java.io.File;
@@ -54,7 +54,7 @@ public class Statements {
   public String getAll(ModelMap model) {
     String username = (String) model.get("username");
     if (username == null) return "redirect:/login";
-    List<StatementRequest> requests = statements.findAll();
+    List<Statement> requests = statements.findAll();
     model.put("statements", requests);
     return "requests";
   }
@@ -67,7 +67,7 @@ public class Statements {
     throws Exception {
     String name = (String) model.get("username");
     if (name == null) return "redirect:/login";
-    StatementRequest r = statements.getStatement(id);
+    Statement r = statements.getStatement(id);
     model.put("statement", r);
     new ExcelFile(r).toFile();
     return "request-details";
@@ -113,7 +113,7 @@ public class Statements {
   ) {
     String username = (String) model.get("username");
     if (username == null) return "redirect:/login";
-    List<StatementRequest> requests = statements.search(criteria, username);
+    List<Statement> requests = statements.search(criteria, username);
     model.put("statements", requests);
     return "search";
   }
@@ -128,7 +128,7 @@ public class Statements {
         "You are not authorized to access this recource"
       );
     }
-    List<StatementRequest> requests = statements.findAllPending();
+    List<Statement> requests = statements.findAllPending();
     model.put("statements", requests);
     return "reviews";
   }
@@ -179,7 +179,7 @@ public class Statements {
         "You are not authorized to access this recource"
       );
     }
-    List<StatementRequest> requests = statements.findAllReviewed();
+    List<Statement> requests = statements.findAllReviewed();
     model.put("statements", requests);
     return "approvals";
   }

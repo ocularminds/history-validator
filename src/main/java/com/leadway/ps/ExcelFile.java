@@ -1,7 +1,7 @@
 package com.leadway.ps;
 
 import com.leadway.ps.model.Record;
-import com.leadway.ps.model.StatementRequest;
+import com.leadway.ps.model.Statement;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -28,7 +28,7 @@ public final class ExcelFile {
     public static final String FOLDER = new File("files").getAbsolutePath() + File.separator + "statements";
     static final SimpleDateFormat SDF = new SimpleDateFormat("dd-MMM-yyyy");
     static final SimpleDateFormat SF = new SimpleDateFormat("MMM-yyyy");
-    private final StatementRequest request;
+    private final Statement request;
     private final String[] HEADERS = {
         "SURNAME", "FIRSTNAME", "MIDDLENAME", "RSA_PIN", "EMPLOYER_CODE", "FUND_CODE",
         "FUND_UNIT_PRICE", "TOTAL_FUND_UNITS", "RSA_BALANCE", "RSA_GAIN_LOSS"
@@ -40,7 +40,7 @@ public final class ExcelFile {
         "FEES", "OTHER_WITHDRAWALS", "NET_CONTRIBUTIONS", "RELATED_PFA_CODE"
     };
 
-    public ExcelFile(StatementRequest request) {
+    public ExcelFile(Statement request) {
         this.request = request;
         this.pin = request.getPin();
         outFile = FOLDER + File.separator + output("xlsx");

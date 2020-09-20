@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * @author Dev.io
  */
 @Entity
-@Table(name = "th_search")
+@Table(name = "th_statement")
 @JsonPropertyOrder({
   "employerCode",
   "firstname",
@@ -42,7 +42,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   "ttlNoOfUnits",
   "unitPrice"
 })
-public class StatementRequest  implements java.io.Serializable{
+public class Statement  implements java.io.Serializable{
   @Id
   @Column(name="rsa_pin", nullable = false, length = 22)
   @JsonProperty("rsapin")
@@ -89,8 +89,7 @@ public class StatementRequest  implements java.io.Serializable{
   private BigDecimal earning;
 
   @Fetch(FetchMode.JOIN)
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, 
-  mappedBy = "request", orphanRemoval = true)
+  @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "statement")
   @JsonProperty("detailRecords")
   private List<Record> records;
 
@@ -108,7 +107,7 @@ public class StatementRequest  implements java.io.Serializable{
   @JsonIgnore
   private List<String> comments;
 
-  public StatementRequest(){
+  public Statement(){
     RoundingMode RAND = RoundingMode.HALF_UP;
     records = new ArrayList<>();
     balance = BigDecimal.ZERO.setScale(2, RAND);
@@ -320,5 +319,11 @@ public class StatementRequest  implements java.io.Serializable{
    */
   public void setComments(List<String> comments) {
     this.comments = comments;
+  }
+
+  public void add(Record record) {
+    if (record == null) return;
+    records.add(record);
+    record.setStatement(this);
   }
 }

@@ -7,8 +7,8 @@ import com.leadway.ps.StatementRowMapper;
 import com.leadway.ps.model.Approval;
 import com.leadway.ps.model.Criteria;
 import com.leadway.ps.model.Record;
-import com.leadway.ps.model.StatementRequest;
-import com.leadway.ps.repository.HistoryRepository;
+import com.leadway.ps.model.Statement;
+import com.leadway.ps.repository.StatementRepository;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -22,6 +22,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -29,16 +30,16 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class StatementService {
-  List<StatementRequest> requests;
+  List<Statement> requests;
   private JdbcTemplate template;
-  private HistoryRepository repository;
+  private StatementRepository repository;
 
   @Autowired
   public StatementService(
     JdbcTemplate jdbcTemplate,
-    HistoryRepository historyRepository
+    StatementRepository statementRepository
   ) {
-    this.repository = historyRepository;
+    this.repository = statementRepository;
     requests = new ArrayList<>();
     this.template = jdbcTemplate;
     if (this.template != null) {
@@ -46,12 +47,13 @@ public class StatementService {
     }
   }
 
-  public List<StatementRequest> findAll() {
+  public List<Statement> findAll() {
     return repository.findAll();
   }
 
-  public StatementRequest search(String pin) {
-    List<StatementRequest> list = template.query(
+  @Transactional
+  public Statement search(String pin) {
+    List<Statement> list = template.query(
       QueryBuilder.search(),
       new Object[] { pin },
       new StatementRowMapper()
@@ -59,12 +61,13 @@ public class StatementService {
     return list.size() > 0 ? list.get(0) : null;
   }
 
-  public List<StatementRequest> search(Criteria criteria, String user) {
-    List<StatementRequest> data = new ArrayList<>();
+  @Transactional
+  public List<Statement> search(Criteria criteria, String user) {
+    List<Statement> data = new ArrayList<>();
     if (
       criteria.getPin() == null || criteria.getPin().trim().isEmpty()
     ) return data;
-    StatementRequest req = search(criteria.getPin());
+    Statement req = search(criteria.getPin());
     if (req == null) {
       return data;
     }
@@ -80,8 +83,10 @@ public class StatementService {
         return data;
       }
       addStatistics(req, records);
+      System.out.println("Total records in search: " + req.getRecords().size());
       req = repository.save(req);
       repository.flush();
+      System.out.println("Total after saving: " + req.getRecords().size());
       data.add(req);
     } catch (Exception e) {
       e.printStackTrace();
@@ -91,28 +96,28 @@ public class StatementService {
     return data;
   }
 
-  public List<StatementRequest> findAllPending() {
+  public List<Statement> findAllPending() {
     return repository.findAllByStatus("PENDING");
   }
 
-  public List<StatementRequest> findAllReviewed() {
+  public List<Statement> findAllReviewed() {
     return repository.findAllByStatus("REVIEWED");
   }
 
-  public StatementRequest getStatement(String pin) throws Exception {
+  public Statement getStatement(String pin) throws Exception {
     return repository
       .findById(pin)
       .orElseThrow(() -> new Exception("Entry not found"));
   }
 
   public void approve(Approval approval) throws Exception {
-    StatementRequest req = getStatement(approval.getRequestId());
+    Statement req = getStatement(approval.getRequestId());
     req.setStatus(approval.getApproval().name());
     req.getComments().add(approval.getComment());
     repository.save(req);
   }
 
-  private void addStatistics(StatementRequest req, List<Record> data) {
+  private void addStatistics(Statement req, List<Record> data) {
     BigDecimal netSum = BigDecimal.ZERO, totalSum = BigDecimal.ZERO;
     BigDecimal unitSum = BigDecimal.ZERO;
     RoundingMode RAND = RoundingMode.HALF_UP;
@@ -126,12 +131,11 @@ public class StatementService {
       netSum = netSum.add(record.getNet().setScale(2, RAND));
       totalSum = totalSum.add(record.getTotal().setScale(2, RAND));
       record.setId(req.getPin() + record.getPfa() + j);
-      record.setRequest(req);
+      req.add(record);
     }
 
     req.setUnits(unitSum);
     req.setBalance(unitSum.multiply(req.getPrice()).setScale(2, RAND));
     req.setEarning(req.getBalance().subtract(netSum).setScale(2, RAND));
-    req.setRecords(records);
   }
 }

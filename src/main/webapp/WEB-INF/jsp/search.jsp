@@ -20,39 +20,8 @@
                                             <form:form method="post" action="${pageContext.request.contextPath}/statements/search" modelAttribute="criteria">
                                                 <div class="form-body">
                                                     <div class="row">
+                                                        <div class="col-md-6">&nbsp;</div>
                                                         <div class="col-md-6">
-                                                            <div class="row">
-                                                                <div class="col-md-6">
-                                                                    Date From
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group">
-                                                                        <form:input path="from" type="date" class="form-control" value="2010-01-01" placeholder="Date To" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-md-6">
-                                                                    Date To
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group">
-                                                                        <form:input path="to" type="date" class="form-control" placeholder="Date To" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="row">
-                                                                <div class="col-md-6">
-                                                                    Fund ID
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group">
-                                                                        <form:input path="fund" type="text" class="form-control" readonly="true" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
                                                             <div class="row">
                                                                 <div class="col-md-6">
                                                                     RSA PIN
@@ -95,10 +64,10 @@
                                                                 <td>${s.firstName} ${s.surname}</td>
                                                                 <td>${s.employer}</td>
                                                                 <td>${s.code}</td>
-                                                                <td>${s.price}</td>
-                                                                <td>${s.units}</td>
-                                                                <td class="text-right">${s.balance}</td>
-                                                                <td class="text-right">${s.earning}</td>
+                                                                <td><fmt:formatNumber type = "number" maxFractionDigits = "4" value = "${s.price}" /></td>
+                                                                <td><fmt:formatNumber type = "number" maxFractionDigits = "2" value = "${s.units}" /></td>
+                                                                <td class="text-right"><fmt:formatNumber type = "number" maxFractionDigits = "2" value = "${s.balance}" /></td>
+                                                                <td class="text-right"><fmt:formatNumber type = "number" maxFractionDigits = "2" value = "${s.earning}" /></td>
                                                                 <td>${s.requester}</td>
                                                             </tr>
                                                         </c:forEach>

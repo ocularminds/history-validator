@@ -10,8 +10,8 @@ import com.leadway.ps.StatementRowMapper;
 import com.leadway.ps.model.Approval;
 import com.leadway.ps.model.Criteria;
 import com.leadway.ps.model.Record;
-import com.leadway.ps.model.StatementRequest;
-import com.leadway.ps.repository.HistoryRepository;
+import com.leadway.ps.model.Statement;
+import com.leadway.ps.repository.StatementRepository;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -32,22 +32,22 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class PencomServiceTest {
 
   @Mock
-  HistoryRepository repository;
+  StatementRepository repository;
 
   @InjectMocks
   PencomService service;
 
   @Test
   public void testSubmit() {
-    StatementRequest request = createRequest("PEN100000000001");
+    Statement request = createRequest("PEN100000000001");
     List<Record> records = randomise(2);
     request.setRecords(records);
     service.submit(request);
   }
 
 
-  private StatementRequest createRequest(String pin) {
-    StatementRequest req = new StatementRequest();
+  private Statement createRequest(String pin) {
+    Statement req = new Statement();
     String[] names = {
       "Akpan, Jinadu, Paul",
       "Segun,Hammed, Bello",
