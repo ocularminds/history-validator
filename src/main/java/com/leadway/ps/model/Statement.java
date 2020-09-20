@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  *
- * @author Dev.io
+ * @author Babatope Festus
  */
 @Entity
 @Table(name = "th_statement")
@@ -88,8 +88,7 @@ public class Statement  implements java.io.Serializable{
   @JsonProperty("ttlGainOrLoss")
   private BigDecimal earning;
 
-  @Fetch(FetchMode.JOIN)
-  @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "statement")
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "statement")
   @JsonProperty("detailRecords")
   private List<Record> records;
 
@@ -101,9 +100,9 @@ public class Statement  implements java.io.Serializable{
   @JsonIgnore
   private String requester;
 
-  @ElementCollection // 1
-  @CollectionTable(name = "th_comments", joinColumns = @JoinColumn(name = "rsa_pin")) // 2
-  @Column(name = "comments") // 3
+  @ElementCollection
+  @CollectionTable(name = "th_comments", joinColumns = @JoinColumn(name = "rsa_pin"))
+  @Column(name = "comments")
   @JsonIgnore
   private List<String> comments;
 

@@ -1,4 +1,7 @@
 # history-validator
+[![Build Status](https://travis-ci.org/ocularminds/history-validator.svg?branch=master)](https://travis-ci.org/codecov/example-java)
+[![codecov](https://codecov.io/gh/ocularminds/history-validator/branch/master/graph/badge.svg)](https://codecov.io/gh/ocularminds/history-validator)
+
 Pension Statement transaction validator.
 
 ## Developing

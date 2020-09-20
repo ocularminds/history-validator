@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
- * @author Dev.io
+ * @author Babatope Festus
  */
 @Service
 public class StatementService {
@@ -85,8 +85,7 @@ public class StatementService {
       addStatistics(req, records);
       System.out.println("Total records in search: " + req.getRecords().size());
       req = repository.save(req);
-      repository.flush();
-      System.out.println("Total after saving: " + req.getRecords().size());
+      System.out.println("Total after saving data: " + req.getRecords().size());
       data.add(req);
     } catch (Exception e) {
       e.printStackTrace();
@@ -131,11 +130,14 @@ public class StatementService {
       netSum = netSum.add(record.getNet().setScale(2, RAND));
       totalSum = totalSum.add(record.getTotal().setScale(2, RAND));
       record.setId(req.getPin() + record.getPfa() + j);
-      req.add(record);
+      record.setStatement(req);
+      records.add(record);
+      //req.add(record);
     }
 
     req.setUnits(unitSum);
     req.setBalance(unitSum.multiply(req.getPrice()).setScale(2, RAND));
     req.setEarning(req.getBalance().subtract(netSum).setScale(2, RAND));
+    req.setRecords(records);
   }
 }

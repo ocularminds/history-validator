@@ -113,7 +113,7 @@ public class Record {
   private String pfa;
 
   @ManyToOne
-  @JoinColumn(name = "rsa_pin", referencedColumnName = "rsa_pin")
+  @JoinColumn(name = "rsa_pin")
   @JsonIgnore
   private Statement statement;
 

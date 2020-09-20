@@ -23,11 +23,8 @@ jobs:
     - name: Build with Maven
       run: mvn clean -B package --file pom.xml
     
-    - name: Generate Coverage Report
+    - name: Generate Coverage Report     
       uses: codecov/codecov-action@v1
       with:
-        file: ./target/site/coverage.xml # optional
-        files: ./coverage1.xml,./coverage2.xml # optional
-        flags: unittests # optional
         name: codecov-umbrella # optional
-        fail_ci_if_error: true # optional (default = false)
+        fail_ci_if_error: false # optional (default = false)
