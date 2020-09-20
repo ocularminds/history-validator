@@ -4,7 +4,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-
+import com.leadway.ps.InvalidAccessError;
 import com.leadway.ps.RecordRowMapper;
 import com.leadway.ps.StatementRowMapper;
 import com.leadway.ps.model.Approval;
@@ -170,6 +170,34 @@ public class UserServiceTest {
     when(repository.findById(any(String.class))).thenReturn(Optional.of(user));
     when(resources.findByLink(any(String.class))).thenReturn(Optional.of(r));
     service.hasRole("0001", LINK);
+  }
+
+  @Test
+  public void testHasRoleFailedIfResourceRoleDoesNotMatch() throws Exception {
+    final String LINK = "/statements/search";
+    User user = create("0001", "INITIATOR");
+    Resource r = new Resource();
+    r.setLink("/statements/search");
+    r.setPriviledge("AUTHORIZER");
+    when(repository.findById(any(String.class))).thenReturn(Optional.of(user));
+    when(resources.findByLink(any(String.class))).thenReturn(Optional.of(r));
+    boolean result = service.hasRole("0001", LINK);
+    assertTrue(result == false);
+  }
+
+  @Test
+  public void testHasRoleFailedForUnknownResource() throws Exception {
+    final String LINK = "/statements/search";
+    User user = create("0001", "INITIATOR");
+    when(repository.findById(any(String.class))).thenReturn(Optional.of(user));
+    when(resources.findByLink(any(String.class))).thenReturn(Optional.ofNullable(null));
+    Exception exception = assertThrows(
+      InvalidAccessError.class,
+      () -> service.hasRole("0001", LINK)
+    );
+    String expectedMessage = "Unknown resource";
+    String actualMessage = exception.getMessage();
+    assertTrue(actualMessage.contains(expectedMessage));
   }
 
   @Test

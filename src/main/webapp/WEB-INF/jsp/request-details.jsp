@@ -42,10 +42,10 @@
                                                 <td>${statement.pin}</td>
                                                 <td>${statement.employer}</td>
                                                 <td>${statement.code}</td>
-                                                <td><fmt:formatNumber type = "number" maxFractionDigits = "4" value = "${statement.price}" /></td>
-                                                <td><fmt:formatNumber type = "number" pattern="#,###.00" value = "${statement.units}" /></td>
-                                                <td><fmt:formatNumber type = "number" pattern="#,###.00" value = "${statement.balance}" /></td>
-                                                <td><fmt:formatNumber type = "number" pattern="#,###.00" value = "${statement.earning}" /></td>
+                                                <td><fmt:formatNumber type="number" minIntegerDigits="2" maxFractionDigits="4" value="${statement.price}" /></td>
+                                                <td><fmt:formatNumber type="number" groupingUsed="true" minIntegerDigits="2" maxFractionDigits="2" value="${statement.units}" /></td>
+                                                <td><fmt:formatNumber type="number" groupingUsed="true" minIntegerDigits="2" maxFractionDigits="2" value="${statement.balance}" /></td>
+                                                <td><fmt:formatNumber type="number" groupingUsed="true" minIntegerDigits="2" maxFractionDigits="2" value="${statement.earning}" /></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -75,13 +75,13 @@
                                                     <td><fmt:formatDate value="${s.monthStart}" pattern="dd-MMM-yyyy" /></td>
                                                     <td><fmt:formatDate value="${s.monthEnd}" pattern="MMM-yyyy" /></td>
                                                     <td>${s.type}</td>
-                                                    <td class="text-right"><fmt:formatNumber type = "number" pattern="#,###.00" value = "${s.employer}" /></td>
-                                                    <td class="text-right"><fmt:formatNumber type = "number" pattern="#,###.00" value = "${s.contribution}" /></td>
-                                                    <td class="text-right"><fmt:formatNumber type = "number" pattern="#,###.00" value = "${s.total}" /></td>
-                                                    <td class="text-right"><fmt:formatNumber type = "number" pattern="#,###.00" value = "${s.units}" /></td>
-                                                    <td class="text-right"><fmt:formatNumber type = "number" pattern="#,###.00" value = "${s.fees}" /></td>
-                                                    <td class="text-right"><fmt:formatNumber type = "number" pattern="#,###.00" value = "${s.withdrawals}" /></td>
-                                                    <td class="text-right"><fmt:formatNumber type = "number" pattern="#,###.00" value = "${s.net}" /></td>
+                                                    <td class="text-right"><fmt:formatNumber type = "number" groupingUsed="true" minIntegerDigits="2" maxFractionDigits="2" value = "${s.employer}" /></td>
+                                                    <td class="text-right"><fmt:formatNumber type = "number" groupingUsed="true" minIntegerDigits="2" maxFractionDigits="2" value = "${s.contribution}" /></td>
+                                                    <td class="text-right"><fmt:formatNumber type = "number" groupingUsed="true" minIntegerDigits="2" maxFractionDigits="2" value = "${s.total}" /></td>
+                                                    <td class="text-right"><fmt:formatNumber type = "number" groupingUsed="true" minIntegerDigits="2" maxFractionDigits="2" value = "${s.units}" /></td>
+                                                    <td class="text-right"><fmt:formatNumber type = "number" groupingUsed="true" minIntegerDigits="2" maxFractionDigits="2" value = "${s.fees}" /></td>
+                                                    <td class="text-right"><fmt:formatNumber type = "number" groupingUsed="true" minIntegerDigits="2" maxFractionDigits="2" value = "${s.withdrawals}" /></td>
+                                                    <td class="text-right"><fmt:formatNumber type = "number" groupingUsed="true" minIntegerDigits="2" maxFractionDigits="2" value = "${s.net}" /></td>
                                                     <td>${s.pfa}</td>
                                                 </tr>
                                             </c:forEach>
