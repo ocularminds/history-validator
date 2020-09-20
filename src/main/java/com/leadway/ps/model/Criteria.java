@@ -23,7 +23,7 @@ public class Criteria {
         this.fund = fund;
         this.pin = pin;
         Date d = new Date();
-        this.from = SDF.format(new Date(d.getTime() - 360 * 24 * 60 * 60 * 1000));
+        this.from = SDF.format(new Date(d.getTime() - 14 * 360 * 24 * 60 * 60 * 1000));
         this.to = SDF.format(d);
     }
 

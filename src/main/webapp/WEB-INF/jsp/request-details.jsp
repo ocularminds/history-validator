@@ -42,10 +42,10 @@
                                                 <td>${statement.pin}</td>
                                                 <td>${statement.employer}</td>
                                                 <td>${statement.code}</td>
-                                                <td>${statement.price}</td>
-                                                <td>${statement.units}</td>
-                                                <td>${statement.balance}</td>
-                                                <td>${statement.earning}</td>
+                                                <td><fmt:formatNumber type = "number" maxFractionDigits = "4" value = "${statement.price}" /></td>
+                                                <td><fmt:formatNumber type = "number" pattern="#,###.00" value = "${statement.units}" /></td>
+                                                <td><fmt:formatNumber type = "number" pattern="#,###.00" value = "${statement.balance}" /></td>
+                                                <td><fmt:formatNumber type = "number" pattern="#,###.00" value = "${statement.earning}" /></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -75,13 +75,13 @@
                                                     <td><fmt:formatDate value="${s.monthStart}" pattern="dd-MMM-yyyy" /></td>
                                                     <td><fmt:formatDate value="${s.monthEnd}" pattern="MMM-yyyy" /></td>
                                                     <td>${s.type}</td>
-                                                    <td class="text-right">${s.employer}</td>
-                                                    <td class="text-right">${s.contribution}</td>
-                                                    <td class="text-right">${s.total}</td>
-                                                    <td class="text-right">${s.units}</td>
-                                                    <td class="text-right">${s.fees}</td>
-                                                    <td class="text-right">${s.withdrawals}</td>
-                                                    <td class="text-right">${s.net}</td>
+                                                    <td class="text-right"><fmt:formatNumber type = "number" pattern="#,###.00" value = "${s.employer}" /></td>
+                                                    <td class="text-right"><fmt:formatNumber type = "number" pattern="#,###.00" value = "${s.contribution}" /></td>
+                                                    <td class="text-right"><fmt:formatNumber type = "number" pattern="#,###.00" value = "${s.total}" /></td>
+                                                    <td class="text-right"><fmt:formatNumber type = "number" pattern="#,###.00" value = "${s.units}" /></td>
+                                                    <td class="text-right"><fmt:formatNumber type = "number" pattern="#,###.00" value = "${s.fees}" /></td>
+                                                    <td class="text-right"><fmt:formatNumber type = "number" pattern="#,###.00" value = "${s.withdrawals}" /></td>
+                                                    <td class="text-right"><fmt:formatNumber type = "number" pattern="#,###.00" value = "${s.net}" /></td>
                                                     <td>${s.pfa}</td>
                                                 </tr>
                                             </c:forEach>

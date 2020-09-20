@@ -16,54 +16,28 @@
                                 <div class="col-12">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h4 class="card-title">User Records</h4>
-                                            <form:form method="post" action="${pageContext.request.contextPath}/users" modelAttribute="user">
+                                            <h4 class="card-title">Department Records</h4>
+                                            <form:form method="post" action="${pageContext.request.contextPath}/departments" modelAttribute="department">
                                                 <div class="form-body">
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="row">
                                                                 <div class="col-md-6">
-                                                                    Username
+                                                                    Code
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
-                                                                        <form:input path="id" type="text" class="form-control" value="" />
+                                                                        <form:input path="code" type="text" class="form-control" value="" />
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-md-6">
-                                                                    Role
+                                                                    Name
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
-                                                                        <form:select path="role">
-                                                                            <c:forEach items="${roles}" var="r">
-                                                                                <option value="${r}">${r}</option>
-                                                                            </c:forEach>
-                                                                        </form:select>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="row">
-                                                                <div class="col-md-6">
-                                                                    Surname
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group">
-                                                                        <form:input path="surname" type="text" class="form-control" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-md-6">
-                                                                    First Name
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group">
-                                                                        <form:input path="name" type="text" class="form-control" />
+                                                                        <form:input path="name" type="text" class="form-control" value="" />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -81,21 +55,15 @@
                                                 <table id="zero_config" class="table table-striped table-bordered no-wrap">
                                                     <thead>
                                                         <tr>
-                                                            <th>USERNAME</th>
-                                                            <th>SURNAME</th>
-                                                            <th>FIRSTNAME</th>
-                                                            <th>ROLE</th>
-                                                            <th>DEPARTMENT</th>
+                                                            <th>Code</th>
+                                                            <th>Name</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <c:forEach items="${users}" var="s">
+                                                        <c:forEach items="${departments}" var="s">
                                                             <tr>
-                                                                <td><a href="${pageContext.request.contextPath}/users/${s.id}">${s.id}</a></td>
-                                                                <td>${s.surname}</td>
+                                                                <td><a href="${pageContext.request.contextPath}/departments/${s.code}">${s.code}</a></td>
                                                                 <td>${s.name}</td>
-                                                                <td>${s.role}</td>
-                                                                <td>${s.department}</td>
                                                             </tr>
                                                         </c:forEach>
                                                     </tbody>
