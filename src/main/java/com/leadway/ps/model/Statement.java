@@ -101,9 +101,9 @@ public class Statement  implements java.io.Serializable{
   @JsonIgnore
   private String requester;
 
-  @ElementCollection // 1
-  @CollectionTable(name = "th_comments", joinColumns = @JoinColumn(name = "rsa_pin")) // 2
-  @Column(name = "comments") // 3
+  @ElementCollection
+  @CollectionTable(name = "th_comments", joinColumns = @JoinColumn(name = "rsa_pin"))
+  @Column(name = "comments")
   @JsonIgnore
   private List<String> comments;
 

@@ -2,6 +2,7 @@
 [![Build Status](https://travis-ci.org/ocularminds/history-validator.svg?branch=master)](https://travis-ci.org/codecov/example-java)
 [![codecov](https://codecov.io/gh/ocularminds/history-validator/branch/master/graph/badge.svg)](https://codecov.io/gh/ocularminds/history-validator)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcodecov%2Fhistory-validator.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Focularminds%2Fhistory-validator?ref=badge_shield)
+
 Pension Statement transaction validator.
 
 ## Developing
