@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  *
- * @author Dev.io
+ * @author Babatope Festus
  */
 @Entity
 @Table(name = "th_statement")
