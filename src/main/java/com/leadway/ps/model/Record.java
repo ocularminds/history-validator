@@ -113,8 +113,8 @@ public class Record {
   @JsonProperty("relatedPfaCode")
   private String pfa;
 
-  @ManyToOne
-  @JoinColumn(name = "rsa_pin")
+  @ManyToOne  
+  @JoinColumn(name = "rsa_pin", referencedColumnName="rsa_pin")
   @JsonIgnore
   private StatementRequest request;
 

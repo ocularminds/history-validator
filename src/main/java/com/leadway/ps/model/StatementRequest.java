@@ -91,7 +91,6 @@ public class StatementRequest  implements java.io.Serializable{
   @Fetch(FetchMode.JOIN)
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, 
   mappedBy = "request", orphanRemoval = true)
-  @JoinColumn(name = "rsa_pin",referencedColumnName="rsa_pin")
   @JsonProperty("detailRecords")
   private List<Record> records;
 
