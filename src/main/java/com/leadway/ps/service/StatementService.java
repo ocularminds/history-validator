@@ -42,9 +42,7 @@ public class StatementService {
     this.repository = statementRepository;
     requests = new ArrayList<>();
     this.template = jdbcTemplate;
-    if (this.template != null) {
-      this.template.setResultsMapCaseInsensitive(true);
-    }
+    this.template.setResultsMapCaseInsensitive(true);
   }
 
   public List<Statement> findAll() {
@@ -109,6 +107,7 @@ public class StatementService {
       .orElseThrow(() -> new Exception("Entry not found"));
   }
 
+  @Transactional
   public void approve(Approval approval) throws Exception {
     Statement req = getStatement(approval.getRequestId());
     req.setStatus(approval.getApproval().name());
@@ -132,7 +131,6 @@ public class StatementService {
       record.setId(req.getPin() + record.getPfa() + j);
       record.setStatement(req);
       records.add(record);
-      //req.add(record);
     }
 
     req.setUnits(unitSum);

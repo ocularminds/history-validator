@@ -64,10 +64,10 @@
                                                                 <td>${s.firstName} ${s.surname}</td>
                                                                 <td>${s.employer}</td>
                                                                 <td>${s.code}</td>
-                                                                <td><fmt:formatNumber type = "number" maxFractionDigits = "4" value = "${s.price}" /></td>
-                                                                <td><fmt:formatNumber type = "number"  pattern="#,###.00" value = "${s.units}"/></td>
-                                                                <td class="text-right"><fmt:formatNumber type = "number"  pattern="#,###.00" value = "${s.balance}" /></td>
-                                                                <td class="text-right"><fmt:formatNumber type = "number"  pattern="#,###.00" value = "${s.earning}" /></td>
+                                                                <td><fmt:formatNumber type="number" minIntegerDigits="2" maxFractionDigits="4" value="${s.price}" /></td>
+                                                                <td><fmt:formatNumber type="number" minIntegerDigits="2" maxFractionDigits="2" value="${s.units}"/></td>
+                                                                <td class="text-right"><fmt:formatNumber minIntegerDigits="2" maxFractionDigits="2" type="number"  value="${s.balance}"/></td>
+                                                                <td class="text-right"><fmt:formatNumber minIntegerDigits="2" maxFractionDigits="2" type="number"  value="${s.earning}"/></td>
                                                                 <td>${s.requester}</td>
                                                             </tr>
                                                         </c:forEach>

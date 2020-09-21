@@ -36,6 +36,16 @@ public class LoginServiceTest {
   }
 
   @Test
+  public void testAuthenticateWithUnknownUser() throws Exception {
+    Credentials credentials = new Credentials();
+    credentials.setUsername("3244");
+    credentials.setPassword("pass");
+    when(users.get(any(String.class))).thenReturn(null);
+    boolean result = service.authenticate(credentials);
+    assertTrue(!result);
+  }
+
+  @Test
   public void testLoginFailedWhenPasswordIsNotMatch() throws Exception {
     Credentials credentials = new Credentials();
     credentials.setUsername("3244");
@@ -49,6 +59,13 @@ public class LoginServiceTest {
   public void testLoginFailedWhenUserNameAndPasswordIsNull() throws Exception {
     Credentials credentials = new Credentials();
     boolean result = service.authenticate(credentials);
+    assertTrue(!result);
+    credentials.setUsername("");
+    result = service.authenticate(credentials);
+    assertTrue(!result);
+    credentials.setUsername(null);
+    credentials.setPassword("");
+    result = service.authenticate(credentials);
     assertTrue(!result);
   }
 }

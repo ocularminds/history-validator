@@ -130,8 +130,8 @@ public final class ExcelFile {
     private Fault buildFault(StringBuilder errors, int success) {
         String url = "/files/paycode/".concat(outFile);
         String msg = "File production successful";
-        String display = success > 0 ? msg : errors.toString();
-        return new Fault(success > 0 ? "00" : "15", display, success > 0 ? url : "#");
+        String display = success == 0 ? msg : errors.toString();
+        return new Fault(success == 0 ? "00" : "15", display, success == 0 ? url : "#");
     }
 
     private void writeFile(XSSFWorkbook workbook, String file) throws IOException {
@@ -155,7 +155,7 @@ public final class ExcelFile {
     private static String amountFormat(BigDecimal bd, int decimal){
        bd.setScale(decimal, java.math.RoundingMode.HALF_UP);
        DecimalFormat df = new DecimalFormat("#,###.00");
-       df.setMinimumFractionDigits(decimal);
+       df.setMinimumIntegerDigits(2);
        df.setMaximumFractionDigits(decimal);
        String s = df.format(bd);  
        if(s.startsWith("-")){

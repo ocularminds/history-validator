@@ -18,19 +18,19 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import javax.servlet.http.HttpServletRequest;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @Controller
 @SessionAttributes(names = { "username", "greetings", "fullname" })
@@ -70,7 +70,7 @@ public class Statements {
     Statement r = statements.getStatement(id);
     model.put("statement", r);
     new ExcelFile(r).toFile();
-    return "request-details";
+    return "records";
   }
 
   @RequestMapping("/export/{pin}")
@@ -82,9 +82,7 @@ public class Statements {
     String fn = pin + ".xlsx";
     String file = ExcelFile.FOLDER + File.separator + fn;
     String attachement = String.format("attachment; filename=\"%s\"", fn);
-    response.setContentType(
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    );
+    response.setContentType("application/vnd.ms-excel");
     response.setContentLengthLong(file.length());
     response.addHeader("Content-Disposition", attachement);
     ExecutorService executor = Executors.newFixedThreadPool(1);
@@ -147,7 +145,10 @@ public class Statements {
       );
     }
     model.put("statement", statements.getStatement(id));
-    return "review";
+    model.put("endpoint", "/statements/reviews/"+id);    
+    model.put("buttonLabel", "Pass");
+    model.put("approval", new Approval(id, Approval.ApprovalType.REVIEW));
+    return "records";
   }
 
   @PostMapping("/reviews/{id}")
@@ -176,7 +177,7 @@ public class Statements {
     if (username == null) return "redirect:/login";
     if (!users.hasRole(username, "statements/approvals")) {
       throw new InvalidAccessError(
-        "You are not authorized to access this recource"
+        "You are not authorized to access this resource"
       );
     }
     List<Statement> requests = statements.findAllReviewed();
@@ -198,7 +199,10 @@ public class Statements {
       );
     }
     model.put("statement", statements.getStatement(id));
-    return "review";
+    model.put("endpoint", "statements/approvals/"+id);    
+    model.put("buttonLabel", "Approve");
+    model.put("approval", new Approval(id, Approval.ApprovalType.APPROVE));
+    return "records";
   }
 
   @PostMapping("/approvals/{id}")
@@ -217,7 +221,7 @@ public class Statements {
     }
     statements.approve(approval);
     model.put("statement", statements.getStatement(id));
-    return "approval";
+    return "records";
   }
 
   private void writeFile(HttpServletResponse response, String file) {

@@ -132,10 +132,10 @@ public class UserService {
 
   public boolean hasRole(String userid, String page)
     throws InvalidAccessError, Exception {
-    User user = get(userid);
     if (userid == null) {
       return false;
     }
+    User user = get(userid);
     Resource resource = getResource(page)
       .orElseThrow(() -> new InvalidAccessError("Unknown resource"));
     return (

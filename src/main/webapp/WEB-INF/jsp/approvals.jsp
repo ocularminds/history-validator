@@ -16,7 +16,7 @@
                                 <div class="col-12">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h4 class="card-title">Statements Review</h4>
+                                            <h4 class="card-title">Statements Validation Approval</h4>
                                             <div class="table-responsive">
                                                 <table id="zero_config" class="table table-striped table-bordered no-wrap">
                                                     <thead>
@@ -53,11 +53,11 @@
                                                     </tbody>
                                                     <tfoot>
                                                         <tr>
-                                                            <th></th>
-                                                            <th></th>
-                                                            <th></th>
-                                                            <th></th>
-                                                            <th></th>
+                                                            <th>Name</th>
+                                                            <th>Position</th>
+                                                            <th>Office</th>
+                                                            <th>Age</th>
+                                                            <th>Start date</th>
                                                             <th>Salary</th>
                                                             <th>Salary</th>
                                                             <th>Salary</th>
