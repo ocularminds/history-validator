@@ -82,12 +82,10 @@ public class Statements {
     String fn = pin + ".xlsx";
     String file = ExcelFile.FOLDER + File.separator + fn;
     String attachement = String.format("attachment; filename=\"%s\"", fn);
-    response.setContentType("application/vnd.ms-excel");
+    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
     response.setContentLengthLong(file.length());
     response.addHeader("Content-Disposition", attachement);
-    ExecutorService executor = Executors.newFixedThreadPool(1);
-    executor.execute(() -> writeFile(response, file));
-    executor.shutdown();
+    writeFile(response, file);
   }
 
   @RequestMapping("/search")

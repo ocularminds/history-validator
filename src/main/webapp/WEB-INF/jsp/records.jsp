@@ -89,10 +89,10 @@
                                                 <td>${statement.pin}</td>
                                                 <td>${statement.employer}</td>
                                                 <td>${statement.code}</td>
-                                                <td><fmt:formatNumber type="number" minIntegerDigits="2" maxFractionDigits="4" value="${statement.price}" /></td>
-                                                <td><fmt:formatNumber type="number" groupingUsed="true" minIntegerDigits="2" maxFractionDigits="2" value="${statement.units}" /></td>
-                                                <td><fmt:formatNumber type="number" groupingUsed="true" minIntegerDigits="2" maxFractionDigits="2" value="${statement.balance}" /></td>
-                                                <td><fmt:formatNumber type="number" groupingUsed="true" minIntegerDigits="2" maxFractionDigits="2" value="${statement.earning}" /></td>
+                                                <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${statement.price}" /></td>
+                                                <td><fmt:formatNumber type="number" groupingUsed="true" minIntegerDigits="1" maxFractionDigits="2" value="${statement.units}" /></td>
+                                                <td><fmt:formatNumber type="number" groupingUsed="true" minIntegerDigits="1" maxFractionDigits="2" value="${statement.balance}" /></td>
+                                                <td><fmt:formatNumber type="number" groupingUsed="true" minIntegerDigits="1" maxFractionDigits="2" value="${statement.earning}" /></td>
                                             </tr>
                                         </tbody>
                                     </table>
