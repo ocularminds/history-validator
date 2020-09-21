@@ -130,8 +130,8 @@ public final class ExcelFile {
     private Fault buildFault(StringBuilder errors, int success) {
         String url = "/files/paycode/".concat(outFile);
         String msg = "File production successful";
-        String display = success > 0 ? msg : errors.toString();
-        return new Fault(success > 0 ? "00" : "15", display, success > 0 ? url : "#");
+        String display = success == 0 ? msg : errors.toString();
+        return new Fault(success == 0 ? "00" : "15", display, success == 0 ? url : "#");
     }
 
     private void writeFile(XSSFWorkbook workbook, String file) throws IOException {

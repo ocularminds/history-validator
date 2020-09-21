@@ -5,54 +5,62 @@ package com.leadway.ps.model;
  * @author Dev.io
  */
 public class Approval {
+  private String requestId;
+  private ApprovalType approval;
+  private String comment;
 
-    private String requestId;
-    private ApprovalType approval;
-    private String comment;
+  public enum ApprovalType {
+    SEARCH,
+    REVIEW,
+    APPROVE,
+  }
 
-    public enum ApprovalType {
-        SEARCH, REVIEW, APPROVE;
-    }
+  public Approval() {}
 
-    /**
-     * @return the requestId
-     */
-    public String getRequestId() {
-        return requestId;
-    }
+  public Approval(String id, ApprovalType type) {
+    this.requestId = id;
+    this.approval = type;
+  }
 
-    /**
-     * @param requestId the requestId to set
-     */
-    public void setRequestId(String requestId) {
-        this.requestId = requestId;
-    }
+  /**
+   * @return the requestId
+   */
+  public String getRequestId() {
+    return requestId;
+  }
 
-    /**
-     * @return the approval
-     */
-    public ApprovalType getApproval() {
-        return approval;
-    }
+  /**
+   * @param requestId the requestId to set
+   */
+  public void setRequestId(String requestId) {
+    this.requestId = requestId;
+  }
 
-    /**
-     * @param approval the approval to set
-     */
-    public void setApproval(ApprovalType approval) {
-        this.approval = approval;
-    }
+  /**
+   * @return the approval
+   */
+  public ApprovalType getApproval() {
+    return approval;
+  }
 
-    /**
-     * @return the comment
-     */
-    public String getComment() {
-        return comment;
-    }
+  /**
+   * @param approval the approval to set
+   */
+  public void setApproval(ApprovalType approval) {
+    this.approval = approval;
+  }
 
-    /**
-     * @param comment the comment to set
-     */
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
+  /**
+   * @return the comment
+   */
+  public String getComment() {
+    return comment;
+  }
+
+  /**
+   * @param comment the comment to set
+   */
+  public void setComment(String comment) {
+    this.comment = comment;
+  }
 }

@@ -70,7 +70,7 @@ public class Statements {
     Statement r = statements.getStatement(id);
     model.put("statement", r);
     new ExcelFile(r).toFile();
-    return "request-details";
+    return "records";
   }
 
   @RequestMapping("/export/{pin}")
@@ -81,7 +81,7 @@ public class Statements {
     throws InterruptedException, ExecutionException, IOException {
     String fn = pin + ".xlsx";
     String file = ExcelFile.FOLDER + File.separator + fn;
-    String attachement = String.format("attachment; filename=\"%s\".xls", pin);
+    String attachement = String.format("attachment; filename=\"%s\"", fn);
     response.setContentType("application/vnd.ms-excel");
     response.setContentLengthLong(file.length());
     response.addHeader("Content-Disposition", attachement);
@@ -145,7 +145,10 @@ public class Statements {
       );
     }
     model.put("statement", statements.getStatement(id));
-    return "review";
+    model.put("endpoint", "/statements/reviews/"+id);    
+    model.put("buttonLabel", "Pass");
+    model.put("approval", new Approval(id, Approval.ApprovalType.REVIEW));
+    return "records";
   }
 
   @PostMapping("/reviews/{id}")
@@ -174,7 +177,7 @@ public class Statements {
     if (username == null) return "redirect:/login";
     if (!users.hasRole(username, "statements/approvals")) {
       throw new InvalidAccessError(
-        "You are not authorized to access this recource"
+        "You are not authorized to access this resource"
       );
     }
     List<Statement> requests = statements.findAllReviewed();
@@ -196,7 +199,10 @@ public class Statements {
       );
     }
     model.put("statement", statements.getStatement(id));
-    return "review";
+    model.put("endpoint", "statements/approvals/"+id);    
+    model.put("buttonLabel", "Approve");
+    model.put("approval", new Approval(id, Approval.ApprovalType.APPROVE));
+    return "records";
   }
 
   @PostMapping("/approvals/{id}")
@@ -215,7 +221,7 @@ public class Statements {
     }
     statements.approve(approval);
     model.put("statement", statements.getStatement(id));
-    return "approval";
+    return "records";
   }
 
   private void writeFile(HttpServletResponse response, String file) {

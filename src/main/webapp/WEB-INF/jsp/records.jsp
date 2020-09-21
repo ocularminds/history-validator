@@ -14,10 +14,57 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
+                            <div class="card-header">
+                                <c:if test="${not empty endpoint}">
+                                <form:form method="post" action="${pageContext.request.contextPath}/${endpoint}" modelAttribute="approval">
+                                                <div class="form-body">
+                                                    <div class="row">
+                                                        <div class="col-md-6">                                                            
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    ID
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <form:input path="requestId" type="text" class="form-control" readonly="true"/>
+                                                                        <form:input path="approval" type="hidden"/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    Comment
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <form:input path="comment" type="text" class="form-control"/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-actions">
+                                                    <div class="text-right">
+                                                        <button type="submit" class="btn btn-info">${buttonLabel}</button>
+                                                        <button type="reset" class="btn btn-dark">Reset</button>
+                                                    </div>
+                                                </div>
+                                            </form:form>
+                                        </c:if>
+                            </div>
                             <div class="card-body">
                                 <h4 class="card-title">Statements Validations</h4>
-                                <p><button class="btn btn-dark">Reject</button>&nbsp;<button class="btn btn-info">Approve</button>
+                                <p><input type="text"/><button class="btn btn-dark">Reject</button>&nbsp;<button class="btn btn-info">Approve</button>
                                  &nbsp;<a class="btn btn-success" href="${pageContext.request.contextPath}/statements/export/${statement.pin}"> <i data-feather="file-text" class="feather-icon"></i>&nbsp;Export Excel</a></p>
+                                 <p><ul>
+                                    <c:forEach items="${statement.comments}" var="comment">
+                                        <li>${comment}</li>
+                                    </c:forEach>
+                                 </ul>
+                                </p>
                                 <div class="table-responsive">
                                     <table id="zero_config" class="table table-striped table-bordered no-wrap" style="font-size: 0.6em">
                                         <thead>
