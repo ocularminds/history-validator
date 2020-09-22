@@ -130,8 +130,8 @@ public class StatementService {
       record.setStatement(req);
       records.add(record);
     }
-
-    req.setUnits(req.getBalance().divide(req.getPrice()).setScale(2, RAND));
+    unitSum = req.getBalance().divide(req.getPrice(), 2, RAND);
+    req.setUnits(unitSum.setScale(2, RAND));
     req.setEarning(req.getBalance().subtract(netSum).setScale(2, RAND));
     req.setRecords(records);
   }
