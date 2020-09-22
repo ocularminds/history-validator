@@ -16,6 +16,7 @@ public class StatementRowMapper implements RowMapper<Statement> {
     public Statement mapRow(ResultSet rs, int i) throws SQLException {
         Statement req = new Statement();        
         req.setPrice(rs.getBigDecimal("fundunitprice"));
+        req.setBalance(rs.getBigDecimal("Balance"));
         req.setFirstName(rs.getString("firstname"));
         req.setMiddleName(rs.getString("MiddleName"));
         req.setFundId(rs.getInt("fundid"));

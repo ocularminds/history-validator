@@ -8,6 +8,8 @@ public class QueryBuilder {
     sb.append("(select top 1 u.unitprice  from unitprice u  ");
     sb.append("where e.fundid = u.fundid  order by unitpriceid desc");
     sb.append(") as fundunitprice, ");
+    sb.append("select isnull((select total from [dbo].[udfGetBalanceBySource](employeeid,fundid,");
+    sb.append("(select max(valuedate) from UnitPrice where FundID = fundid))),0) as Balance,");
     sb.append("er.employercode, fd.FundName from employee e join employer er ");
     sb.append("on e.employerid = er.employerid join  funddefinition fd ");
     sb.append("on fd.funddefinitionid = e.fundid and e.rsapin = ?");

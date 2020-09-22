@@ -81,9 +81,7 @@ public class StatementService {
         return data;
       }
       addStatistics(req, records);
-      System.out.println("Total records in search: " + req.getRecords().size());
       req = repository.save(req);
-      System.out.println("Total after saving data: " + req.getRecords().size());
       data.add(req);
     } catch (Exception e) {
       e.printStackTrace();
@@ -133,8 +131,7 @@ public class StatementService {
       records.add(record);
     }
 
-    req.setUnits(unitSum);
-    req.setBalance(unitSum.multiply(req.getPrice()).setScale(2, RAND));
+    req.setUnits(req.getBalance().divide(req.getPrice()).setScale(2, RAND));
     req.setEarning(req.getBalance().subtract(netSum).setScale(2, RAND));
     req.setRecords(records);
   }
