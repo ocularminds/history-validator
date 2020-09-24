@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @SessionAttributes(names = { "username", "greetings", "fullname" })
@@ -73,8 +74,11 @@ public class Statements {
     return "records";
   }
 
-  @RequestMapping("/export/{pin}")
-  public void download(
+  @RequestMapping(
+    value = "/export/{pin}",
+    produces = "application/octet-stream"
+  )
+  public @ResponseBody byte[] download(
     @PathVariable(value = "pin") String pin,
     HttpServletResponse response
   )
@@ -82,10 +86,13 @@ public class Statements {
     String fn = pin + ".xlsx";
     String file = ExcelFile.FOLDER + File.separator + fn;
     String attachement = String.format("attachment; filename=\"%s\"", fn);
-    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    response.setContentType(
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
     response.setContentLengthLong(file.length());
     response.addHeader("Content-Disposition", attachement);
-    writeFile(response, file);
+    FileInputStream in = new FileInputStream(new File(file));
+    return IOUtils.toByteArray(in);
   }
 
   @RequestMapping("/search")
@@ -143,7 +150,7 @@ public class Statements {
       );
     }
     model.put("statement", statements.getStatement(id));
-    model.put("endpoint", "/statements/reviews/"+id);    
+    model.put("endpoint", "/statements/reviews/" + id);
     model.put("buttonLabel", "Pass");
     model.put("approval", new Approval(id, Approval.ApprovalType.REVIEW));
     return "records";
@@ -197,7 +204,7 @@ public class Statements {
       );
     }
     model.put("statement", statements.getStatement(id));
-    model.put("endpoint", "statements/approvals/"+id);    
+    model.put("endpoint", "statements/approvals/" + id);
     model.put("buttonLabel", "Approve");
     model.put("approval", new Approval(id, Approval.ApprovalType.APPROVE));
     return "records";
@@ -220,25 +227,5 @@ public class Statements {
     statements.approve(approval);
     model.put("statement", statements.getStatement(id));
     return "records";
-  }
-
-  private void writeFile(HttpServletResponse response, String file) {
-    ServletOutputStream os = null;
-    FileInputStream in = null;
-    try {
-      os = response.getOutputStream();
-      in = new FileInputStream(file);
-      IOUtils.copy(in, os);
-      os.flush();
-    } catch (IOException ex) {
-      ex.printStackTrace();
-    } finally {
-      try {
-        if (in != null) in.close();
-        if (os != null) os.close();
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    }
   }
 }
