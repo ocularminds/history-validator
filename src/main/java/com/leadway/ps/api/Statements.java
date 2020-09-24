@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @SessionAttributes(names = { "username", "greetings", "fullname" })
@@ -74,15 +73,14 @@ public class Statements {
     return "records";
   }
 
-  @RequestMapping(
-    value = "/export/{pin}",
-    produces = "application/octet-stream"
-  )
-  public @ResponseBody byte[] download(
+  @RequestMapping("/export/{pin}")
+  public void download(
     @PathVariable(value = "pin") String pin,
     HttpServletResponse response
   )
-    throws InterruptedException, ExecutionException, IOException {
+    throws InterruptedException, ExecutionException, IOException ,Exception{
+    Statement statement = statements.getStatement(pin);
+    new ExcelFile(statement).toFile();
     String fn = pin + ".xlsx";
     String file = ExcelFile.FOLDER + File.separator + fn;
     String attachement = String.format("attachment; filename=\"%s\"", fn);
@@ -91,8 +89,7 @@ public class Statements {
     );
     response.setContentLengthLong(file.length());
     response.addHeader("Content-Disposition", attachement);
-    FileInputStream in = new FileInputStream(new File(file));
-    return IOUtils.toByteArray(in);
+    writeFile(response, file);
   }
 
   @RequestMapping("/search")
@@ -227,5 +224,23 @@ public class Statements {
     statements.approve(approval);
     model.put("statement", statements.getStatement(id));
     return "records";
+  }
+
+  private void writeFile(HttpServletResponse res, String file)
+    throws InterruptedException, java.util.concurrent.ExecutionException {
+    ExecutorService executor = Executors.newFixedThreadPool(1);
+    Future<String> future = executor.submit(
+      () -> {
+        try (
+          ServletOutputStream os = res.getOutputStream();
+          FileInputStream in = new FileInputStream(new File(file))
+        ) {
+          IOUtils.copy(in, os);
+        }
+        return null;
+      }
+    );
+    future.get();
+    executor.shutdown();
   }
 }
