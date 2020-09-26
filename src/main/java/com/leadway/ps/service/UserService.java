@@ -52,8 +52,14 @@ public class UserService {
       .orElseThrow(() -> new Exception("User not found"));
   }
 
+  public User find(String username) throws Exception {
+    return repository
+      .findByLogin(username)
+      .orElseThrow(() -> new Exception("User not found"));
+  }
+
   public User put(String username, User user) throws Exception {
-    User currentUser = get(username);
+    User currentUser = find(username);
     currentUser.setName(user.getName());
     currentUser.setSurname(user.getSurname());
     currentUser.setRole(user.getRole());
@@ -139,7 +145,7 @@ public class UserService {
     if (userid == null) {
       return false;
     }
-    User user = get(userid);
+    User user = find(userid);
     Resource resource = getResource(page)
       .orElseThrow(() -> new InvalidAccessError("Unknown resource"));
     return (

@@ -30,7 +30,7 @@ public class LoginServiceTest {
     Credentials credentials = new Credentials();
     credentials.setUsername("3244");
     credentials.setPassword("pass");
-    when(users.get(any(String.class))).thenReturn(new User());
+    when(users.find(any(String.class))).thenReturn(new User());
     boolean result = service.authenticate(credentials);
     assertTrue(result);
   }
@@ -40,7 +40,7 @@ public class LoginServiceTest {
     Credentials credentials = new Credentials();
     credentials.setUsername("3244");
     credentials.setPassword("pass");
-    when(users.get(any(String.class))).thenReturn(null);
+    when(users.find(any(String.class))).thenReturn(null);
     boolean result = service.authenticate(credentials);
     assertTrue(!result);
   }
@@ -50,7 +50,7 @@ public class LoginServiceTest {
     Credentials credentials = new Credentials();
     credentials.setUsername("3244");
     credentials.setPassword("olodo");
-    when(users.get(any(String.class))).thenReturn(new User());
+    when(users.find(any(String.class))).thenReturn(new User());
     boolean result = service.authenticate(credentials);
     assertTrue(!result);
   }

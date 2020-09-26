@@ -26,7 +26,7 @@ public class LoginService {
     ) {
       return false;
     }
-    if (users.get(credentials.getUsername()) == null) return false;
+    if (users.find(credentials.getUsername()) == null) return false;
     return credentials.getPassword().equalsIgnoreCase("pass");
   }
 }

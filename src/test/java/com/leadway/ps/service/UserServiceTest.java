@@ -92,7 +92,7 @@ public class UserServiceTest {
   public void testPutUser() throws Exception {
     User old = create("345", ROLES[0]);
     User user = create("345", ROLES[1]);
-    when(repository.findById(any(String.class))).thenReturn(Optional.of(old));
+    when(repository.findByLogin(any(String.class))).thenReturn(Optional.of(old));
     when(repository.save(any(User.class))).thenReturn(user);
     User current = service.put("345", user);
     assertTrue(current != null && current.getName().equals(user.getName()));
@@ -167,7 +167,7 @@ public class UserServiceTest {
     Resource r = new Resource();
     r.setLink("/statements/search");
     r.setPriviledge("TEST");
-    when(repository.findById(any(String.class))).thenReturn(Optional.of(user));
+    when(repository.findByLogin(any(String.class))).thenReturn(Optional.of(user));
     when(resources.findByLink(any(String.class))).thenReturn(Optional.of(r));
     service.hasRole("0001", LINK);
   }
@@ -179,7 +179,7 @@ public class UserServiceTest {
     Resource r = new Resource();
     r.setLink("/statements/search");
     r.setPriviledge("AUTHORIZER");
-    when(repository.findById(any(String.class))).thenReturn(Optional.of(user));
+    when(repository.findByLogin(any(String.class))).thenReturn(Optional.of(user));
     when(resources.findByLink(any(String.class))).thenReturn(Optional.of(r));
     boolean result = service.hasRole("0001", LINK);
     assertTrue(result == false);
@@ -189,7 +189,7 @@ public class UserServiceTest {
   public void testHasRoleFailedForUnknownResource() throws Exception {
     final String LINK = "/statements/search";
     User user = create("0001", "INITIATOR");
-    when(repository.findById(any(String.class))).thenReturn(Optional.of(user));
+    when(repository.findByLogin(any(String.class))).thenReturn(Optional.of(user));
     when(resources.findByLink(any(String.class))).thenReturn(Optional.ofNullable(null));
     Exception exception = assertThrows(
       InvalidAccessError.class,
