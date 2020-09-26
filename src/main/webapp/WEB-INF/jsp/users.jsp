@@ -115,7 +115,7 @@
                                                     <tbody>
                                                         <c:forEach items="${users}" var="s">
                                                             <tr>
-                                                                <td><a href="${pageContext.request.contextPath}/users/${s.id}">${s.id}</a></td>
+                                                                <td><a href="${pageContext.request.contextPath}/users/${s.id}">${s.login}</a></td>
                                                                 <td>${s.surname}</td>
                                                                 <td>${s.name}</td>
                                                                 <td>${s.role}</td>
