@@ -64,7 +64,7 @@ public class UserService {
   public void add(User user) {
     String s1 = Integer.toString((int) ((Math.random() * 100) + 100));
     String s2 = Long.toString(System.currentTimeMillis());
-    if(user.getId() == nul || user.getId().trim().isEmpty()){
+    if(user.getId() == null || user.getId().trim().isEmpty()){
        user.setId(s1 + new StringBuilder(s2).reverse().substring(0, 6));
     }
     repository.save(user);
