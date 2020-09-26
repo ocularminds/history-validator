@@ -27,7 +27,7 @@
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
-                                                                        <form:input path="id" type="text" class="form-control" value="" />
+                                                                        <form:input path="id" type="text" class="form-control" readonly="true" />
                                                                     </div>
                                                                 </div>
                                                             </div>
