@@ -61,6 +61,7 @@ public class UserService {
     return repository.save(user);
   }
 
+  @Transactional
   public void add(User user) {
     String s1 = Integer.toString((int) ((Math.random() * 100) + 100));
     String s2 = Long.toString(System.currentTimeMillis());
@@ -110,6 +111,7 @@ public class UserService {
       for (String[] u : data) {
         System.out.println("--- \t" + Arrays.toString(u));
         user = new User(u[0], u[1], u[2], u[3], u[4]);
+        user.setId(nextId());
         records.add(user);
       }
       repository.saveAll(records);
