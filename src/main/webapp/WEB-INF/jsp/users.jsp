@@ -23,7 +23,7 @@
                                                         <div class="col-md-6">
                                                             <div class="row">
                                                                 <div class="col-md-6">
-                                                                    Username
+                                                                    Id
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
@@ -40,6 +40,30 @@
                                                                         <form:select path="role">
                                                                             <c:forEach items="${roles}" var="r">
                                                                                 <option value="${r}">${r}</option>
+                                                                            </c:forEach>
+                                                                        </form:select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    Username
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <form:input path="login" type="text" class="form-control" value="" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    Department
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <form:select path="department">
+                                                                            <c:forEach items="${departments}" var="d">
+                                                                                <option value="${d.code}">${d.name}</option>
                                                                             </c:forEach>
                                                                         </form:select>
                                                                     </div>

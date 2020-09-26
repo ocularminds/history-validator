@@ -73,7 +73,8 @@ public class Users {
   ) {
     String username = (String) model.get("username");
     if (username == null) return "redirect:/login";
-    return "redirect:/login";
+    users.add(user);
+    return "redirect:/users";
   }
 
   @RequestMapping("/departments")

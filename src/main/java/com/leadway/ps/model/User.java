@@ -13,9 +13,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "th_users")
 public class User implements java.io.Serializable{
+
   @Id
   @Column(name = "userid", nullable = false, length = 22)
   private String id;
+  
+  @Column(name = "username", nullable = false, length = 22)
+  private String login;
 
   @Column(name = "surname", nullable = false, length = 26)
   private String surname;
@@ -32,13 +36,13 @@ public class User implements java.io.Serializable{
   public User() {}
 
   public User(
-    String id,
+    String login,
     String surname,
     String name,
     String role,
     String department
   ) {
-    this.id = id;
+    this.login = login;
     this.surname = surname;
     this.name = name;
     this.role = role;
@@ -51,6 +55,14 @@ public class User implements java.io.Serializable{
 
   public void setId(String id) {
     this.id = id;
+  }
+
+  public String getLogin() {
+    return this.login;
+  }
+
+  public void setLogin(String login) {
+    this.login = login;
   }
 
   public String getSurname() {

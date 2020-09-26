@@ -48,7 +48,7 @@
                                     <div class="col-lg-12">
                                         <div class="form-group">
                                             <label class="text-dark" for="pwd">Password</label>
-                                            <form:input class="form-control input-lg" id="pwd" type="password" path="password" value="pass" readonly/>
+                                            <form:input class="form-control input-lg" id="pwd" type="password" path="password" value="pass" readonly="true"/>
                                         </div>
                                     </div>
                                     <div class="col-lg-12 text-center">
