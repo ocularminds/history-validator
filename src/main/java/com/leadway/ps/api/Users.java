@@ -47,6 +47,8 @@ public class Users {
     String username = (String) model.get("username");
     if (username == null) return "redirect:/login";
     List<User> requests = users.findAll();
+    List<Department> departments = users.findAllDepartments();
+    model.put("departments", departments);
     model.put("users", requests);
     model.put("user", new User());
     model.put("roles", users.getRoles());
@@ -60,6 +62,8 @@ public class Users {
     if (name == null) return "redirect:/login";
     User r = users.get(id);
     List<User> requests = users.findAll();
+    List<Department> departments = users.findAllDepartments();
+    model.put("departments", departments);
     model.put("users", requests);
     model.put("user", r);
     model.put("roles", users.getRoles());
