@@ -56,7 +56,7 @@ this.users=userService;
     public String dashboard(ModelMap model) throws Exception{
         String username = (String) model.get("username");
         if(username == null) return "redirect:/login";
-        User user = users.get(username);
+        User user = users.find(username);
         String greetings;
         int time = Integer.parseInt(new SimpleDateFormat("hh").format(new Date()));
         if (time < 12) {
