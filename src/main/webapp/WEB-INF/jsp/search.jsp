@@ -65,7 +65,7 @@
                                                                 <td>${s.employer}</td>
                                                                 <td>${s.code}</td>
                                                                 <c:choose>
-                                                                    <c:when test = "${s.price.compareTo(BigDecimal.ZERO) == -1}"> 2000}">
+                                                                    <c:when test = "${s.price.compareTo(BigDecimal.ZERO) == -1}">
                                                                     <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${s.price})" /></td>
                                                                     </c:when>
                                                                     <c:otherwise>
@@ -73,7 +73,7 @@
                                                                     </c:otherwise>
                                                                 </c:choose>                                                           
                                                                 <c:choose>
-                                                                    <c:when test = "${s.balance.compareTo(BigDecimal.ZERO) == -1}"> 2000}">
+                                                                    <c:when test = "${s.balance.compareTo(BigDecimal.ZERO) == -1}">
                                                                     <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${s.balance})" /></td>
                                                                     </c:when>
                                                                     <c:otherwise>
@@ -81,7 +81,7 @@
                                                                     </c:otherwise>
                                                                 </c:choose>      
                                                                 <c:choose>
-                                                                    <c:when test = "${s.earning.compareTo(BigDecimal.ZERO) == -1}"> 2000}">
+                                                                    <c:when test = "${s.earning.compareTo(BigDecimal.ZERO) == -1}">
                                                                     <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${s.earning})" /></td>
                                                                     </c:when>
                                                                     <c:otherwise>
