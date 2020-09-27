@@ -68,9 +68,11 @@
                                                                 <td>${s.firstName} ${s.surname}</td>
                                                                 <td>${s.employer}</td>
                                                                 <td>${s.code}</td>
+                                                                <fmt:formatNumber key="myprice" type="number" minIntegerDigits="1" maxFractionDigits="4" value="${price}" />
+                                                                <fmt:formatNumber key="mybalance" type="number" minIntegerDigits="1" maxFractionDigits="4" value="${balance}" />
                                                                 <c:choose>
                                                                     <c:when test = "${price lt 0}">
-                                                                    <td>(<fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${price}" />)</td>
+                                                                    <td>(${fmt:replace($mybalance,"-","")})</td>
                                                                     </c:when>
                                                                     <c:otherwise>
                                                                         <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${price}" /></td>
@@ -86,10 +88,10 @@
                                                                 </c:choose>                                                                 
                                                                 <c:choose>
                                                                     <c:when test = "${balance lt 0}">
-                                                                    <td>(<fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${balance}" />)</td>
+                                                                    <td>(${fmt:replace($mybalance,"-","")})</td>
                                                                     </c:when>
                                                                     <c:otherwise>
-                                                                        <td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${balance}" /></td>
+                                                                        <td class="text-right">${mybalance}</td>
                                                                     </c:otherwise>
                                                                 </c:choose>      
                                                                 <c:choose>
