@@ -43,39 +43,11 @@
                                                                 <td>${s.pin}</td>
                                                                 <td>${s.employer}</td>
                                                                 <td>${s.code}</td>
-                                                                <c:choose>
-								    <c:when test = "${s.price lt 0}">
-								    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${s.price})" /></td>
-								    </c:when>
-								    <c:otherwise>
-									<td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${s.price}" /></td>
-								    </c:otherwise>
-                                                                </c:choose>    
-                                                                <c:choose>
-                                                                    <c:when test = "${s.units lt 0}">
-                                                                    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${s.units})" /></td>
-                                                                    </c:when>
-                                                                    <c:otherwise>
-                                                                        <td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${s.units}" /></td>
-                                                                    </c:otherwise>
-                                                                </c:choose>    
-                                                                <c:choose>
-                                                                    <c:when test = "${s.balance lt 0}">
-                                                                    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${s.balance})" /></td>
-                                                                    </c:when>
-                                                                    <c:otherwise>
-                                                                        <td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${s.balance}" /></td>
-                                                                    </c:otherwise>
-                                                                </c:choose>    
-                                                                <c:choose>
-                                                                    <c:when test = "${e.earning lt 0}">
-                                                                    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${s.earning})" /></td>
-                                                                    </c:when>
-                                                                    <c:otherwise>
-                                                                        <td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${s.earning}" /></td>
-                                                                    </c:otherwise>
-                                                                </c:choose> 
-                                                                <td>${s.status}</td>
+								<td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${s.price}" /></td>
+								<td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${s.units}" /></td>
+								<td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${s.balance}" /></td>
+								<td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${s.earning}" /></td>
+								<td>${s.status}</td>
                                                             </tr>
                                                         </c:forEach>
                                                     </tbody>

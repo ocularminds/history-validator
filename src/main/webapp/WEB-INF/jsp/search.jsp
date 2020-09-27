@@ -67,41 +67,11 @@
                                                                 <td><a href="${pageContext.request.contextPath}/statements/requests/${s.pin}">${s.pin}</a></td>
                                                                 <td>${s.firstName} ${s.surname}</td>
                                                                 <td>${s.employer}</td>
-                                                                <td>${s.code}</td>
-                                                                <fmt:formatNumber key="myprice" type="number" minIntegerDigits="1" maxFractionDigits="4" value="${price}" />
-                                                                <fmt:formatNumber key="mybalance" type="number" minIntegerDigits="1" maxFractionDigits="4" value="${balance}" />
-                                                                <c:choose>
-                                                                    <c:when test = "${price lt 0}">
-                                                                    <td>(${fmt:replace($mybalance,"-","")})</td>
-                                                                    </c:when>
-                                                                    <c:otherwise>
-                                                                        <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${price}" /></td>
-                                                                    </c:otherwise>
-                                                                </c:choose> 
-                                                                <c:choose>
-                                                                    <c:when test = "${units lt 0}">
-                                                                    <td>(<fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${units}" />)</td>
-                                                                    </c:when>
-                                                                    <c:otherwise>
-                                                                        <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${units}" /></td>
-                                                                    </c:otherwise>
-                                                                </c:choose>                                                                 
-                                                                <c:choose>
-                                                                    <c:when test = "${balance lt 0}">
-                                                                    <td>(${fmt:replace($mybalance,"-","")})</td>
-                                                                    </c:when>
-                                                                    <c:otherwise>
-                                                                        <td class="text-right">${mybalance}</td>
-                                                                    </c:otherwise>
-                                                                </c:choose>      
-                                                                <c:choose>
-                                                                    <c:when test = "${earning lt 0}">
-                                                                    <td>(<fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${earning}" />)</td>
-                                                                    </c:when>
-                                                                    <c:otherwise>
-                                                                        <td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${earning}" /></td>
-                                                                    </c:otherwise>
-                                                                </c:choose>      
+                                                                <td>${s.code}</td>                                                                
+                                                                <td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${price}" /></td>
+                                                                <td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${units}" /></td>
+                                                                <td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="2" value="${balance}" /></td>
+                                                                <td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="2" value="${earning}" /></td>
                                                                 <td>${s.requester}</td>
                                                             </tr>
                                                         </c:forEach>

@@ -160,71 +160,14 @@
 						<c:set var = "fees" scope = "request" value = "${s.fees}"/>
                                                 <c:set var = "withdrawals" scope = "request" value = "${s.withdrawals}"/>                                               
 					        <c:set var = "net" scope = "request" value = "${s.net}"/>
-					        <c:choose>
-						<c:when test = "${employer lt 0}">
-						<td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${employer})" /></td>
-						</c:when>
-						<c:otherwise>
-						    <td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${employer}" /></td>
-						</c:otherwise>
-						</c:choose> 
-					        <c:choose>
-						<c:when test = "${contribution lt 0}">
-						<td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${contribution})" /></td>
-						</c:when>
-						<c:otherwise>
-						    <td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${contribution}" /></td>
-						</c:otherwise>
-						</c:choose>                   
-						<c:choose>
-						    <c:when test = "${total lt 0}">
-						    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${total})" /></td>
-						    </c:when>
-						    <c:otherwise>
-							<td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${total}" /></td>
-						    </c:otherwise>
-						</c:choose>          
-						<c:choose>
-						    <c:when test = "${total lt 0}">
-						    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${total})" /></td>
-						    </c:when>
-						    <c:otherwise>
-							<td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${total}" /></td>
-						    </c:otherwise>
-						</c:choose>          
-						<c:choose>
-						    <c:when test = "${units lt 0}">
-						    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${units})" /></td>
-						    </c:when>
-						    <c:otherwise>
-							<td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${units}" /></td>
-						    </c:otherwise>
-						</c:choose>          
-						<c:choose>
-						    <c:when test = "${fees lt 0}">
-						    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${fees})" /></td>
-						    </c:when>
-						    <c:otherwise>
-							<td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${fees}" /></td>
-						    </c:otherwise>
-						</c:choose>          
-						<c:choose>
-						    <c:when test = "${withdrawals lt 0}">
-						    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${withdrawals})" /></td>
-						    </c:when>
-						    <c:otherwise>
-							<td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${withdrawals}" /></td>
-						    </c:otherwise>
-						</c:choose>          
-						<c:choose>
-						    <c:when test = "${net lt 0}">
-						    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${net})" /></td>
-						    </c:when>
-						    <c:otherwise>
-							<td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${net}" /></td>
-						    </c:otherwise>
-						</c:choose>  
-                                                   <td>${s.pfa}</td>
+					        <td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${employer}" /></td>
+						<td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${contribution}" /></td>
+						<td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${total}" /></td>
+						<td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${units}" /></td>
+						<td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${fees}" /></td>
+						<td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${withdrawals}" /></td>
+						<td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${net}" /></td>  
+                                                <td>${s.pfa}</td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>
