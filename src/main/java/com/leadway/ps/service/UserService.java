@@ -137,7 +137,7 @@ public class UserService {
   }
 
   public Optional<Resource> getResource(String link) {
-    return resources.findByLink(link);
+    return resources.findDistinctByLink(link);
   }
 
   public boolean hasRole(String userid, String page)

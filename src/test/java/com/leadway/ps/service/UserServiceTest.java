@@ -168,7 +168,7 @@ public class UserServiceTest {
     r.setLink("/statements/search");
     r.setPriviledge("TEST");
     when(repository.findByLogin(any(String.class))).thenReturn(Optional.of(user));
-    when(resources.findByLink(any(String.class))).thenReturn(Optional.of(r));
+    when(resources.findDistinctByLink(any(String.class))).thenReturn(Optional.of(r));
     service.hasRole("0001", LINK);
   }
 
@@ -180,7 +180,7 @@ public class UserServiceTest {
     r.setLink("/statements/search");
     r.setPriviledge("AUTHORIZER");
     when(repository.findByLogin(any(String.class))).thenReturn(Optional.of(user));
-    when(resources.findByLink(any(String.class))).thenReturn(Optional.of(r));
+    when(resources.findDistinctByLink(any(String.class))).thenReturn(Optional.of(r));
     boolean result = service.hasRole("0001", LINK);
     assertTrue(result == false);
   }
@@ -190,7 +190,7 @@ public class UserServiceTest {
     final String LINK = "/statements/search";
     User user = create("0001", "INITIATOR");
     when(repository.findByLogin(any(String.class))).thenReturn(Optional.of(user));
-    when(resources.findByLink(any(String.class))).thenReturn(Optional.ofNullable(null));
+    when(resources.findDistinctByLink(any(String.class))).thenReturn(Optional.ofNullable(null));
     Exception exception = assertThrows(
       InvalidAccessError.class,
       () -> service.hasRole("0001", LINK)
