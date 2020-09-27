@@ -59,33 +59,36 @@
                                                     </thead>
                                                     <tbody>
                                                         <c:forEach items="${statements}" var="s">
+                                                        <c:set var = "price" scope = "request" value = "${s.price}"/>
+                                                        <c:set var = "balance" scope = "request" value = "${s.balance}"/>
+                                                        <c:set var = "earning" scope = "request" value = "${s.earning}"/>
                                                             <tr>
                                                                 <td><a href="${pageContext.request.contextPath}/statements/requests/${s.pin}">${s.pin}</a></td>
                                                                 <td>${s.firstName} ${s.surname}</td>
                                                                 <td>${s.employer}</td>
                                                                 <td>${s.code}</td>
                                                                 <c:choose>
-                                                                    <c:when test = "${s.price.compareTo(BigDecimal.ZERO) == -1}">
-                                                                    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${s.price})" /></td>
+                                                                    <c:when test = "${price.compareTo(BigDecimal.ZERO) == -1}">
+                                                                    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${price})" /></td>
                                                                     </c:when>
                                                                     <c:otherwise>
-                                                                        <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${s.price}" /></td>
+                                                                        <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${price}" /></td>
                                                                     </c:otherwise>
                                                                 </c:choose>                                                           
                                                                 <c:choose>
-                                                                    <c:when test = "${s.balance.compareTo(BigDecimal.ZERO) == -1}">
-                                                                    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${s.balance})" /></td>
+                                                                    <c:when test = "${balance.compareTo(BigDecimal.ZERO) == -1}">
+                                                                    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${balance})" /></td>
                                                                     </c:when>
                                                                     <c:otherwise>
-                                                                        <td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${s.balance}" /></td>
+                                                                        <td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${balance}" /></td>
                                                                     </c:otherwise>
                                                                 </c:choose>      
                                                                 <c:choose>
-                                                                    <c:when test = "${s.earning.compareTo(BigDecimal.ZERO) == -1}">
-                                                                    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${s.earning})" /></td>
+                                                                    <c:when test = "${earning.compareTo(BigDecimal.ZERO) == -1}">
+                                                                    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${earning})" /></td>
                                                                     </c:when>
                                                                     <c:otherwise>
-                                                                        <td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${s.earning}" /></td>
+                                                                        <td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${earning}" /></td>
                                                                     </c:otherwise>
                                                                 </c:choose>      
                                                                 <td>${s.requester}</td>
