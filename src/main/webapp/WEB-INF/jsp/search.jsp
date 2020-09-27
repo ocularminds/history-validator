@@ -68,15 +68,23 @@
                                                                 <td>${s.employer}</td>
                                                                 <td>${s.code}</td>
                                                                 <c:choose>
-                                                                    <c:when test = "${price gt 0}">
+                                                                    <c:when test = "${price lt 0}">
                                                                     <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${price})" /></td>
                                                                     </c:when>
                                                                     <c:otherwise>
                                                                         <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${price}" /></td>
                                                                     </c:otherwise>
-                                                                </c:choose>                                                           
+                                                                </c:choose> 
                                                                 <c:choose>
-                                                                    <c:when test = "${balance gt 0}">
+                                                                    <c:when test = "${s.units lt 0}">
+                                                                    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${s.units})" /></td>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${s.units}" /></td>
+                                                                    </c:otherwise>
+                                                                </c:choose>                                                                 
+                                                                <c:choose>
+                                                                    <c:when test = "${balance lt 0}">
                                                                     <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${balance})" /></td>
                                                                     </c:when>
                                                                     <c:otherwise>
@@ -84,7 +92,7 @@
                                                                     </c:otherwise>
                                                                 </c:choose>      
                                                                 <c:choose>
-                                                                    <c:when test = "${earning gt 0}">
+                                                                    <c:when test = "${earning lt 0}">
                                                                     <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${earning})" /></td>
                                                                     </c:when>
                                                                     <c:otherwise>
