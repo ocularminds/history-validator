@@ -70,7 +70,7 @@
                                                                 <td>${s.code}</td>
                                                                 <c:choose>
                                                                     <c:when test = "${price lt 0}">
-                                                                    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${price})" /></td>
+                                                                    <td>(<fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${price}" />)</td>
                                                                     </c:when>
                                                                     <c:otherwise>
                                                                         <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${price}" /></td>
@@ -78,7 +78,7 @@
                                                                 </c:choose> 
                                                                 <c:choose>
                                                                     <c:when test = "${units lt 0}">
-                                                                    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${units})" /></td>
+                                                                    <td>(<fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${units}" />)</td>
                                                                     </c:when>
                                                                     <c:otherwise>
                                                                         <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${units}" /></td>
@@ -86,7 +86,7 @@
                                                                 </c:choose>                                                                 
                                                                 <c:choose>
                                                                     <c:when test = "${balance lt 0}">
-                                                                    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${balance})" /></td>
+                                                                    <td>(<fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${balance}" />)</td>
                                                                     </c:when>
                                                                     <c:otherwise>
                                                                         <td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${balance}" /></td>
@@ -94,7 +94,7 @@
                                                                 </c:choose>      
                                                                 <c:choose>
                                                                     <c:when test = "${earning lt 0}">
-                                                                    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${earning})" /></td>
+                                                                    <td>(<fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${earning}" />)</td>
                                                                     </c:when>
                                                                     <c:otherwise>
                                                                         <td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${earning}" /></td>
