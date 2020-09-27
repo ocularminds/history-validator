@@ -15,7 +15,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <c:if test="${not empty endpoint}">
+                                <c:if test="${endpoint != null}">
                                 <form:form method="post" action="${pageContext.request.contextPath}/${endpoint}" modelAttribute="approval">
                                                 <div class="form-body">
                                                     <div class="row">
@@ -57,8 +57,7 @@
                             </div>
                             <div class="card-body">
                                 <h4 class="card-title">Statements Validations</h4>
-                                <p><input type="text"/><button class="btn btn-dark">Reject</button>&nbsp;<button class="btn btn-info">Approve</button>
-                                 &nbsp;<a class="btn btn-success" href="${pageContext.request.contextPath}/statements/export/${statement.pin}"> <i data-feather="file-text" class="feather-icon"></i>&nbsp;Export Excel</a></p>
+                                <p><a class="btn btn-success" href="${pageContext.request.contextPath}/statements/export/${statement.pin}"> <i data-feather="file-text" class="feather-icon"></i>&nbsp;Export Excel</a></p>
                                  <p><ul>
                                     <c:forEach items="${statement.comments}" var="comment">
                                         <li>${comment}</li>
@@ -89,10 +88,38 @@
                                                 <td>${statement.pin}</td>
                                                 <td>${statement.employer}</td>
                                                 <td>${statement.code}</td>
-                                                <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${statement.price}" /></td>
-                                                <td><fmt:formatNumber type="number" groupingUsed="true" minIntegerDigits="1" maxFractionDigits="2" value="${statement.units}" /></td>
-                                                <td><fmt:formatNumber type="number" groupingUsed="true" minIntegerDigits="1" maxFractionDigits="2" value="${statement.balance}" /></td>
-                                                <td><fmt:formatNumber type="number" groupingUsed="true" minIntegerDigits="1" maxFractionDigits="2" value="${statement.earning}" /></td>
+                                                                <c:choose>
+								    <c:when test = "${s.price lt 0}">
+								    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${s.price})" /></td>
+								    </c:when>
+								    <c:otherwise>
+									<td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${s.price}" /></td>
+								    </c:otherwise>
+                                                                </c:choose>    
+                                                                <c:choose>
+                                                                    <c:when test = "${s.units lt 0}">
+                                                                    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${s.units})" /></td>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${s.units}" /></td>
+                                                                    </c:otherwise>
+                                                                </c:choose>    
+                                                                <c:choose>
+                                                                    <c:when test = "${s.balance lt 0}">
+                                                                    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${s.balance})" /></td>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${s.balance}" /></td>
+                                                                    </c:otherwise>
+                                                                </c:choose>    
+                                                                <c:choose>
+                                                                    <c:when test = "${e.earning lt 0}">
+                                                                    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${s.earning})" /></td>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${s.earning}" /></td>
+                                                                    </c:otherwise>
+                                                                </c:choose> 
                                             </tr>
                                         </tbody>
                                     </table>
@@ -121,15 +148,64 @@
                                                     <td><fmt:formatDate value="${s.dateReceived}" pattern="dd-MMM-yyyy" /></td>
                                                     <td><fmt:formatDate value="${s.monthStart}" pattern="dd-MMM-yyyy" /></td>
                                                     <td><fmt:formatDate value="${s.monthEnd}" pattern="MMM-yyyy" /></td>
-                                                    <td>${s.type}</td>
-                                                    <td class="text-right"><fmt:formatNumber type = "number" groupingUsed="true" minIntegerDigits="2" maxFractionDigits="2" value = "${s.employer}" /></td>
-                                                    <td class="text-right"><fmt:formatNumber type = "number" groupingUsed="true" minIntegerDigits="2" maxFractionDigits="2" value = "${s.contribution}" /></td>
-                                                    <td class="text-right"><fmt:formatNumber type = "number" groupingUsed="true" minIntegerDigits="2" maxFractionDigits="2" value = "${s.total}" /></td>
-                                                    <td class="text-right"><fmt:formatNumber type = "number" groupingUsed="true" minIntegerDigits="2" maxFractionDigits="2" value = "${s.units}" /></td>
-                                                    <td class="text-right"><fmt:formatNumber type = "number" groupingUsed="true" minIntegerDigits="2" maxFractionDigits="2" value = "${s.fees}" /></td>
-                                                    <td class="text-right"><fmt:formatNumber type = "number" groupingUsed="true" minIntegerDigits="2" maxFractionDigits="2" value = "${s.withdrawals}" /></td>
-                                                    <td class="text-right"><fmt:formatNumber type = "number" groupingUsed="true" minIntegerDigits="2" maxFractionDigits="2" value = "${s.net}" /></td>
-                                                    <td>${s.pfa}</td>
+                                                    <td>${s.type}</td>                                                         
+					    <c:choose>
+						<c:when test = "${s.contribution lt 0}">
+						<td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${s.contribution})" /></td>
+						</c:when>
+						<c:otherwise>
+						    <td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${s.contribution}" /></td>
+						</c:otherwise>
+						</c:choose>          
+						<c:choose>
+						    <c:when test = "${s.total lt 0}">
+						    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${s.total})" /></td>
+						    </c:when>
+						    <c:otherwise>
+							<td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${s.total}" /></td>
+						    </c:otherwise>
+						</c:choose>          
+						<c:choose>
+						    <c:when test = "${s.total lt 0}">
+						    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${s.total})" /></td>
+						    </c:when>
+						    <c:otherwise>
+							<td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${s.total}" /></td>
+						    </c:otherwise>
+						</c:choose>          
+						<c:choose>
+						    <c:when test = "${s.units lt 0}">
+						    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${s.units})" /></td>
+						    </c:when>
+						    <c:otherwise>
+							<td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${s.units}" /></td>
+						    </c:otherwise>
+						</c:choose>          
+						<c:choose>
+						    <c:when test = "${s.fees lt 0}">
+						    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${s.fees})" /></td>
+						    </c:when>
+						    <c:otherwise>
+							<td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${s.fees}" /></td>
+						    </c:otherwise>
+						</c:choose>          
+						<c:choose>
+						    <c:when test = "${s.withdrawals lt 0}">
+						    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${s.withdrawals})" /></td>
+						    </c:when>
+						    <c:otherwise>
+							<td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${s.withdrawals}" /></td>
+						    </c:otherwise>
+						</c:choose>          
+						<c:choose>
+						    <c:when test = "${s.net lt 0}">
+						    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${s.net})" /></td>
+						    </c:when>
+						    <c:otherwise>
+							<td class="text-right"><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${s.net}" /></td>
+						    </c:otherwise>
+						</c:choose>  
+                                                   <td>${s.pfa}</td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>

@@ -69,6 +69,9 @@ public class QueryBuilder {
     sb.append(
       " when (cast(ContributionTypeID as varchar) in (6,7,9,36,45) AND c.Fundid=2) then 'TFD04' "
     );
+     sb.append(
+      " when (cast(ContributionTypeID as varchar) in (7) AND c.Fundid=1) then 'TFD04' "
+    );
     sb.append(
       " when (cast(ContributionTypeID as varchar) in (9) AND c.Fundid=13) then 'TFD05' "
     );
@@ -146,14 +149,9 @@ public class QueryBuilder {
     sb.append(" UNION ");
     sb.append(" select rsapin, p.Employeeid, ValueDate [PAY_RECEIVE_DATE], ");
     sb.append(
-      "StartPeriod [RELATED_MONTH_START], EndPeriod [RELATED_MONTH_END], "
-    );
-    sb.append(
-      " [TRANSACTION_TYPE]=case when cast(PaymentTypeID as varchar) in (1,22,78) then 'LS001'  "
-    );
-    sb.append(
-      " when cast(PaymentTypeID as varchar) in (3,8,17,33,34,35,36) then 'PW001'  "
-    );
+      " StartPeriod [RELATED_MONTH_START], EndPeriod [RELATED_MONTH_END], " );
+    sb.append(" [TRANSACTION_TYPE] = case when cast(PaymentTypeID as varchar) in (1,22,78) then 'LS001'  ");
+    sb.append( " when cast(PaymentTypeID as varchar) in (3,8,17,33,34,35,36) then 'PW001'  " );
     sb.append(" when cast(PaymentTypeID as varchar) in (7) then 'WT001' ");
     sb.append(" when cast(PaymentTypeID as varchar) in (9) then 'PT025'  ");
     sb.append(" when cast(PaymentTypeID as varchar) in (10) then 'NST01'  ");
@@ -192,14 +190,11 @@ public class QueryBuilder {
     sb.append("when cast(PaymentTypeID as varchar) in (67,88) then 'EXMP1' ");
 
     // newly added begins
-    sb.append(
-      " when cast(PaymentTypeID as varchar) in (59,60,62,65,75) then 'RFD03'  "
-    );
+    sb.append(" when cast(PaymentTypeID as varchar) in (59,60,62,65,75) then 'RFD03'  ");
 
     sb.append(" when cast(PaymentTypeID as varchar) in  (89) then 'ENH01' ");
-    sb.append(" when cast(PaymentTypeID as varchar) in (16) then 'ARR02' ");
-    sb.append(
-      " when cast(PaymentTypeID as varchar) in (16,21,64,71,74,76,77,80,90) then 'ADF01' "
+    sb.append(" when cast(PaymentTypeID as varchar) in (4) then 'ARR02' ");
+    sb.append(" when cast(PaymentTypeID as varchar) in (16,21,64,71,74,76,77,80,90) then 'ADF01' "
     );
 
     //newly added ends
@@ -209,8 +204,8 @@ public class QueryBuilder {
     sb.append(" ISNULL(Gross,0.00) [OTHER_WITHDRAWALS],");
     sb.append(" NET_CONTRIBUTIONS = 0.00 - ISNULL(Gross,0.00) , ");
     sb.append("'0023' [RELATED_PFA_CODE]  ");
-    sb.append("From payments p join employee e ");
-    sb.append("on p.employeeid = e.employeeid ");
+    sb.append(" From payments p join employee e ");
+    sb.append(" on p.employeeid = e.employeeid ");
     sb.append(" where isnull(isConfirmed,0) = 1 and isnull(isarchived,0)=0 ");
     sb.append("and e.rsapin in (?) ");
     sb.append("order by 1, 2, 3 ");
