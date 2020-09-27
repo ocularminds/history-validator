@@ -60,6 +60,7 @@
                                                     <tbody>
                                                         <c:forEach items="${statements}" var="s">
                                                         <c:set var = "price" scope = "request" value = "${s.price}"/>
+                                                        <c:set var = "units" scope = "request" value = "${s.units}"/>
                                                         <c:set var = "balance" scope = "request" value = "${s.balance}"/>
                                                         <c:set var = "earning" scope = "request" value = "${s.earning}"/>
                                                             <tr>
@@ -76,11 +77,11 @@
                                                                     </c:otherwise>
                                                                 </c:choose> 
                                                                 <c:choose>
-                                                                    <c:when test = "${s.units lt 0}">
-                                                                    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${s.units})" /></td>
+                                                                    <c:when test = "${units lt 0}">
+                                                                    <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="(${units})" /></td>
                                                                     </c:when>
                                                                     <c:otherwise>
-                                                                        <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${s.units}" /></td>
+                                                                        <td><fmt:formatNumber type="number" minIntegerDigits="1" maxFractionDigits="4" value="${units}" /></td>
                                                                     </c:otherwise>
                                                                 </c:choose>                                                                 
                                                                 <c:choose>
