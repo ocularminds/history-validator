@@ -185,7 +185,7 @@ public class Statements {
     }
     statements.approve(approval);
     model.put("statement", statements.getStatement(id));
-    return "redirect:/reviews";
+    return "redirect:/statements/reviews";
   }
 
   @RequestMapping("/approvals")
@@ -239,7 +239,7 @@ public class Statements {
     }
     statements.approve(approval);
     model.put("statement", statements.getStatement(id));
-    return "redirect:/approvals";
+    return "redirect:/statements/approvals";
   }
 
   private void writeFile(HttpServletResponse res, String file)
