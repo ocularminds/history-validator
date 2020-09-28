@@ -29,12 +29,8 @@ public class QueryBuilder {
     sb.append(" when cast(ContributionTypeID as varchar)  ");
     sb.append(" in (11,12,13,14,66) then 'AR001'  ");
     sb.append("when cast(ContributionTypeID as varchar) in (3) then 'VLC01'  ");
-    sb.append(
-      " when cast(ContributionTypeID as varchar) in (17,18,32) then 'OST01'  "
-    );
-    sb.append(
-      " when cast(ContributionTypeID as varchar) in (71) then  'NR001' "
-    );
+    sb.append(" when cast(ContributionTypeID as varchar) in (17,18,32) then 'OST01'  ");
+    sb.append(" when cast(ContributionTypeID as varchar) in (71) then  'NR001' ");
     sb.append(" when cast(ContributionTypeID as varchar) in  ");
     sb.append(
       "(1,10,29,41,43,44,46,49,51,53,54,55,56,57,60,62,63,67,68,69,70,72,74,39,59,75) then	'MC001' "
@@ -42,9 +38,7 @@ public class QueryBuilder {
     sb.append(
       " when cast(ContributionTypeID as varchar) in (31) then	'NST01'  "
     );
-    sb.append(
-      " when cast(ContributionTypeID as varchar) in (2,34) then	'LEG01' "
-    );
+    sb.append(" when cast(ContributionTypeID as varchar) in (2,34) then	'LEG01' ");
     sb.append(
       " when cast(ContributionTypeID as varchar) in (73,15,19,20) then 'RFD01'  "
     );
@@ -194,9 +188,8 @@ public class QueryBuilder {
 
     sb.append(" when cast(PaymentTypeID as varchar) in  (89) then 'ENH01' ");
     sb.append(" when cast(PaymentTypeID as varchar) in (4) then 'ARR02' ");
-    sb.append(" when cast(PaymentTypeID as varchar) in (16,21,64,71,74,76,77,80,90) then 'ADF01' "
-    );
-
+    sb.append(" when cast(PaymentTypeID as varchar) in (16,21,64,71,74,76,77,80,90) then 'ADF01' ");
+    sb.append(" when cast(PaymentTypeID as varchar) in (6) then 'ANT01' ");
     //newly added ends
     sb.append(" else cast(PaymentTypeID as varchar) end, ");
     sb.append(" 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, ");
