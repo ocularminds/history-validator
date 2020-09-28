@@ -155,7 +155,7 @@ public class Statements {
     ModelMap model
   )
     throws Exception {
-    String name = (String) model.get("name");
+    String name = (String) model.get("username");
     if (name == null) return "redirect:/login";
     if (!users.hasRole(name, "statements/reviews")) {
       throw new InvalidAccessError(
@@ -209,7 +209,7 @@ public class Statements {
     ModelMap model
   )
     throws Exception {
-    String name = (String) model.get("name");
+    String name = (String) model.get("username");
     if (name == null) return "redirect:/login";
     if (!users.hasRole(name, "statements/approvals")) {
       throw new InvalidAccessError(
