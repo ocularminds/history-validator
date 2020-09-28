@@ -1,5 +1,6 @@
 package com.leadway.ps.api;
 
+import com.leadway.ps.common.JsonParser;
 import com.leadway.ps.ExcelFile;
 import com.leadway.ps.InvalidAccessError;
 import com.leadway.ps.model.Approval;
@@ -12,6 +13,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -30,6 +33,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
@@ -92,6 +96,18 @@ public class Statements {
     writeFile(response, file);
   }
 
+  @RequestMapping(path="/json/{pin}",produces="application/json")
+  public ResponseEntity<String> json(
+    @PathVariable(value = "pin") String pin,
+    HttpServletResponse response
+  )
+    throws IOException ,Exception{
+    Statement statement = statements.getStatement(pin);
+    Map<String, Statement> req = new HashMap<>();
+	req.put("thSummary", statement);
+    return ResponseEntity.ok().body(JsonParser.toJson(req));
+  }
+
   @RequestMapping("/search")
   public String search(ModelMap model) throws InvalidAccessError, Exception {
     String username = (String) model.get("username");
@@ -150,7 +166,7 @@ public class Statements {
     model.put("endpoint", "/statements/reviews/" + id);
     model.put("buttonLabel", "Pass");
     model.put("approval", new Approval(id, Approval.ApprovalType.REVIEW));
-    return "records";
+    return "review";
   }
 
   @PostMapping("/reviews/{id}")
@@ -169,7 +185,7 @@ public class Statements {
     }
     statements.approve(approval);
     model.put("statement", statements.getStatement(id));
-    return "review";
+    return "redirect:/reviews";
   }
 
   @RequestMapping("/approvals")
@@ -204,7 +220,7 @@ public class Statements {
     model.put("endpoint", "statements/approvals/" + id);
     model.put("buttonLabel", "Approve");
     model.put("approval", new Approval(id, Approval.ApprovalType.APPROVE));
-    return "records";
+    return "approve";
   }
 
   @PostMapping("/approvals/{id}")
@@ -223,7 +239,7 @@ public class Statements {
     }
     statements.approve(approval);
     model.put("statement", statements.getStatement(id));
-    return "records";
+    return "redirect:/approvals";
   }
 
   private void writeFile(HttpServletResponse res, String file)
