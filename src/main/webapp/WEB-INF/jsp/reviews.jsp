@@ -37,7 +37,7 @@
                                                     <tbody>
                                                         <c:forEach items="${statements}" var="s">
                                                             <tr>
-                                                                <td><a href="${pageContext.request.contextPath}/statements/requests/${s.pin}">${s.surname}</a></td>
+                                                                <td><a href="${pageContext.request.contextPath}/statements/reviews/${s.pin}">${s.surname}</a></td>
                                                                 <td>${s.firstName}</td>
                                                                 <td>${s.middleName}</td>
                                                                 <td>${s.pin}</td>
