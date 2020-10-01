@@ -14,6 +14,7 @@ import com.leadway.ps.model.Statement;
 import com.leadway.ps.repository.StatementRepository;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,14 +40,25 @@ public class PencomServiceTest {
 
   @Test
   public void testSubmit() {
-    Statement request = createRequest("PEN100000000001");
-    List<Record> records = randomise(2);
+	String s1 = Integer.toString((int) ((Math.random() * 800) + 100));
+	String s2 = Long.toString(System.currentTimeMillis());
+	String s3 = Integer.toString((int) ((Math.random() * 8000) + 1000));
+	s1 = s1 + "-"+ new StringBuilder(s2).reverse().substring(0, 6)+"-"+s3;
+	Date date = new Date();
+	String Q1 = new SimpleDateFormat("yyyy").format(date);
+	String Q = new SimpleDateFormat("MM").format(date);
+	int D = Integer.parseInt(Q)/3;
+	int R = Integer.parseInt(Q) % 3;
+	D = R > 0 ? D + 1: D;
+	Q = Integer.toString(D)+"-"+Q1;
+    Statement request = createRequest("PEN100000000001",Q,s1);
+    List<Record> records = randomise(2,Q,s1);
     request.setRecords(records);
     service.submit(request);
   }
 
 
-  private Statement createRequest(String pin) {
+  private Statement createRequest(String pin, String Q, String ref) {
     Statement req = new Statement();
     String[] names = {
       "Akpan, Jinadu, Paul",
@@ -57,6 +69,8 @@ public class PencomServiceTest {
     };
     int random = (int) (Math.random() * 5);
     String[] emp = names[random].split(",");
+    req.setQaurter(Q);
+    req.setReference(ref);
     req.setFirstName(emp[0]);
     req.setSurname(emp[1]);
     req.setMiddleName(emp[2]);
@@ -71,7 +85,7 @@ public class PencomServiceTest {
     return req;
   }
 
-  private List<Record> randomise(int max) {
+  private List<Record> randomise(int max,String Q, String ref) {
     List<Record> records = new ArrayList<>();
     long time = new Date().getTime();
     Record record;
@@ -102,6 +116,9 @@ public class PencomServiceTest {
       record.setWithdrawals(debits.setScale(2, RAND));
       net = total.subtract(record.getFees()).subtract(debits);
       netSum = netSum.add(net);
+      record.setSerial(j+1);
+	  record.setQuarter(Q);
+      record.setReference(ref);
       record.setNet(net);
       record.setPfa("022");
       records.add(record);

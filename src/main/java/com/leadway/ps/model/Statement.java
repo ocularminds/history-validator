@@ -64,9 +64,17 @@ public class Statement  implements java.io.Serializable{
   @JsonProperty("middlename")
   private String middleName;
 
+  @Column(name="querter", nullable = false, length = 22)
+  @JsonProperty("quarterId")
+  private String quarter;
+
   @Column(nullable = false, length = 22)
   @JsonProperty("employerCode")
   private String employer;
+
+  @Column(name="ref_id", nullable = false, length = 22)
+  @JsonProperty("referenceId")
+  private String reference;
 
   @Column(nullable = false, length = 22)
   @JsonProperty("tpfacode")
@@ -89,7 +97,7 @@ public class Statement  implements java.io.Serializable{
   private BigDecimal earning;
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "statement")
-  @JsonProperty("detailRecords")
+  @JsonIgnore
   private List<Record> records;
 
   @Column(nullable = false, length = 22)
@@ -107,6 +115,7 @@ public class Statement  implements java.io.Serializable{
   private List<String> comments;
 
   public Statement(){
+	quarter = new java.text.SimpleDateFormat("MM-yyyy").format(new java.util.Date());
     RoundingMode RAND = RoundingMode.HALF_UP;
     records = new ArrayList<>();
     balance = BigDecimal.ZERO.setScale(2, RAND);
@@ -114,6 +123,34 @@ public class Statement  implements java.io.Serializable{
     price = BigDecimal.ZERO.setScale(2, RAND);
     units = BigDecimal.ZERO.setScale(2, RAND);
     earning = BigDecimal.ZERO.setScale(2, RAND);
+  }
+
+  /**
+   * @return the ref
+   */
+  public String getReference() {
+    return reference;
+  }
+
+  /**
+   * @param middleName the middleName to set
+   */
+  public void setReference(String reference) {
+    this.reference = reference;
+  }
+
+  /**
+   * @return the quarter
+   */
+  public String getQaurter() {
+    return quarter;
+  }
+
+  /**
+   * @param quarter the quarter to set
+   */
+  public void setQaurter(String quarter) {
+    this.quarter = quarter;
   }
 
   public int getFundId() {

@@ -49,6 +49,18 @@ public class Record {
   @JsonIgnore
   private String id; //pin+pfa+recordnum
 
+  @Column(name="serial", nullable = false)
+  @JsonProperty("serialNo")
+  private int serial;
+
+  @Column(name="querter", nullable = false, length = 22)
+  @JsonProperty("quarterId")
+  private String quarter;
+
+  @Column(name="ref_id", nullable = false, length = 22)
+  @JsonProperty("referenceId")
+  private String reference;
+
   @Column(name = "date_received")
   @JsonProperty("paymentDate")
   @JsonFormat(pattern = "dd-MMM-yyyy")
@@ -117,6 +129,9 @@ public class Record {
   @JsonIgnore
   private Statement statement;
 
+  public Record(){
+  }
+
   /**
    * @return the id
    */
@@ -129,6 +144,48 @@ public class Record {
    */
   public void setId(String id) {
     this.id = id;
+  }
+
+  /**
+   * @return the serial
+   */
+  public int getSerial() {
+    return serial;
+  }
+
+  /**
+   * @param serial the serial to set
+   */
+  public void setSerial(int serial) {
+    this.serial = serial;
+  }
+
+  /**
+   * @return the ref
+   */
+  public String getReference() {
+    return reference;
+  }
+
+  /**
+   * @param middleName the middleName to set
+   */
+  public void setReference(String reference) {
+    this.reference = reference;
+  }
+
+  /**
+   * @return the quarter
+   */
+  public String getQuarter() {
+    return quarter;
+  }
+
+  /**
+   * @param quarter the quarter to set
+   */
+  public void setQuarter(String quarter) {
+    this.quarter = quarter;
   }
 
   /**

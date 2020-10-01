@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.text.SimpleDateFormat;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -114,6 +115,17 @@ public class StatementService {
   }
 
   private void addStatistics(Statement req, List<Record> data) {
+	String s1 = Integer.toString((int) ((Math.random() * 800) + 100));
+	String s2 = Long.toString(System.currentTimeMillis());
+	String s3 = Integer.toString((int) ((Math.random() * 8000) + 1000));
+	s1 = s1 + "-"+ new StringBuilder(s2).reverse().substring(0, 6)+"-"+s3;
+	Date date = new Date();
+	String Q1 = new SimpleDateFormat("yyyy").format(date);
+	String Q = new SimpleDateFormat("MM").format(date);
+	int D = Integer.parseInt(Q)/3;
+	int R = Integer.parseInt(Q) % 3;
+	D = R > 0 ? D + 1: D;
+	Q = Integer.toString(D)+"-"+Q1;
     BigDecimal netSum = BigDecimal.ZERO, totalSum = BigDecimal.ZERO;
     BigDecimal unitSum = BigDecimal.ZERO;
     RoundingMode RAND = RoundingMode.HALF_UP;
@@ -127,10 +139,15 @@ public class StatementService {
       netSum = netSum.add(record.getNet().setScale(2, RAND));
       totalSum = totalSum.add(record.getTotal().setScale(2, RAND));
       record.setId(req.getPin() + record.getPfa() + j);
+      record.setSerial(j+1);
+      record.setQuarter(Q);
+      record.setReference(s1);
       record.setStatement(req);
       records.add(record);
     }
     unitSum = req.getBalance().divide(req.getPrice(), 2, RAND);
+    req.setReference(s1);
+    req.setQaurter(Q);
     req.setUnits(unitSum.setScale(2, RAND));
     req.setEarning(req.getBalance().subtract(netSum).setScale(2, RAND));
     req.setRecords(records);

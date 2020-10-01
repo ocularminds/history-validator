@@ -4,11 +4,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.leadway.ps.common.HttpIO;
 import com.leadway.ps.common.JsonParser;
 import com.leadway.ps.model.Statement;
+import com.leadway.ps.model.Report;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import java.text.SimpleDateFormat;
 
 @Service
 public class PencomService {
@@ -22,9 +24,8 @@ public class PencomService {
   public void submit() {}
 
   public Object[] submit(Statement req) {
-    Map<String, Statement> d = new HashMap<>();
-    d.put("thSummary", req);
-    System.out.println(JsonParser.toJson(d));
+	Report report = new Report(req,req.getRecords());
+    System.out.println(JsonParser.toJson(report));
     return new Object[] {
       Integer.toString(HttpStatus.OK.value()),
       "Success",
