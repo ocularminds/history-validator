@@ -52,7 +52,8 @@ public class ExcelFileTest {
     req.setPin(pin);
     req.setEmployer("PR0000070199");
     req.setCode("FUND3");
-    req.setPrice(new BigDecimal("3.7230"));
+    req.setPrice("3.7230");
+    req.setFundId("456345000");
     BigDecimal fundUnits = new BigDecimal(Math.random() * 99999999)
     .setScale(2, RoundingMode.HALF_UP);
     req.setUnits(fundUnits);

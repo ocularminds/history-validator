@@ -89,7 +89,7 @@ public final class ExcelFile {
         ExcelBuilder.createCell(++columnCount, row, upper(request.getPin()), style);
         ExcelBuilder.createCell(++columnCount, row, upper(request.getEmployer()), style);
         ExcelBuilder.createCell(++columnCount, row, upper(request.getCode()), style);
-        ExcelBuilder.createCell(++columnCount, row, amountFormat(request.getPrice(),4), style);
+        ExcelBuilder.createCell(++columnCount, row, amountFormat(new BigDecimal(request.getPrice()),4), style);
         ExcelBuilder.createCell(++columnCount, row, amountFormat(request.getUnits(),2), style);
         ExcelBuilder.createCell(++columnCount, row, amountFormat(request.getBalance(),2), style);
         ExcelBuilder.createCell(++columnCount, row, amountFormat(request.getEarning(),2), style);
@@ -120,7 +120,7 @@ public final class ExcelFile {
             sumNet = sumNet.add(record.getNet());
             ++rowCount;
        }
-        
+
         row = sheet.createRow(rowCount);
         ExcelBuilder.createCell(9,row,amountFormat(sumTotal,2),style[3]);
         ExcelBuilder.createCell(13,row,amountFormat(sumNet,2),style[3]);
@@ -157,10 +157,10 @@ public final class ExcelFile {
        DecimalFormat df = new DecimalFormat("#,###.00");
        df.setMinimumIntegerDigits(1);
        df.setMaximumFractionDigits(decimal);
-       String s = df.format(bd);  
+       String s = df.format(bd);
        if(s.startsWith("-")){
           return "("+s.substring(1,s.length())+")";
-       } 
-       return s;    
+       }
+       return s;
     }
 }

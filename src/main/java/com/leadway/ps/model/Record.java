@@ -130,6 +130,7 @@ public class Record {
   private Statement statement;
 
   public Record(){
+	  quarter = "3-2020";
   }
 
   /**

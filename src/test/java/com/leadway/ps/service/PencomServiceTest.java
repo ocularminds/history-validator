@@ -50,7 +50,7 @@ public class PencomServiceTest {
 	int D = Integer.parseInt(Q)/3;
 	int R = Integer.parseInt(Q) % 3;
 	D = R > 0 ? D + 1: D;
-	Q = Integer.toString(D)+"-"+Q1;
+	Q = "3-2020";
     Statement request = createRequest("PEN100000000001",Q,s1);
     List<Record> records = randomise(2,Q,s1);
     request.setRecords(records);
@@ -69,6 +69,7 @@ public class PencomServiceTest {
     };
     int random = (int) (Math.random() * 5);
     String[] emp = names[random].split(",");
+    req.setFundId("3454000");
     req.setQaurter(Q);
     req.setReference(ref);
     req.setFirstName(emp[0]);
@@ -77,7 +78,7 @@ public class PencomServiceTest {
     req.setPin(pin);
     req.setEmployer("PR0000111100");
     req.setCode("FUND3");
-    req.setPrice(new BigDecimal("3.8504"));
+    req.setPrice("3.8504");
     BigDecimal fundUnits = new BigDecimal(Math.random() * 99999999)
     .setScale(2, RoundingMode.HALF_UP);
     req.setUnits(fundUnits);

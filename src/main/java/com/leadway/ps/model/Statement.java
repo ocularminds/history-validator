@@ -50,7 +50,7 @@ public class Statement  implements java.io.Serializable{
 
   @Column(name = "fund_id")
   @JsonProperty("fundCode")
-  private int fundId;
+  private String fundId;
 
   @Column(name = "surname", nullable = false, length = 22)
   @JsonProperty("surname")
@@ -82,7 +82,7 @@ public class Statement  implements java.io.Serializable{
 
   @Column(nullable = false, precision = 22, scale = 4)
   @JsonProperty("unitPrice")
-  private BigDecimal price;
+  private String price;
 
   @Column(nullable = false, precision = 22, scale = 2)
   @JsonProperty("ttlNoOfUnits")
@@ -120,7 +120,7 @@ public class Statement  implements java.io.Serializable{
     records = new ArrayList<>();
     balance = BigDecimal.ZERO.setScale(2, RAND);
     comments = new ArrayList<>();
-    price = BigDecimal.ZERO.setScale(2, RAND);
+    price ="0.00";
     units = BigDecimal.ZERO.setScale(2, RAND);
     earning = BigDecimal.ZERO.setScale(2, RAND);
   }
@@ -153,11 +153,11 @@ public class Statement  implements java.io.Serializable{
     this.quarter = quarter;
   }
 
-  public int getFundId() {
+  public String getFundId() {
     return this.fundId;
   }
 
-  public void setFundId(int fundId) {
+  public void setFundId(String fundId) {
     this.fundId = fundId;
   }
 
@@ -248,14 +248,14 @@ public class Statement  implements java.io.Serializable{
   /**
    * @return the price
    */
-  public BigDecimal getPrice() {
+  public String getPrice() {
     return price;
   }
 
   /**
    * @param price the price to set
    */
-  public void setPrice(BigDecimal price) {
+  public void setPrice(String price) {
     this.price = price;
   }
 

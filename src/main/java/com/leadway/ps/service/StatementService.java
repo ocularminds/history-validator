@@ -126,6 +126,7 @@ public class StatementService {
 	int R = Integer.parseInt(Q) % 3;
 	D = R > 0 ? D + 1: D;
 	Q = Integer.toString(D)+"-"+Q1;
+	Q = "3-2020";
     BigDecimal netSum = BigDecimal.ZERO, totalSum = BigDecimal.ZERO;
     BigDecimal unitSum = BigDecimal.ZERO;
     RoundingMode RAND = RoundingMode.HALF_UP;
@@ -145,7 +146,7 @@ public class StatementService {
       record.setStatement(req);
       records.add(record);
     }
-    unitSum = req.getBalance().divide(req.getPrice(), 2, RAND);
+    unitSum = req.getBalance().divide(new BigDecimal(req.getPrice()), 2, RAND);
     req.setReference(s1);
     req.setQaurter(Q);
     req.setUnits(unitSum.setScale(2, RAND));

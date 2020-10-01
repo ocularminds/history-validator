@@ -246,13 +246,15 @@ public class StatementServiceTest {
     };
     int random = (int) (Math.random() * 5);
     String[] emp = names[random].split(",");
+    req.setFundId("456345");
+    req.setReference("4535-78978");
     req.setFirstName(emp[0]);
     req.setSurname(emp[1]);
     req.setMiddleName(emp[2]);
     req.setPin(pin);
     req.setEmployer("PR0000070199");
     req.setCode("FUND3");
-    req.setPrice(new BigDecimal("3.7230"));
+    req.setPrice("3.7230");
     BigDecimal fundUnits = new BigDecimal(Math.random() * 99999999)
     .setScale(2, RoundingMode.HALF_UP);
     req.setUnits(fundUnits);
