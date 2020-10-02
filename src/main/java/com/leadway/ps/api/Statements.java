@@ -78,8 +78,19 @@ public class Statements {
     if (name == null) return "redirect:/login";
     Statement r = statements.getStatement(id);
     model.put("statement", r);
-    new ExcelFile(r).toFile();
     return "records";
+  }
+
+  @GetMapping(value = "/export/{pin}/statement.json")
+  public ResponseEntity<String> downloadExcel(@PathVariable(value = "pin") String pin) throws Exception {
+      Statement statement = statements.getStatement(pin);
+      Report report = new Report(statement,statement.getRecords());
+	  String json = JsonParser.toJson(report);
+      HttpHeaders headers = new HttpHeaders();
+      headers.add("Content-Type", "application/json");
+      return ResponseEntity.ok().headers(headers).body(
+		  json
+	  );
   }
 
   @GetMapping(value = "/export/{pin}/statement.xlsx")
@@ -92,6 +103,7 @@ public class Statements {
 		  new InputStreamResource(in)
 	  );
   }
+
 
   @RequestMapping("/search")
   public String search(ModelMap model) throws InvalidAccessError, Exception {

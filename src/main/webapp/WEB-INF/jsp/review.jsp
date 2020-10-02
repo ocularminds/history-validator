@@ -50,7 +50,7 @@
 					<button type="submit" class="btn btn-info">${buttonLabel}</button>
 					<button type="reset" class="btn btn-dark">Reset</button>
 					<a class="btn btn-success" href="${pageContext.request.contextPath}/statements/export/${statement.pin}/statement.xlsx"> <i data-feather="file-text" class="feather-icon"></i>&nbsp;Export Excel</a>&nbsp;
-					<a class="btn btn-light" href="${pageContext.request.contextPath}/statements/json/${statement.pin}"> <i data-feather="file-text" class="feather-icon"></i>&nbsp;Export JSON</a>
+					<a class="btn btn-light" href="${pageContext.request.contextPath}/statements/export/${statement.pin}/statement.json"> <i data-feather="file-text" class="feather-icon"></i>&nbsp;Export JSON</a>
 				    </div>
 				</div>
 			    </form:form>
