@@ -10,6 +10,7 @@ import com.leadway.ps.service.StatementService;
 import com.leadway.ps.service.UserService;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -28,12 +29,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
@@ -77,35 +82,15 @@ public class Statements {
     return "records";
   }
 
-  @RequestMapping("/export/{pin}")
-  public void download(
-    @PathVariable(value = "pin") String pin,
-    HttpServletResponse response
-  )
-    throws InterruptedException, ExecutionException, IOException ,Exception{
-    Statement statement = statements.getStatement(pin);
-    new ExcelFile(statement).toFile();
-    String fn = pin + ".xlsx";
-    String file = ExcelFile.FOLDER + File.separator + fn;
-    String attachement = String.format("attachment; filename=\"%s\"", fn);
-    response.setContentType(
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    );
-    response.setContentLengthLong(file.length());
-    response.addHeader("Content-Disposition", attachement);
-    writeFile(response, file);
-  }
-
-  @RequestMapping(path="/json/{pin}",produces="application/json")
-  public ResponseEntity<String> json(
-    @PathVariable(value = "pin") String pin,
-    HttpServletResponse response
-  )
-    throws IOException ,Exception{
-    Statement statement = statements.getStatement(pin);
-    Map<String, Statement> req = new HashMap<>();
-	req.put("thSummary", statement);
-    return ResponseEntity.ok().body(JsonParser.toJson(req));
+  @GetMapping(value = "/export/{pin}/statement.xlsx")
+  public ResponseEntity<InputStreamResource> downloadExcel(@PathVariable(value = "pin") String pin) throws Exception {
+      Statement statement = statements.getStatement(pin);
+      ByteArrayInputStream in = new ExcelFile(statement).toStream();
+      HttpHeaders headers = new HttpHeaders();
+      headers.add("Content-Disposition", "attachment; filename=statement.xlsx");
+      return ResponseEntity.ok().headers(headers).body(
+		  new InputStreamResource(in)
+	  );
   }
 
   @RequestMapping("/search")
@@ -185,7 +170,7 @@ public class Statements {
     }
     statements.approve(approval);
     model.put("statement", statements.getStatement(id));
-    return "redirect:/statements/reviews";
+    return "redirect:/reviews";
   }
 
   @RequestMapping("/approvals")
@@ -239,24 +224,6 @@ public class Statements {
     }
     statements.approve(approval);
     model.put("statement", statements.getStatement(id));
-    return "redirect:/statements/approvals";
-  }
-
-  private void writeFile(HttpServletResponse res, String file)
-    throws InterruptedException, java.util.concurrent.ExecutionException {
-    ExecutorService executor = Executors.newFixedThreadPool(1);
-    Future<String> future = executor.submit(
-      () -> {
-        try (
-          ServletOutputStream os = res.getOutputStream();
-          FileInputStream in = new FileInputStream(new File(file))
-        ) {
-          IOUtils.copy(in, os);
-        }
-        return null;
-      }
-    );
-    future.get();
-    executor.shutdown();
+    return "redirect:/approvals";
   }
 }

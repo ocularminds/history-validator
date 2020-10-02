@@ -4,6 +4,9 @@ import com.leadway.ps.model.Record;
 import com.leadway.ps.model.Statement;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.OutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.text.DecimalFormat;
@@ -46,18 +49,33 @@ public final class ExcelFile {
         outFile = FOLDER + File.separator + output("xlsx");
     }
 
+    public ByteArrayInputStream toStream()throws Exception{
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		toStream(baos, outFile);
+        return new ByteArrayInputStream(baos.toByteArray());
+	}
+
+	public Fault toFile()throws Exception{
+		if (!new File(FOLDER).exists()) {
+			System.out.println(FOLDER + " does not exist. creating it...");
+			new File(FOLDER).mkdirs();
+        }
+        FileOutputStream fos = new FileOutputStream(outFile);
+        return toStream(fos, outFile);
+	}
+
    //1. Add Footer total  and net contributions
    //2. Summary in uppercase
    //3. Fund unit price in ecimal places - 4
    //4. Data to fix column
    //5. Format amount to comma nd decimal places
    //6. Negative amount to be in parentences
-    public Fault toFile() throws Exception {
+    public Fault toStream(OutputStream out,String outFile) throws Exception {
         StringBuilder errors = new StringBuilder();
         int success = 0;
         try {
             XSSFWorkbook workbook = (XSSFWorkbook) ExcelBuilder.createWorkBookForPath(outFile);
-            XSSFSheet sheet = ExcelBuilder.newSheet(FOLDER, outFile, HEADERS, workbook);
+            XSSFSheet sheet = ExcelBuilder.newSheet(HEADERS, workbook);
             CellStyle[] styles = {
                 ExcelBuilder.newStyle(workbook,null,false, IndexedColors.WHITE, HorizontalAlignment.CENTER),
                 ExcelBuilder.newStyle(workbook,null,false, IndexedColors.YELLOW, HorizontalAlignment.CENTER),
@@ -71,12 +89,12 @@ public final class ExcelFile {
             addHeaderContent(workbook, rowCount++, sheet);
             ExcelBuilder.createHeaderRow(workbook, sheet, SUB_HEADERS, rowCount++);
             addContent(rowCount, sheet, styles);
-            writeFile(workbook, outFile);
+            workbook.write(out);
         } catch (IOException ex) {
             System.out.println("error writing transaction history file " + ex);
-            return new Fault("PS3", ex.getMessage());
+            //return new Fault("PS3", ex.getMessage());
         }
-        return buildFault(errors, success);
+        return buildFault(errors,  success) ;
     }
 
     private void addHeaderContent(XSSFWorkbook workbook, int rowCount, XSSFSheet sheet) {

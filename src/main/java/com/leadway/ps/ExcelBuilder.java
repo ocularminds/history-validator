@@ -39,6 +39,12 @@ public class ExcelBuilder {
         return workbook;
     }
 
+    public static XSSFSheet newSheet(String[] headers, XSSFWorkbook workbook) throws Exception {
+        XSSFSheet sheet = workbook.createSheet("HISTORY");
+        ExcelBuilder.createHeaderRow(workbook, sheet, headers, 0);
+        return sheet;
+    }
+
     public static XSSFSheet newSheet(String folder, String outFile, String[] headers, XSSFWorkbook workbook) throws Exception {
         if (!new File(folder).exists()) {
             System.out.println(folder + " does not exist. creating it...");
