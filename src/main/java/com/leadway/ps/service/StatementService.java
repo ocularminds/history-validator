@@ -148,7 +148,7 @@ public class StatementService {
     }
     unitSum = req.getBalance().divide(new BigDecimal(req.getPrice()), 2, RAND);
     req.setReference(s1);
-    req.setQaurter(Q);
+    req.setQuarter(Q);
     req.setUnits(unitSum.setScale(2, RAND));
     req.setEarning(req.getBalance().subtract(netSum).setScale(2, RAND));
     req.setRecords(records);

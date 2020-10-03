@@ -12,6 +12,8 @@ import java.text.SimpleDateFormat;
 import java.text.DecimalFormat;
 import java.math.BigDecimal;
 import java.util.stream.IntStream;
+import java.util.List;
+import java.util.Collections;
 import java.awt.Color;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
@@ -116,7 +118,9 @@ public final class ExcelFile {
     private void addContent(int rowCount, XSSFSheet sheet, CellStyle[] style) {
         Row row;
         BigDecimal sumTotal = BigDecimal.ZERO,sumNet=BigDecimal.ZERO;
-        for (Record record : request.getRecords()) {
+        List<Record> records = request.getRecords();
+		Collections.sort(records);
+        for (Record record : records) {
             row = sheet.createRow(rowCount);
             int columnCount = 0;
             ExcelBuilder.createCell(columnCount, row, SDF.format(record.getDateReceived()), style[0]);

@@ -33,6 +33,7 @@ public class RecordRowMapper implements RowMapper<Record> {
         record.setPfa(pfa);
         record.setTotal(rs.getBigDecimal("TOTAL_CONTRIBUTIONS"));
         record.setId(pin+pfa+Integer.toString(i));
+        record.setPfa("023");
         return record;
     }
 }

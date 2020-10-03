@@ -70,14 +70,15 @@ public class PencomServiceTest {
     int random = (int) (Math.random() * 5);
     String[] emp = names[random].split(",");
     req.setFundId("3454000");
-    req.setQaurter(Q);
+    req.setQuarter(Q);
     req.setReference(ref);
     req.setFirstName(emp[0]);
     req.setSurname(emp[1]);
     req.setMiddleName(emp[2]);
     req.setPin(pin);
     req.setEmployer("PR0000111100");
-    req.setCode("FUND3");
+    req.setFundId("FUND4");
+	req.setCode("023");
     req.setPrice("3.8504");
     BigDecimal fundUnits = new BigDecimal(Math.random() * 99999999)
     .setScale(2, RoundingMode.HALF_UP);
@@ -121,7 +122,7 @@ public class PencomServiceTest {
 	  record.setQuarter(Q);
       record.setReference(ref);
       record.setNet(net);
-      record.setPfa("022");
+	  record.setPfa("023");
       records.add(record);
     }
     return records;

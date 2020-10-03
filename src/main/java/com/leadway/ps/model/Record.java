@@ -43,7 +43,7 @@ import javax.persistence.Table;
     "withdrawal",
   }
 )
-public class Record {
+public class Record  implements Comparable<Record>{
   @Id
   @Column(name = "hid", nullable = false, length = 22)
   @JsonIgnore
@@ -131,6 +131,7 @@ public class Record {
 
   public Record(){
 	  quarter = "3-2020";
+	  pfa = "023";
   }
 
   /**
@@ -412,4 +413,9 @@ public class Record {
   public void setStatement(Statement request) {
     this.statement = request;
   }
+
+    @Override
+    public int compareTo(Record e) {
+        return Integer.toString(this.getSerial()).compareTo(Integer.toString(e.getSerial()));
+    }
 }

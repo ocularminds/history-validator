@@ -25,6 +25,8 @@ public class StatementRowMapper implements RowMapper<Statement> {
         req.setPin(rs.getString("rsapin"));
         req.setSurname(rs.getString("lastname"));
         req.setStatus("PENDING");
+        req.setFundId("FUND4");
+        req.setCode("023");
         return req;
     }
 

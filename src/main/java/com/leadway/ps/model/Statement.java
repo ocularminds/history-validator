@@ -123,6 +123,8 @@ public class Statement  implements java.io.Serializable{
     price ="0.00";
     units = BigDecimal.ZERO.setScale(2, RAND);
     earning = BigDecimal.ZERO.setScale(2, RAND);
+    code = "023";
+    fundId = "FUND4";
   }
 
   /**
@@ -142,14 +144,14 @@ public class Statement  implements java.io.Serializable{
   /**
    * @return the quarter
    */
-  public String getQaurter() {
+  public String getQuarter() {
     return quarter;
   }
 
   /**
    * @param quarter the quarter to set
    */
-  public void setQaurter(String quarter) {
+  public void setQuarter(String quarter) {
     this.quarter = quarter;
   }
 

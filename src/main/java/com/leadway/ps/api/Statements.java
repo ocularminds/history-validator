@@ -5,6 +5,7 @@ import com.leadway.ps.ExcelFile;
 import com.leadway.ps.InvalidAccessError;
 import com.leadway.ps.model.Approval;
 import com.leadway.ps.model.Criteria;
+import com.leadway.ps.model.Record;
 import com.leadway.ps.model.Report;
 import com.leadway.ps.model.Statement;
 import com.leadway.ps.service.StatementService;
@@ -17,10 +18,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -85,7 +82,9 @@ public class Statements {
   @GetMapping(value = "/export/{pin}/statement.json")
   public ResponseEntity<String> downloadJson(@PathVariable(value = "pin") String pin) throws Exception {
       Statement statement = statements.getStatement(pin);
-      Report report = new Report(statement,statement.getRecords());
+      List<Record> records = statement.getRecords();
+	  Collections.sort(records);
+	  Report report = new Report(statement,records);
 	  String json = JsonParser.toJson(report);
       HttpHeaders headers = new HttpHeaders();
       headers.add("Content-Type", "application/json");
@@ -183,7 +182,7 @@ public class Statements {
     }
     statements.approve(approval);
     model.put("statement", statements.getStatement(id));
-    return "redirect:/reviews";
+    return "redirect:/statements/reviews";
   }
 
   @RequestMapping("/approvals")
@@ -237,6 +236,6 @@ public class Statements {
     }
     statements.approve(approval);
     model.put("statement", statements.getStatement(id));
-    return "redirect:/approvals";
+    return "redirect:/statements/approvals";
   }
 }
