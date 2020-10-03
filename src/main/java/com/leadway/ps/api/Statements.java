@@ -5,6 +5,7 @@ import com.leadway.ps.ExcelFile;
 import com.leadway.ps.InvalidAccessError;
 import com.leadway.ps.model.Approval;
 import com.leadway.ps.model.Criteria;
+import com.leadway.ps.model.Report;
 import com.leadway.ps.model.Statement;
 import com.leadway.ps.service.StatementService;
 import com.leadway.ps.service.UserService;
@@ -82,7 +83,7 @@ public class Statements {
   }
 
   @GetMapping(value = "/export/{pin}/statement.json")
-  public ResponseEntity<String> downloadExcel(@PathVariable(value = "pin") String pin) throws Exception {
+  public ResponseEntity<String> downloadJson(@PathVariable(value = "pin") String pin) throws Exception {
       Statement statement = statements.getStatement(pin);
       Report report = new Report(statement,statement.getRecords());
 	  String json = JsonParser.toJson(report);
