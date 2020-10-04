@@ -15,7 +15,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <form:form method="post" action="${pageContext.request.contextPath}/${endpoint}" modelAttribute="approval">
+                                <form:form method="post" action="${pageContext.request.contextPath}/statements/approve/${statement.pin}" modelAttribute="approval">
 				<div class="form-body">
 				    <div class="row">
 					<div class="col-md-6">                                                            
