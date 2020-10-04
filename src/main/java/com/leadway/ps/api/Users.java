@@ -117,7 +117,7 @@ public class Users {
   @PostMapping("/departments")
   public String save(
     ModelMap model,
-    @ModelAttribute(value = "user") Department department
+    @ModelAttribute(value = "department") Department department
   ) {
     String username = (String) model.get("username");
     if (username == null) return "redirect:/login";

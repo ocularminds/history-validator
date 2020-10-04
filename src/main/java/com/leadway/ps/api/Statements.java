@@ -170,7 +170,7 @@ public class Statements {
   public String review(
     @PathVariable(value = "id") String id,
     ModelMap model,
-    Approval approval
+    @ModelAttribute(value = "approval") Approval approval
   )
     throws Exception {
     String username = (String) model.get("username");
@@ -215,7 +215,6 @@ public class Statements {
     }
     model.put("statement", statements.getStatement(id));
     model.put("endpoint", "statements/approvals/" + id);
-    model.put("buttonLabel", "Approve");
     model.put("approval", new Approval(id, Approval.ApprovalType.APPROVE));
     return "approve";
   }
@@ -224,7 +223,7 @@ public class Statements {
   public String approve(
     @PathVariable(value = "id") String id,
     ModelMap model,
-    Approval approval
+    @ModelAttribute(value = "approval") Approval approval
   )
     throws Exception {
     String username = (String) model.get("username");
