@@ -15,28 +15,29 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <form:form method="post" action="${pageContext.request.contextPath}/statements/approve/${statement.pin}" modelAttribute="approval">
+                                <form:form method="post" action="${pageContext.request.contextPath}/statements/approvals/${statement.pin}" modelAttribute="approval">
 				<div class="form-body">
 				    <div class="row">
-					<div class="col-md-6">                                                            
+					<div class="col-md-6">  
+					&nbsp;
+					</div>
+					<div class="col-md-6">					                                                          
 					    <div class="row">
-						<div class="col-md-6">
-						    ID
+						<div class="col-md-5">
+						    RSA PIN
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-7">
 						    <div class="form-group">
 							<form:input path="requestId" type="text" class="form-control" readonly="true"/>
 							<form:input path="approval" type="hidden"/>
 						    </div>
 						</div>
 					    </div>
-					</div>
-					<div class="col-md-6">
 					    <div class="row">
-						<div class="col-md-6">
+						<div class="col-md-5">
 						    Comment
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-7">
 						    <div class="form-group">
 							<form:input path="comment" type="text" class="form-control"/>
 						    </div>
@@ -48,7 +49,6 @@
 				<div class="form-actions">
 				    <div class="text-right">
 					<button type="submit" class="btn btn-info">Approve</button>
-					<button type="reset" class="btn btn-dark">Reset</button>
 					<a class="btn btn-success" href="${pageContext.request.contextPath}/statements/export/${statement.pin}/statement.xlsx"> <i data-feather="file-text" class="feather-icon"></i>&nbsp;Export Excel</a>&nbsp;
 					<a class="btn btn-light" href="${pageContext.request.contextPath}/statements/export/${statement.pin}/statement.json"> <i data-feather="file-text" class="feather-icon"></i>&nbsp;Export JSON</a>
 				    </div>
