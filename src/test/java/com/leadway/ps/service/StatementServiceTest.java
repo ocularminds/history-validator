@@ -64,7 +64,7 @@ public class StatementServiceTest {
     List<Statement> requests = new ArrayList<>();
     requests.add(createRequest("345"));
     requests.add(createRequest("5467"));
-    when(repository.findAllByStatus("REVIEWED")).thenReturn(requests);
+    when(repository.findAllByStatus("REVIEW")).thenReturn(requests);
     List<Statement> records = service.findAllReviewed();
     assertTrue(records.size() == 2);
   }
