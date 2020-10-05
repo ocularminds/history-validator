@@ -97,7 +97,7 @@ public class StatementService {
   }
 
   public List<Statement> findAllReviewed() {
-    return repository.findAllByStatus("REVIEWED");
+    return repository.findAllByStatus("REVIEW");
   }
 
   public Statement getStatement(String pin) throws Exception {
